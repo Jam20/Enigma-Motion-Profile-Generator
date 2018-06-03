@@ -7,7 +7,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
-    <Grid Background="black">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -16,11 +16,13 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Background="Black">
+            <Button Name="HamburgerButton" FontFamily="Segoe Mdl2 Assets" Content="" FontSize="36" Click="HamburgerButton_Click" Background="Black" Foreground="#943EEB"/>
+        </StackPanel>
 
-        <Button Name="HamburgerButton" Grid.Column="0" Grid.Row="0" FontFamily="Segoe Mdl2 Assets" Content="" FontSize="36" Click="HamburgerButton_Click" Background="Black" Foreground="#943EEB"/>
-        <SplitView Name="NavigationSplitView" Grid.Column="0" Grid.Row="1" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="56" HorizontalAlignment="Left">
+        <SplitView Name="NavigationSplitView" Grid.Column="0" Grid.Row="1" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="56" HorizontalAlignment="Left" Background="Black">
             <SplitView.Pane>
-                <ListBox Name="NavigationListBox" SelectionMode="Single" SelectionChanged="NavigationListBox_SelectionChanged" Background="Black" >
+                <ListBox Name="NavigationListBox" SelectionMode="Single" SelectionChanged="NavigationListBox_SelectionChanged" Background="Black">
                     <ListBoxItem >
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
@@ -48,5 +50,11 @@
                 </ListBox>
             </SplitView.Pane>
         </SplitView>
+        <RelativePanel Grid.Column="1" Grid.Row="0" Background="Black">
+            <StackPanel RelativePanel.AlignRightWithPanel="True" Orientation="Horizontal">
+                <Button Name="ImportButton" FontFamily="Segoe MDL2 Assets" Content="" Foreground="#943EEB" FontSize="36" Margin="0,0,10,0"/>
+                <Button Name="ExportButton" FontFamily="Segoe MDL2 Assets" Content="" Foreground="#943EEB" FontSize="36"/>
+            </StackPanel>
+        </RelativePanel>
     </Grid>
 </Page>
