@@ -20,28 +20,28 @@
             <Button Name="HamburgerButton" FontFamily="Segoe Mdl2 Assets" Content="" FontSize="36" Click="HamburgerButton_Click" Background="Black" Foreground="#943EEB"/>
         </StackPanel>
 
-        <SplitView Name="NavigationSplitView" Grid.Column="0" Grid.Row="1" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="56" HorizontalAlignment="Left" Background="Black">
+        <SplitView Name="NavigationSplitView" Grid.Column="0" Grid.Row="1" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="56" HorizontalAlignment="Left" >
             <SplitView.Pane>
-                <ListBox Name="NavigationListBox" SelectionMode="Single" SelectionChanged="NavigationListBox_SelectionChanged" Background="Black">
-                    <ListBoxItem >
+                <ListBox Name="NavigationListBox" SelectionMode="Single"  SelectionChanged="NavigationListBox_SelectionChanged" Background="Black">
+                    <ListBoxItem Name="HomeListItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
                             <TextBlock Text="Home" FontSize="36" Foreground="	#943EEB"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem>
+                    <ListBoxItem Name="RobotListItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
                             <TextBlock Text="Robot" FontSize="36" Foreground="#943EEB"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem>
+                    <ListBoxItem Name="FieldListItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
                             <TextBlock Text="Field" FontSize="36" Foreground="#943EEB"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem>
+                    <ListBoxItem Name="SettingsListItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
                             <TextBlock Text="Settings" FontSize="36" Foreground="#943EEB"/>
@@ -49,6 +49,9 @@
                     </ListBoxItem>
                 </ListBox>
             </SplitView.Pane>
+            <SplitView.Content>
+                <Rectangle Fill="White" Width="141"></Rectangle>
+            </SplitView.Content>
         </SplitView>
         <RelativePanel Grid.Column="1" Grid.Row="0" Background="Black">
             <StackPanel RelativePanel.AlignRightWithPanel="True" Orientation="Horizontal">
@@ -56,5 +59,6 @@
                 <Button Name="ExportButton" FontFamily="Segoe MDL2 Assets" Content="" Foreground="#943EEB" FontSize="36"/>
             </StackPanel>
         </RelativePanel>
+        <Frame Name="MainFrame" Grid.Column="1" Grid.Row="1"/>
     </Grid>
 </Page>
