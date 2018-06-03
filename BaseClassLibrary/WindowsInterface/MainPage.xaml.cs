@@ -26,5 +26,15 @@ namespace WindowsInterface
         {
             this.InitializeComponent();
         }
+
+        private void NavigationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationSplitView.IsPaneOpen = !NavigationSplitView.IsPaneOpen;
+        }
     }
 }
