@@ -25,6 +25,7 @@ namespace WindowsInterface
         public MainPage()
         {
             this.InitializeComponent();
+            MainFrame.Navigate(typeof(HomePage));
         }
 
         private void NavigationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -46,5 +47,7 @@ namespace WindowsInterface
         {
             NavigationSplitView.IsPaneOpen = !NavigationSplitView.IsPaneOpen;
         }
+
+        
     }
 }
