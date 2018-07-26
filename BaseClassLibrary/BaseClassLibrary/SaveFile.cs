@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-public static class ClassSaveFile {
+public static class SaveFile {
     public static void WriteSaveFile(double[] pathInput, String path) {
         //Person will push out the class that has the path
         //We will be taking a "motion profile" as a parameter and it will return a 3D array
