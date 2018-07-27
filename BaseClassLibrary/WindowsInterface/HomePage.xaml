@@ -9,12 +9,344 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Background="DarkGray">
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="Input point" FontSize="30" HorizontalAlignment="Center" Padding="0,10,0,0"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="X value" FontSize="25" HorizontalAlignment="Right" Padding="0,0,30,0"/>
+                    <TextBox x:Name="xPointInputTextBox" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Y value" FontSize="25" HorizontalAlignment="Left" Padding="30,0,0,0"/>
+                    <TextBox x:Name="yPointInputTextBox" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                </StackPanel>
+            </Grid>
+            <Button x:Name="savePointBtn" Content="Save" Background="Gray" Foreground="Black"  HorizontalAlignment="Center" FontSize="30" Width="300" Margin="0,15" Click="savePointBtn_Click"/>
+
+            <ScrollViewer Height="500">
+                <Grid x:Name="pointsTable">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Grid.Column="1" Fill="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="4,0"/>
+                    <Rectangle Grid.Column="3" Fill="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="4,0"/>
+                    <StackPanel x:Name="ptNumberColumn" Grid.Column="0" >
+                        <TextBlock Text="0" FontSize="30" HorizontalAlignment="Center"/>
+                        <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
+                        <ListBox x:Name="pointNumberListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+
+                        </ListBox>
+                    </StackPanel>
+                    <StackPanel x:Name="xValuesColumn" Grid.Column="2">
+                        <TextBlock Text="X values" FontSize="30" HorizontalAlignment="Center"/>
+                        <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
+                        <ListBox x:Name="xValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+
+                        </ListBox>
+                    </StackPanel>
+                    <StackPanel  Grid.Column="4">
+                        <TextBlock Text="Y values" FontSize="30" HorizontalAlignment="Center"/>
+                        <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
+                        <ListBox x:Name="yValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+                            
+                        </ListBox>
+                                 
+                    </StackPanel>
+
+                </Grid>
+            </ScrollViewer>
+        </StackPanel>
+        
+        
+        
+        <Canvas x:Name="FieldCanvas" Grid.Column="0" Margin="300,100,0,0">
+            <!--Field Bounderies-->
+            <Line
+            X1="0" Y1="36"
+            X2="30" Y2="0"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="30" Y1="0"
+            X2="294" Y2="0"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="294" Y1="0"
+            X2="324" Y2="36"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="324" Y1="36"
+            X2="324" Y2="612"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="324" Y1="612"
+            X2="294" Y2="648"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="294" Y1="648"
+            X2="30" Y2="648"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="30" Y1="648"
+            X2="0" Y2="612"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="0" Y1="612"
+            X2="0" Y2="36"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+
+            <!--Switch 1-->
+            <Line
+            X1="85" Y1="140"
+            X2="239" Y2="140"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="85" Y1="196"
+            X2="239" Y2="196"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="239" Y1="140"
+            X2="239" Y2="196"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="85" Y1="140"
+            X2="85" Y2="196"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+
+            <!--Switch 2-->
+            <Line
+            X1="85" Y1="508"
+            X2="239" Y2="508"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="85" Y1="452"
+            X2="239" Y2="452"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="239" Y1="508"
+            X2="239" Y2="452"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="85" Y1="508"
+            X2="85" Y2="452"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+
+            <!--Scale -->
+            <Line
+            X1="72" Y1="300"
+            X2="72" Y2="348"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="108" Y1="300"
+            X2="108" Y2="348"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="72" Y1="300"
+            X2="108" Y2="300"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="72" Y1="348"
+            X2="108" Y2="348"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="212" Y1="312"
+            X2="108" Y2="312"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="212" Y1="336"
+            X2="108" Y2="336"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="212" Y1="300"
+            X2="212" Y2="348"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="248" Y1="300"
+            X2="248" Y2="348"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="248" Y1="300"
+            X2="212" Y2="300"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="248" Y1="348"
+            X2="212" Y2="348"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="160" Y1="312"
+            X2="160" Y2="336"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+
+            <!--Ramp-->
+            <!--Outer Ramp-->
+            <Line
+            X1="95" Y1="261"
+            X2="229" Y2="261"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="95" Y1="387"
+            X2="229" Y2="387"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="95" Y1="348"
+            X2="95" Y2="387"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="95" Y1="300"
+            X2="95" Y2="261"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="229" Y1="348"
+            X2="229" Y2="387"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="229" Y1="300"
+            X2="229" Y2="261"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+
+            <!--Inner Ramp-->
+            <Line
+            X1="108" Y1="377"
+            X2="212" Y2="377"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="108" Y1="271"
+            X2="212" Y2="271"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="108" Y1="336"
+            X2="108" Y2="377"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="212" Y1="271"
+            X2="212" Y2="312"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="108" Y1="271"
+            X2="108" Y2="312"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="212" Y1="336"
+            X2="212" Y2="377"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+
+
+            <Line
+            X1="212" Y1="377"
+            X2="229" Y2="387"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="108" Y1="377"
+            X2="95" Y2="387"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="212" Y1="271"
+            X2="229" Y2="261"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+            <Line
+            X1="108" Y1="271"
+            X2="95" Y2="261"
+            StrokeThickness="4"
+            Stroke="Black"
+            />
+        </Canvas>
         
     </Grid>
 </Page>

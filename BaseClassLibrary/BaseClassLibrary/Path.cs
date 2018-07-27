@@ -17,8 +17,13 @@ public class Path
     }
 
     public void addPoint(double[] newPt) {
-        if (pathList.Count == 0) {
-            firstPoint = newPt;
+        if (pathList.Count ==0) {
+            if (firstPoint == null) {
+                firstPoint = newPt;
+            }
+            else {
+                pathList.Add(new Segment(firstPoint, newPt));
+            }
             return;
         }
         Segment newSegment = new Segment(pathList[pathList.Count - 1].getControlptFour(), newPt);
@@ -57,6 +62,21 @@ public class Path
         double output = 0;
         for(int i=0; i<pathList.Count; i++) {
             output += pathList[i].getSegmentLength();
+        }
+        return output;
+    }
+
+    public double[][] getPoints() {
+        if(pathList.Count == 0) {
+            if (firstPoint == null) return null;
+            double[][] arry = new double[1][];
+            arry[0] = firstPoint;
+            return arry;
+        }
+        double[][] output = new double[pathList.Count+1][];
+        output[0] = pathList[0].getControlptOne();
+        for (int i = 0; i < output.Length-1; i++) {
+            output[i+1] = pathList[i].getControlptFour();
         }
         return output;
     }

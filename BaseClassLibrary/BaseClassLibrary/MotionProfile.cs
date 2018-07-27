@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BaseClassLibrary
 {
-    class MotionProfile{
+    public class MotionProfile{
         private Path path;
         private Robot robot;
         private double[] position, velocity, heading;
@@ -38,6 +38,7 @@ namespace BaseClassLibrary
                 }
                 timeInMs += (int)(robot.timeIncrementInSec * 1000);
             }
+            profileTime = timeInMs / 1000;
             position = new double[pos.Count];
             velocity = new double[vel.Count];
             heading = new double[head.Count];
@@ -51,7 +52,7 @@ namespace BaseClassLibrary
 
         public double[][] toArry() {
             double[][] output = new double[3][];
-            for(int i= 0 i< output.Length; i++) {
+            for(int i= 0; i< output.Length; i++) {
                 output[i] = new double[position.Length];
             }
 
