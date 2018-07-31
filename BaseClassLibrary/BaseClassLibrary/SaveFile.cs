@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 public static class SaveFile {
@@ -8,8 +9,9 @@ public static class SaveFile {
         //[Segment(0 -> pathLength), ControlPoint(0 -> 3), x or y(0 -> 1)]
         FileInfo fi = new FileInfo(path);
 
-        using (StreamWriter sw = fi.CreateText()) {
+        using(StreamWriter sw = fi.CreateText()) {
             double[][][] segments = new double[2][][];
+            double[][] profile = new double[10][];
             /*segments[0] = new double[4][]
             {
                 new double[] { 1, 2},
@@ -24,9 +26,17 @@ public static class SaveFile {
                 new double[] { 5.4, 6.4},
                 new double[] { 7.4, 8.4}
             };*/
-            foreach (double[][] segment in segments) {
+
+            //Writes the file header
+            foreach(double[][] segment in segments) {
                 sw.WriteLine(SegmentToLine(segment));
             }
+
+            //Writes the motion profile
+            foreach(double[] point in profile){
+                sw.WriteLine(PointToString(point));
+            }
+            sw.Close();
         }
 
         //The next thing will be outputted and will be the position, velocity, direction, and interval. 3 1D arrays
@@ -35,10 +45,9 @@ public static class SaveFile {
 
     private static String SegmentToLine(double[][] segment) {
         String output = "";
-        for (UInt16 i = 0; i <= 3; i++) {
+        for(int i = 0; i <= 3; i++) {
             output += PairItems(segment[i]) + ",";
         }
-        output.TrimEnd(',');
         return output;
     }
 
@@ -47,9 +56,42 @@ public static class SaveFile {
         return point[0].ToString() + ":" + point[1].ToString();
     }
 
+    private static String PointToString(double[] point) {
+        String output = ",";
+        foreach(double number in point) {
+            output += number.ToString() + ",";
+        }
+        return output.Trim(',');
+    }
+
     public static double[][][] ReadSaveFile(String path) {
         FileInfo fi = new FileInfo(path);
-        FileStream fs = fi.OpenRead();
-        return new double[5][][];
+        StreamReader sr = new StreamReader(path);
+        Boolean reachedEnd = false;
+        String line = "";
+        List<double[][]> output = new List<double[][]>();
+
+        while(!reachedEnd) {
+            line = sr.ReadLine();
+            //Lines starting with a comma are the profile lines
+            if(line[0] == ',') {
+                break;
+            }
+            //Prevents an empty term at the end of the array
+            line = line.TrimEnd(',');
+            output.Add(LineToSegments(line.Split(',')));
+        }
+        return output.ToArray();
     }
+
+    private static double[][] LineToSegments(String[] points) {
+        double[][] output = new double[points.Length][];
+        for(int i = 0; i < points.Length; i++) {
+            String[] point = points[i].Split(':');
+            output[i][0] = Convert.ToDouble(point[0]);
+            output[i][1] = Convert.ToDouble(point[1]);
+        }
+        return output;
+    }
+
 }
