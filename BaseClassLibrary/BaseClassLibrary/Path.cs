@@ -32,28 +32,38 @@ public class Path
             
     }
 
-    private void standardizePath() {
+    public void standardizePath() {
         if (pathList.Count < 2) return;
         for (int i = 0; i < pathList.Count-1; i++) {
-            bool isContinous = (pathList[i].getControlptThree()[1] - pathList[i + 1].getControlptTwo()[1]) / (pathList[i].getControlptThree()[0] - pathList[i + 1].getControlptTwo()[0]) == (pathList[i].getControlptThree()[1] - pathList[i].getControlptFour()[1]) / (pathList[i].getControlptThree()[0] - pathList[i].getControlptFour()[0]);
-            if (!isContinous) {
-                double s = (pathList[i].getControlptThree()[1] - pathList[i + 1].getControlptTwo()[1]) / (pathList[i].getControlptThree()[0] - pathList[i + 1].getControlptTwo()[0]);
-                double d = Segment.pow(Math.Abs(pathList[i].getControlptFour()[0] - pathList[i + 1].getControlptTwo()[0]), 2) + Segment.pow(Math.Abs(pathList[i].getControlptFour()[1] - pathList[i + 1].getControlptTwo()[1]), 2);
-                double b = Math.Sqrt((d / (2 * Segment.pow(s, 2))));
-                double a = b * s;
-                double[] newControlptTwo = { pathList[i].getControlptFour()[0] + a, pathList[i].getControlptFour()[1] + b };
-                pathList[i + 1].setControlptTwo(newControlptTwo);
+            double ratioOne = (pathList[i].getControlptThree()[1] - pathList[i].getControlptFour()[1]) / (pathList[i].getControlptThree()[0] - pathList[i].getControlptFour()[0]);
+            double ratioTwo = (pathList[i+1].getControlptTwo()[1] - pathList[i].getControlptFour()[1]) / (pathList[i+1].getControlptTwo()[0] - pathList[i].getControlptFour()[0]);
+            if(ratioOne != ratioTwo) {
+                double xDist = Math.Abs(pathList[i + 1].getControlptTwo()[0] - pathList[i].getControlptFour()[0]);
+                double yDist = Math.Abs(pathList[i + 1].getControlptTwo()[1] - pathList[i].getControlptFour()[1]);
+                double distance = Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
+                double newXValue = Math.Sqrt(Math.Pow(distance, 2) / (Math.Pow(ratioOne, 2) + 1));
+                double newYValue = newXValue * ratioOne;
+                if (pathList[i].getControlptThree()[0] < pathList[i].getControlptFour()[0]) {
+                    pathList[i + 1].setControlptTwo(new double[] { pathList[i].getControlptFour()[0] + newXValue, pathList[i].getControlptFour()[1] + newYValue });
+                }
+                else {
+                    pathList[i + 1].setControlptTwo(new double[] { pathList[i].getControlptFour()[0] - newXValue, pathList[i].getControlptFour()[1] - newYValue });
+                }
+                double newRatioTwo = (pathList[i + 1].getControlptTwo()[1] - pathList[i].getControlptFour()[1]) / (pathList[i + 1].getControlptTwo()[0] - pathList[i].getControlptFour()[0]);
+                
             }
-            
         }
     }
 
     public void modifyPoint(int index, double[] newPoint){
         if (newPoint.Length > 2) return;
-        if (index == 0) pathList[0].setControlptOne(newPoint);
+        if (index == 0) {
+            if (pathList.Count == 0) firstPoint = newPoint;
+            else pathList[0].setControlptOne(newPoint);
+        }
         else {
             pathList[index - 1].setControlptFour(newPoint);
-            pathList[index].setControlptOne(newPoint);
+            if (pathList.Count >index) pathList[index].setControlptOne(newPoint);
         }
         standardizePath();
     }
@@ -94,6 +104,8 @@ public class Path
     public List<Segment> getPathList() {
         return pathList;
     }
+
+    
 
     
 }

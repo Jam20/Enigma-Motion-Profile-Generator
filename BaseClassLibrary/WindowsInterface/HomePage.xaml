@@ -62,18 +62,35 @@
                         <TextBlock Text="Y values" FontSize="30" HorizontalAlignment="Center"/>
                         <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
                         <ListBox x:Name="yValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
-                            
+
                         </ListBox>
-                                 
+
                     </StackPanel>
 
                 </Grid>
             </ScrollViewer>
+            <TextBlock Text="SegmentSelector" FontSize="30" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="SegmentListComboBox" HorizontalAlignment="Stretch" Margin="0,10,0,0" SelectionChanged="SegmentListComboBox_SelectionChanged"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Control Point 2" FontSize="25" Margin="0,10" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="ControlPoint2Textblock" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Control Point 3" FontSize="25" Margin="0,10" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="ControlPoint3Textblock" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+
+
         </StackPanel>
-        
-        
-        
-        <Canvas x:Name="FieldCanvas" Grid.Column="0" Margin="300,100,0,0">
+
+        <Canvas x:Name="FieldCanvas" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
             <!--Field Bounderies-->
             <Line
             X1="0" Y1="36"
@@ -346,6 +363,8 @@
             StrokeThickness="4"
             Stroke="Black"
             />
+
+           
         </Canvas>
         
     </Grid>

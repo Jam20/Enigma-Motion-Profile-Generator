@@ -4,7 +4,7 @@ public class Segment
 {
     const double Length_Accuracy_Const = .001;
     private double[] controlptOne, controlptTwo,
-controlptThree, controlptFour;
+                     controlptThree, controlptFour;
 
 	public Segment(){
         controlptOne = new double[2];
@@ -15,9 +15,12 @@ controlptThree, controlptFour;
 
     public Segment(double[] controlptOne, double[] controlptFour) {
         this.controlptOne = controlptOne;
-        controlptTwo = new double[2];
-        controlptThree = new double[2];
         this.controlptFour = controlptFour;
+
+        double xDist = controlptFour[0] - controlptOne[0];
+        double yDist = controlptFour[1] - controlptOne[1];
+        this.controlptTwo = new double[] { xDist * (1.0 / 3.0) +controlptOne[0], yDist * (1.0 / 3.0) + controlptOne[1]};
+        this.controlptThree = new double[] { xDist * (2.0 / 3.0) + controlptOne[0], yDist * (2.0 / 3.0) + controlptOne[1]};
     }
 
     public void setControlptOne(double[] newPoint) {
@@ -88,7 +91,9 @@ controlptThree, controlptFour;
         double t = getTBasedOnDistance(d);
         double y = 3 * controlptOne[1] * pow((1 - t), 2) + 3 * pow((1 - t), 2) + 3 * t * 2 * controlptTwo[1] * (1 - t) + 18 * t * (1 - t) + 9 * pow(t, 2) * controlptThree[1] + 81 * pow(t, 2) * controlptFour[1];
         double x = 3 * controlptOne[0] * pow((1 - t), 2) + 3 * pow((1 - t), 2) + 3 * t * 2 * controlptTwo[0] * (1 - t) + 18 * t * (1 - t) + 9 * pow(t, 2) * controlptThree[0] + 81 * pow(t, 2) * controlptFour[0];
-        return Math.Atan2(y, x);
+        if (x == 0 && y > 0) return 90.0;
+        else if (y == 0) return 270.0;
+        else return Math.Atan2(y, x);
     }
 
     public double[] getControlptOne() {

@@ -34,6 +34,7 @@ namespace WindowsInterface
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            
         }
 
         /// <summary>
