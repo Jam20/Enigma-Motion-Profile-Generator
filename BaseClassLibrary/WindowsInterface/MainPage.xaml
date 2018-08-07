@@ -4,10 +4,100 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interact="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Page.Resources>
+        <Style x:Key="purpleButtonStyle"
+            TargetType="Button">
+            <Setter Property="Foreground" Value="#393185"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="#943EEB" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Content1" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="#943EEB" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Content1" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <ContentPresenter x:Name="Content1"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    
+    <!--begining of the border styling-->
+    <Grid Background="DarkGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Background="Black" VerticalAlignment="Center">
+            <Button Name="HamburgerButton"  Style="{StaticResource purpleButtonStyle}" FontFamily="Segoe Mdl2 Assets" Content="" FontSize="36" Click="HamburgerButton_Click" Background="Black" Foreground="#943EEB" Margin="10,10,0,10"/>
+            
+        </StackPanel>
 
+        <SplitView Name="NavigationSplitView" Grid.Column="0" Grid.Row="1" DisplayMode="CompactOverlay" OpenPaneLength="200" CompactPaneLength="56" HorizontalAlignment="Left" >
+            <SplitView.Pane>
+                <ListBox Name="NavigationListBox" SelectionMode="Single"  SelectionChanged="NavigationListBox_SelectionChanged" Background="Black">
+                    <ListBoxItem Name="HomeListItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
+                            <TextBlock Text="Home" FontSize="36" Foreground="	#943EEB"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="RobotListItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
+                            <TextBlock Text="Robot" FontSize="36" Foreground="#943EEB"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="FieldListItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
+                            <TextBlock Text="Field" FontSize="36" Foreground="#943EEB"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="SettingsListItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="36" Margin="0,0,10,0" Foreground="	#943EEB"/>
+                            <TextBlock Text="Settings" FontSize="36" Foreground="#943EEB"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Rectangle Fill="DarkGray" Width="141"></Rectangle>
+            </SplitView.Content>
+        </SplitView>
+        <RelativePanel Grid.Column="1" Grid.Row="0" Background="Black">
+            <StackPanel RelativePanel.AlignRightWithPanel="True" Orientation="Horizontal">
+                <Button Name="ImportButton" Style="{StaticResource purpleButtonStyle}" FontFamily="Segoe MDL2 Assets" Content="" Foreground="#943EEB" FontSize="36" Margin="0,10,10,0"/>
+                <Button Name="ExportButton" Style="{StaticResource purpleButtonStyle}" FontFamily="Segoe MDL2 Assets" Content="" Foreground="#943EEB" FontSize="36" Margin="0,10,0,0"/>
+            </StackPanel>
+        </RelativePanel>
+        <Frame Name="MainFrame" Grid.Column="1" Grid.Row="1"/>
     </Grid>
 </Page>

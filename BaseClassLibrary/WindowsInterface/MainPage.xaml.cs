@@ -25,6 +25,29 @@ namespace WindowsInterface
         public MainPage()
         {
             this.InitializeComponent();
+            MainFrame.Navigate(typeof(HomePage));
         }
+
+        private void NavigationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBoxItem selectedItem = NavigationListBox.SelectedItem as ListBoxItem;
+            RobotListItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 255, 255, 255));
+            HomeListItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 255, 255, 255));
+            FieldListItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 255, 255, 255));
+            SettingsListItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 255, 255, 255));
+            selectedItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 3, 255, 0));
+            
+            if (selectedItem == HomeListItem) MainFrame.Navigate(typeof(HomePage));
+            else if(selectedItem == FieldListItem) MainFrame.Navigate(typeof(Field));
+            else if (selectedItem == RobotListItem) MainFrame.Navigate(typeof(Robot));
+            else if (selectedItem == SettingsListItem) MainFrame.Navigate(typeof(Settings));
+        }
+
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationSplitView.IsPaneOpen = !NavigationSplitView.IsPaneOpen;
+        }
+
+        
     }
 }

@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using BaseClassLibrary;
 
 namespace WindowsInterface
 {
@@ -22,6 +23,9 @@ namespace WindowsInterface
     /// </summary>
     sealed partial class App : Application
     {
+        internal MotionProfile currentProfile;
+        internal static Path currentPath;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -30,6 +34,7 @@ namespace WindowsInterface
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            
         }
 
         /// <summary>

@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseClassLibrary", "BaseClassLibrary\BaseClassLibrary.csproj", "{DB3FC84C-74E2-490E-BC64-D7CA1369B22D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsInterface", "WindowsInterface\WindowsInterface.csproj", "{F34BA683-0D35-4241-9A34-F7E92F174E6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma Desktop Profile Generator", "WindowsInterface\Enigma Desktop Profile Generator.csproj", "{F34BA683-0D35-4241-9A34-F7E92F174E6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1C94E794-8B5E-448D-8930-1F88CFA01168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
