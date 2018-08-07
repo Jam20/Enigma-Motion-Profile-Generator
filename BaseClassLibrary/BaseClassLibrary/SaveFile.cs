@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+//I don't know how to reference the path/motion profile class and google isn't helping.
+//This might just take parameters instead.
 
 public static class SaveFile {
     public static void WriteSaveFile(double[] pathInput, String path) {
@@ -35,7 +37,7 @@ public static class SaveFile {
 
             //Writes the motion profile
             foreach(double[] point in profile){
-                sw.WriteLine(PointToString(point) + timeDifference.ToString);
+                sw.WriteLine(PointToString(point) + timeDifference.ToString());
             }
             sw.Close();
         }
