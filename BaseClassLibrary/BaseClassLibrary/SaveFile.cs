@@ -12,6 +12,7 @@ public static class SaveFile {
         using(StreamWriter sw = fi.CreateText()) {
             double[][][] segments = new double[2][][];
             double[][] profile = new double[10][];
+            double timeDifference = 10;
             /*segments[0] = new double[4][]
             {
                 new double[] { 1, 2},
@@ -34,7 +35,7 @@ public static class SaveFile {
 
             //Writes the motion profile
             foreach(double[] point in profile){
-                sw.WriteLine(PointToString(point));
+                sw.WriteLine(PointToString(point) + timeDifference.ToString);
             }
             sw.Close();
         }
@@ -61,7 +62,7 @@ public static class SaveFile {
         foreach(double number in point) {
             output += number.ToString() + ",";
         }
-        return output.Trim(',');
+        return output;
     }
 
     public static double[][][] ReadSaveFile(String path) {
