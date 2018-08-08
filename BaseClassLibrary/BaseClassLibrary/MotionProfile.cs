@@ -5,10 +5,10 @@ using System.Text;
 namespace BaseClassLibrary
 {
     public class MotionProfile{
-        private Path path;
+        public Path path;
         private Robot robot;
         private double[] position, velocity, heading;
-        private double profileTime;
+        public double profileTime;
 
         public MotionProfile(Path p, Robot r) {
             path = p;
@@ -50,7 +50,7 @@ namespace BaseClassLibrary
             }
         }
 
-        public double[][] toArry() {
+        public double[][] toArray() {
             double[][] output = new double[3][];
             for(int i= 0; i< output.Length; i++) {
                 output[i] = new double[position.Length];

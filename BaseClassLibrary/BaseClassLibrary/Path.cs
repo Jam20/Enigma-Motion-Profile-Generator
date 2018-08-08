@@ -105,7 +105,11 @@ public class Path
         return pathList;
     }
 
-    
+    public double[][][] toArray() {
+        //Currently a placeholder that will be implemented later.
+        double[][][] output = new double[3][][];
+        return output;
+    }
 
     
 }
