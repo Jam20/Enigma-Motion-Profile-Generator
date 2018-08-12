@@ -88,7 +88,7 @@ public class Segment
 
     public double getDirectionAt(double d)
     {
-        double t = getTBasedOnDistance(d);
+        double t = d / getSegmentLength(); //getTBasedOnDistance(d);
         double y = 3 * controlptOne[1] * pow((1 - t), 2) + 3 * pow((1 - t), 2) + 3 * t * 2 * controlptTwo[1] * (1 - t) + 18 * t * (1 - t) + 9 * pow(t, 2) * controlptThree[1] + 81 * pow(t, 2) * controlptFour[1];
         double x = 3 * controlptOne[0] * pow((1 - t), 2) + 3 * pow((1 - t), 2) + 3 * t * 2 * controlptTwo[0] * (1 - t) + 18 * t * (1 - t) + 9 * pow(t, 2) * controlptThree[0] + 81 * pow(t, 2) * controlptFour[0];
         if (x == 0 && y > 0) return 90.0;

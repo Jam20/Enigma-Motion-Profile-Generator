@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class Path
-{
+public class Path{
+
     private List<Segment> pathList;
     private int startingHeading;
     private int endingHeading;
@@ -121,6 +121,10 @@ public class Path
         while(currentDistance < dist) {
             currentDistance += pathList[currentSegment].getSegmentLength();
             currentSegment++;
+        }
+        if (currentSegment != 0) {
+            currentSegment--;
+            currentDistance -= pathList[currentSegment].getSegmentLength();
         }
         return pathList[currentSegment].getDirectionAt(currentDistance - dist);
     }

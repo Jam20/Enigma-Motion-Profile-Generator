@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -39,7 +41,7 @@ namespace WindowsInterface
             
             if (selectedItem == HomeListItem) MainFrame.Navigate(typeof(HomePage));
             else if(selectedItem == FieldListItem) MainFrame.Navigate(typeof(Field));
-            else if (selectedItem == RobotListItem) MainFrame.Navigate(typeof(Robot));
+            else if (selectedItem == RobotListItem) MainFrame.Navigate(typeof(RobotPage));
             else if (selectedItem == SettingsListItem) MainFrame.Navigate(typeof(Settings));
         }
 
@@ -48,6 +50,18 @@ namespace WindowsInterface
             NavigationSplitView.IsPaneOpen = !NavigationSplitView.IsPaneOpen;
         }
 
-        
+        private async void ExportButton_Click(object sender, RoutedEventArgs e) {
+            FolderPicker folderSelector = new FolderPicker();
+            folderSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            folderSelector.ViewMode = PickerViewMode.List;
+            folderSelector.FileTypeFilter.Add("*");
+            StorageFolder file = await folderSelector.PickSingleFolderAsync();
+            String path = file.Path;
+            SaveFile.WriteSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
+        }
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e) {
+
+        }
     }
 }

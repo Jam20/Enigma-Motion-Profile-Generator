@@ -6,7 +6,7 @@ namespace BaseClassLibrary
 {
     public class MotionProfile{
         public Path path;
-        private Robot robot;
+        public Robot robot;
         private double[] position, velocity, heading;
         public double profileTime;
 
@@ -19,7 +19,10 @@ namespace BaseClassLibrary
             head = new List<double>();
             int timeInMs = 0;
             double timeToDeselerate = path.getTotalDistance() - robot.maxVel * (robot.maxVel / robot.maxAccel) + robot.maxAccel * (Math.Pow(robot.maxVel, 2) / (2 * Math.Pow(robot.maxAccel, 2)));
-            while (pos[pos.Count-1] < path.getTotalDistance()) {
+            pos.Add(0);
+            vel.Add(0);
+            head.Add(path.getDirectionat(0));
+            while (pos[pos.Count - 1] < path.getTotalDistance() && Math.Abs(pos[pos.Count-1]-path.getTotalDistance())>.75) {
 
                 if((vel[vel.Count-1] < robot.maxVel && pos[pos.Count-1] >= .5 * path.getTotalDistance()) || (pos[pos.Count-1] >= timeToDeselerate)) {
                     pos.Add(pos[pos.Count - 1] + vel[vel.Count - 1] * robot.timeIncrementInSec - .5 * robot.maxAccel * robot.timeIncrementInSec);

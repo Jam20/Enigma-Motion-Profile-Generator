@@ -23,7 +23,8 @@ namespace WindowsInterface
     /// </summary>
     sealed partial class App : Application
     {
-        internal MotionProfile currentProfile;
+        
+        internal static Robot currentRobot;
         internal static Path currentPath;
 
         /// <summary>

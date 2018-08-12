@@ -20,13 +20,22 @@ namespace WindowsInterface
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Robot : Page
+    public sealed partial class RobotPage : Page
     {
-        public Robot()
+        public RobotPage()
         {
             this.InitializeComponent();
+            if (App.currentRobot == null) App.currentRobot = new Robot();
+            else {
+                MaxAccelBox.Text = App.currentRobot.maxAccel.ToString();
+                MaxVelbox.Text = App.currentRobot.maxVel.ToString();
+            }
         }
 
-        
+        private void RobotSaveBtn_Click(object sender, RoutedEventArgs e) {
+            App.currentRobot.maxAccel = Double.Parse(MaxAccelBox.Text);
+            App.currentRobot.maxVel = Double.Parse(MaxVelbox.Text);
+            App.currentRobot.timeIncrementInSec = .01;
+        }
     }
 }
