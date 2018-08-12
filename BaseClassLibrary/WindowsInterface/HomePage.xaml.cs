@@ -87,14 +87,15 @@ namespace WindowsInterface
                 pointNumberListBox.Items.Add(numberListBoxItem);
 
                 Ellipse dataPt = new Ellipse();
-                dataPt.Width = 5;
-                dataPt.Height = 5;
+                dataPt.Width = 6;
+                dataPt.Height = 6;
                 dataPt.Fill = new SolidColorBrush(Windows.UI.Colors.Black);
                 dataPt.Name = pointNumberListBox.Items.Count.ToString();
                 dataPt.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
                 dataPt.ManipulationDelta += pointManipulationDelta;
-                Canvas.SetTop(dataPt, FieldCanvas.Height - App.currentPath.getPoints()[i][1]);
-                Canvas.SetLeft(dataPt, App.currentPath.getPoints()[i][0]);
+                Canvas.SetTop(dataPt, FieldCanvas.Height - (App.currentPath.getPoints()[i][1]+3));
+                Canvas.SetLeft(dataPt, App.currentPath.getPoints()[i][0]-3);
+                Canvas.SetZIndex(dataPt, 1000);
                 FieldCanvas.Children.Add(dataPt);
                 currentPointEllipses.Add(dataPt);
             }
@@ -165,9 +166,9 @@ namespace WindowsInterface
         private void pointManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
             Ellipse sentEllipse = sender as Ellipse;
             int pointTableNum = Int32.Parse(sentEllipse.Name);
-            
-            Canvas.SetLeft(sentEllipse, Canvas.GetLeft(sentEllipse) + e.Delta.Translation.X);
-            Canvas.SetTop(sentEllipse, Canvas.GetTop(sentEllipse) + e.Delta.Translation.Y);
+            App.currentPath.modifyPoint(pointTableNum - 1, new double[] { App.currentPath.getPoint(pointTableNum - 1)[0] + e.Delta.Translation.X, App.currentPath.getPoint(pointTableNum - 1)[1] - e.Delta.Translation.Y });
+            Canvas.SetLeft(sentEllipse, App.currentPath.getPoint(pointTableNum-1)[0]-3);
+            Canvas.SetTop(sentEllipse, FieldCanvas.Height-(App.currentPath.getPoint(pointTableNum - 1)[1]+3));
 
             
             ListBoxItem xValueListBoxItem = (ListBoxItem)xValuesListBox.Items[pointTableNum - 1];
@@ -175,7 +176,7 @@ namespace WindowsInterface
 
             xValueListBoxItem.Content = Canvas.GetLeft(sentEllipse);
             yValueListBoxItem.Content = FieldCanvas.Height - Canvas.GetTop(sentEllipse);
-            App.currentPath.modifyPoint(pointTableNum - 1, new double[] { Canvas.GetLeft(sentEllipse) , FieldCanvas.Height - Canvas.GetTop(sentEllipse) });
+            
             if(SegmentListComboBox.SelectedItem != null) {
                 displayPath(App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)]);
             }
@@ -190,8 +191,8 @@ namespace WindowsInterface
             double[] newControlPointTwo = new double[] { selectedSegment.getControlptTwo()[0] + e.Delta.Translation.X, selectedSegment.getControlptTwo()[1] - e.Delta.Translation.Y };
             selectedSegment.setControlptTwo(newControlPointTwo);
             App.currentPath.standardizePath();
-            Canvas.SetTop(sentControlPoint,FieldCanvas.Height - selectedSegment.getControlptTwo()[1]);
-            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptTwo()[0]);
+            Canvas.SetTop(sentControlPoint,FieldCanvas.Height - (selectedSegment.getControlptTwo()[1]+3));
+            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptTwo()[0]-3);
             ControlPoint2Textblock.Text = "(" + selectedSegment.getControlptTwo()[0] + "," + selectedSegment.getControlptTwo()[1] + ")";
 
             displayPath(selectedSegment);
@@ -203,8 +204,8 @@ namespace WindowsInterface
             double[] newControlPointThree = new double[] { selectedSegment.getControlptThree()[0] + e.Delta.Translation.X, selectedSegment.getControlptThree()[1] - e.Delta.Translation.Y };
             selectedSegment.setControlptThree(newControlPointThree);
             App.currentPath.standardizePath();
-            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - selectedSegment.getControlptThree()[1]);
-            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptThree()[0]);
+            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.getControlptThree()[1]+3));
+            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptThree()[0]-3);
             ControlPoint3Textblock.Text = "(" + selectedSegment.getControlptThree()[0] + "," + selectedSegment.getControlptThree()[1] + ")";
             displayPath(selectedSegment);
         }
@@ -220,14 +221,15 @@ namespace WindowsInterface
             ControlPoint3Textblock.Text = "(" + selectedSegment.getControlptThree()[0] + "," + selectedSegment.getControlptThree()[1] + ")";
 
             Ellipse controlPointTwoEllipse = new Ellipse();
-            controlPointTwoEllipse.Width = 5;
-            controlPointTwoEllipse.Height = 5;
+            controlPointTwoEllipse.Width = 6;
+            controlPointTwoEllipse.Height = 6;
             controlPointTwoEllipse.Fill = new SolidColorBrush(Windows.UI.Colors.Red);
             controlPointTwoEllipse.Name = "CurrentControlPointTwo";
             controlPointTwoEllipse.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
             controlPointTwoEllipse.ManipulationDelta += controlPointTwoManipulationDelta;
-            Canvas.SetTop(controlPointTwoEllipse, FieldCanvas.Height - selectedSegment.getControlptTwo()[1]);
-            Canvas.SetLeft(controlPointTwoEllipse, selectedSegment.getControlptTwo()[0]);
+            Canvas.SetTop(controlPointTwoEllipse, FieldCanvas.Height - (selectedSegment.getControlptTwo()[1]+3));
+            Canvas.SetLeft(controlPointTwoEllipse, selectedSegment.getControlptTwo()[0]-3);
+            Canvas.SetZIndex(controlPointTwoEllipse, 1001);
             FieldCanvas.Children.Add(controlPointTwoEllipse);
             currentControlPointTwoEllipse = controlPointTwoEllipse;
 
@@ -240,6 +242,7 @@ namespace WindowsInterface
             controlPointThreeEllipse.ManipulationDelta += controlPointThreeManipulationDelta;
             Canvas.SetTop(controlPointThreeEllipse, FieldCanvas.Height - selectedSegment.getControlptThree()[1]);
             Canvas.SetLeft(controlPointThreeEllipse, selectedSegment.getControlptThree()[0]);
+            Canvas.SetZIndex(controlPointThreeEllipse, 1001);
             FieldCanvas.Children.Add(controlPointThreeEllipse);
             currentControlPointThreeEllipse = controlPointThreeEllipse;
 

@@ -54,7 +54,7 @@ public class Path
             }
         }
     }
-
+    
     public void modifyPoint(int index, double[] newPoint){
         if (newPoint.Length > 2) return;
         if (index == 0) {
@@ -66,6 +66,30 @@ public class Path
             if (pathList.Count >index) pathList[index].setControlptOne(newPoint);
         }
         standardizePath();
+    }
+
+    public void modifyPointAdd(int index, double x, double y){
+        
+        if (index == 0)
+        {
+            if (pathList.Count == 0) firstPoint = new double[] { firstPoint[0] + x, firstPoint[1] + y };
+            else pathList[0].setControlptOne(new double[] { firstPoint[0] + x, firstPoint[1] + y });
+        }
+        else
+        {
+            pathList[index - 1].setControlptFour(new double[] { firstPoint[0] + x, firstPoint[1] + y });
+            if (pathList.Count > index) pathList[index].setControlptOne(new double[] { firstPoint[0] + x, firstPoint[1] + y });
+        }
+        standardizePath();
+    }
+
+    public double[] getPoint(int index) {
+
+        if (index == 0) {
+            if (pathList.Count == 0) return firstPoint;
+            else return pathList[0].getControlptOne();
+        }
+        else return pathList[index-1].getControlptFour();
     }
 
     public double getTotalDistance() {
