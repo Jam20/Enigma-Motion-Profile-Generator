@@ -6,6 +6,7 @@ public class Segment
     private double[] controlptOne, controlptTwo,
                      controlptThree, controlptFour;
 
+    //basic constructor for a semgent in which we don't know all of the control points
 	public Segment(){
         controlptOne = new double[2];
         controlptTwo = new double[2];
@@ -13,6 +14,7 @@ public class Segment
         controlptFour = new double[2];
     }
 
+    //constructor for a segment given the start point and end points 
     public Segment(double[] controlptOne, double[] controlptFour) {
         this.controlptOne = controlptOne;
         this.controlptFour = controlptFour;
@@ -23,6 +25,7 @@ public class Segment
         this.controlptThree = new double[] { xDist * (2.0 / 3.0) + controlptOne[0], yDist * (2.0 / 3.0) + controlptOne[1]};
     }
 
+    //Setter methods for the 4 control points
     public void setControlptOne(double[] newPoint) {
         controlptOne = newPoint;
     }
@@ -39,17 +42,19 @@ public class Segment
         controlptFour = newPoint;
     }
 
-
+    //given the control points gives the function on the x axis 
     public double xFunctionAt(double t) {
         return pow((1.0F - t), 3)*controlptOne[0] + 3 * t * pow((1.0F - t), 2)*controlptTwo[0]
             + 3 * pow(t, 2) * (1.0F - t)*controlptThree[0] + pow(t, 3)*controlptFour[0];
     }
 
+    //same as xFunctionAt but gets the y value
     public double yFunctionAt(double t) {
         return pow((1.0F - t), 3) * controlptOne[1] + 3 * t * pow((1.0F - t), 2) * controlptTwo[1]
             + 3 * pow(t, 2) * (1.0F - t) * controlptThree[1] + pow(t, 3) * controlptFour[1];
     }
 
+    //simple power method
     public static double pow(double num, int pow) {
         double output = num;
         for (int i = 0; i < pow-1; i++) {
@@ -58,6 +63,7 @@ public class Segment
         return output;
     }
 
+    //uses the accuracy constant to determine the length using the distance formula
     public double getSegmentLength() {
         double output = 0;
         for (double i = 0.0; i < 1.0; i+=Length_Accuracy_Const) {
@@ -67,6 +73,8 @@ public class Segment
         }
         return output;
     }
+
+    //gets the t value based on the distance 
     public double getTBasedOnDistance(double d) {
         double output = 0;
         double distance = 0;
@@ -86,6 +94,7 @@ public class Segment
         return output;
     }
 
+    //gets the direction at a given distance
     public double getDirectionAt(double d)
     {
         double t = d / getSegmentLength(); //getTBasedOnDistance(d);
@@ -96,6 +105,7 @@ public class Segment
         else return Math.Atan2(y, x);
     }
 
+    //getter methods for the control points
     public double[] getControlptOne() {
         return controlptOne;
     }

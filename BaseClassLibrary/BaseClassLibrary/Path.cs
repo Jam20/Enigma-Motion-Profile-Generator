@@ -8,14 +8,18 @@ public class Path{
     private int endingHeading;
     private double[] firstPoint;
 
+    //Generic constuctor for first time use
     public Path() {
         pathList = new List<Segment>();
     }
 
+    //Constructor with already determined Points list
     public Path(List<Segment> pathList) {
         this.pathList = pathList;
     }
 
+
+    //Adds a point into the pathlist and standardizes the path to make it continous
     public void addPoint(double[] newPt) {
         if (pathList.Count ==0) {
             if (firstPoint == null) {
@@ -32,6 +36,7 @@ public class Path{
             
     }
 
+    //Checks every segment and its ajesent segments for continuity and then ajusts if they are not continous
     public void standardizePath() {
         if (pathList.Count < 2) return;
         for (int i = 0; i < pathList.Count-1; i++) {
@@ -55,6 +60,7 @@ public class Path{
         }
     }
     
+    //based on a @param index the 0 based index of the location of the main point in the path is modified from its original value to @param newPoint
     public void modifyPoint(int index, double[] newPoint){
         if (newPoint.Length > 2) return;
         if (index == 0) {
@@ -68,6 +74,7 @@ public class Path{
         standardizePath();
     }
 
+    //Does the same as modifyPoint but instead of switching to acompletly new number simpily adds @param x,y to their respective values in the point
     public void modifyPointAdd(int index, double x, double y){
         
         if (index == 0)
@@ -83,6 +90,7 @@ public class Path{
         standardizePath();
     }
 
+    //gets the a main point from the pathlist at @param index
     public double[] getPoint(int index) {
 
         if (index == 0) {
@@ -92,6 +100,7 @@ public class Path{
         else return pathList[index-1].getControlptFour();
     }
 
+    //uses the getSegmentLength method from each segment and totals the distance
     public double getTotalDistance() {
         double output = 0;
         for(int i=0; i<pathList.Count; i++) {
@@ -100,6 +109,7 @@ public class Path{
         return output;
     }
 
+    //gets a 2d array reperesentation of the pathlist with each dimention 1 being the segment index and dimention 2 being a array of the control points
     public double[][] getPoints() {
         if(pathList.Count == 0) {
             if (firstPoint == null) return null;
@@ -115,6 +125,7 @@ public class Path{
         return output;
     }
 
+    //given a @param dist we find which segment we would be in givin the size of distance than we find based on the distance from the start of that semgent the direction using that individual segments getDirectionAt method
     public double getDirectionat(double dist) {
         double currentDistance = 0;
         int currentSegment = 0;
@@ -129,6 +140,7 @@ public class Path{
         return pathList[currentSegment].getDirectionAt(currentDistance - dist);
     }
 
+    //gets the pathlist object 
     public List<Segment> getPathList() {
         return pathList;
     }
