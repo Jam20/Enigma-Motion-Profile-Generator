@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -51,12 +52,12 @@ namespace WindowsInterface
         }
 
         private async void ExportButton_Click(object sender, RoutedEventArgs e) {
-            FolderPicker folderSelector = new FolderPicker();
-            folderSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            folderSelector.ViewMode = PickerViewMode.List;
-            folderSelector.FileTypeFilter.Add("*");
-            StorageFolder file = await folderSelector.PickSingleFolderAsync();
+            FileSavePicker fileSelector = new FileSavePicker();
+            fileSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            fileSelector.FileTypeChoices.Add("csv", new List<string>() { ".csv" });
+            StorageFile file = await fileSelector.PickSaveFileAsync();
             String path = file.Path;
+            StorageApplicationPermissions.FutureAccessList.Add(file);
             SaveFile.WriteSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
         }
 

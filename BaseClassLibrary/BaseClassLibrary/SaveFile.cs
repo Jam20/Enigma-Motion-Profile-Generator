@@ -16,7 +16,7 @@ public static class SaveFile {
         using(StreamWriter sw = fi.CreateText()) {
             double[][][] segments = motionProfile.path.toArray();
             double[][] profile = motionProfile.toArray();
-            double timeDifference = motionProfile.profileTime;
+            double timeDifference = motionProfile.robot.timeIncrementInSec*1000;
 
             //Writes the file header
             foreach(double[][] segment in segments) {
