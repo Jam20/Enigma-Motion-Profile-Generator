@@ -33,9 +33,26 @@ namespace WindowsInterface
         }
 
         private void RobotSaveBtn_Click(object sender, RoutedEventArgs e) {
-            App.currentRobot.maxAccel = Double.Parse(MaxAccelBox.Text);
-            App.currentRobot.maxVel = Double.Parse(MaxVelbox.Text);
-            App.currentRobot.timeIncrementInSec = .01;
+            if(double.TryParse(MaxAccelBox.Text, out double accel) && double.TryParse(MaxVelbox.Text, out double vel)) {
+                App.currentRobot.maxAccel = accel;
+                App.currentRobot.maxVel = vel;
+                App.currentRobot.timeIncrementInSec = .01;
+            } else {
+                MaxAccelBox.Text = "";
+                MaxVelbox.Text = "";
+                DisplayWarningDialog("Error: Bad Input", "This field only accepts numeric input.");
+            }
+        }
+
+        private async void DisplayWarningDialog(string title, string content) {
+            //Generic Warning box
+            ContentDialog warning = new ContentDialog() {
+                Title = title,
+                Content = content,
+                CloseButtonText = "OK"
+            };
+
+            await warning.ShowAsync();
         }
     }
 }

@@ -38,9 +38,17 @@ namespace WindowsInterface
         }
        
         private void savePointBtn_Click(object sender, RoutedEventArgs e) {
-            double[] newpt = new double[] { Double.Parse(xPointInputTextBox.Text), Double.Parse(yPointInputTextBox.Text) };
-            App.currentPath.addPoint(newpt);
-            importPath();
+            //Added number check to prevent crashes from bad input
+            if(double.TryParse(xPointInputTextBox.Text, out double x) && double.TryParse(yPointInputTextBox.Text, out double y)){
+                double[] newpt = new double[] { x, y };
+                App.currentPath.addPoint(newpt);
+                importPath();
+            } else {
+                xPointInputTextBox.Text = "";
+                yPointInputTextBox.Text = "";
+                DisplayWarningDialog("Error: Bad Input", "This field may only contain numeric input.");
+            }
+            
         }
 
         private void pointsTableSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -246,6 +254,17 @@ namespace WindowsInterface
             currentControlPointThreeEllipse = controlPointThreeEllipse;
 
             displayPath(selectedSegment);
+        }
+
+        private async void DisplayWarningDialog(string title, string content) {
+            //Generic Warning Box
+            ContentDialog warning = new ContentDialog() {
+                Title = title,
+                Content = content,
+                CloseButtonText = "OK"
+            };
+
+            await warning.ShowAsync();
         }
     }
 }
