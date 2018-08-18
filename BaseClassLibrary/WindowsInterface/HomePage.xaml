@@ -15,80 +15,90 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1">
-            <TextBlock Text="Input point" FontSize="30" HorizontalAlignment="Center" Padding="0,10,0,0"/>
+        <Grid Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+            <TextBlock Text="Input point"  FontSize="30" HorizontalAlignment="Center" Padding="0,10,0,0"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="X value" FontSize="25" HorizontalAlignment="Right" Padding="0,0,30,0"/>
-                    <TextBox x:Name="xPointInputTextBox" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0"/>
-                </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="Y value" FontSize="25" HorizontalAlignment="Left" Padding="30,0,0,0"/>
-                    <TextBox x:Name="yPointInputTextBox" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"/>
-                </StackPanel>
-            </Grid>
-            <Button x:Name="savePointBtn" Content="Save" Background="Gray" Foreground="Black"  HorizontalAlignment="Center" FontSize="30" Width="300" Margin="0,15" Click="savePointBtn_Click"/>
-
-            <ScrollViewer Height="500">
-                <Grid x:Name="pointsTable">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Rectangle Grid.Column="1" Fill="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="4,0"/>
-                    <Rectangle Grid.Column="3" Fill="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="4,0"/>
-                    <StackPanel x:Name="ptNumberColumn" Grid.Column="0" >
-                        <TextBlock Text="0" FontSize="30" HorizontalAlignment="Center"/>
-                        <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
-                        <ListBox x:Name="pointNumberListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
-
-                        </ListBox>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="X value" FontSize="25" HorizontalAlignment="Right" Padding="0,0,30,0"/>
+                        <TextBox x:Name="xPointInputTextBox" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0"/>
                     </StackPanel>
-                    <StackPanel x:Name="xValuesColumn" Grid.Column="2">
-                        <TextBlock Text="X values" FontSize="30" HorizontalAlignment="Center"/>
-                        <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
-                        <ListBox x:Name="xValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
-
-                        </ListBox>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Y value" FontSize="25" HorizontalAlignment="Left" Padding="30,0,0,0"/>
+                        <TextBox x:Name="yPointInputTextBox" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"/>
                     </StackPanel>
-                    <StackPanel  Grid.Column="4">
-                        <TextBlock Text="Y values" FontSize="30" HorizontalAlignment="Center"/>
-                        <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
-                        <ListBox x:Name="yValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
-
-                        </ListBox>
-
-                    </StackPanel>
-
                 </Grid>
-            </ScrollViewer>
-            <TextBlock Text="SegmentSelector" FontSize="30" HorizontalAlignment="Center"/>
-            <ComboBox x:Name="SegmentListComboBox" HorizontalAlignment="Stretch" Margin="0,10,0,0" SelectionChanged="SegmentListComboBox_SelectionChanged"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="Control Point 2" FontSize="25" Margin="0,10" HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="ControlPoint2Textblock" HorizontalAlignment="Center"/>
+                <Button x:Name="savePointBtn" Content="Save" Background="Gray" Foreground="Black"  HorizontalAlignment="Center" FontSize="30" Width="300" Margin="0,15" Click="savePointBtn_Click"/>
+            </StackPanel>
+                
+                <ScrollViewer VerticalAlignment="Stretch" Grid.Row="1">
+                    <Grid x:Name="pointsTable">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Grid.Column="1" Fill="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="4,0"/>
+                        <Rectangle Grid.Column="3" Fill="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="4,0"/>
+                        <StackPanel x:Name="ptNumberColumn" Grid.Column="0" >
+                            <TextBlock Text="0" FontSize="30" HorizontalAlignment="Center"/>
+                            <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
+                            <ListBox x:Name="pointNumberListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+
+                            </ListBox>
+                        </StackPanel>
+                        <StackPanel x:Name="xValuesColumn" Grid.Column="2">
+                            <TextBlock Text="X values" FontSize="30" HorizontalAlignment="Center"/>
+                            <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
+                            <ListBox x:Name="xValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+
+                            </ListBox>
+                        </StackPanel>
+                        <StackPanel  Grid.Column="4">
+                            <TextBlock Text="Y values" FontSize="30" HorizontalAlignment="Center"/>
+                            <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
+                            <ListBox x:Name="yValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+
+                            </ListBox>
+
+                        </StackPanel>
+
+                    </Grid>
+                </ScrollViewer>
+                <StackPanel Grid.Row="2">
+                    <TextBlock Text="SegmentSelector" FontSize="30" HorizontalAlignment="Center"/>
+                    <ComboBox x:Name="SegmentListComboBox" HorizontalAlignment="Stretch" Margin="0,10,0,0" SelectionChanged="SegmentListComboBox_SelectionChanged"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Control Point 2" FontSize="25" Margin="0,10" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="ControlPoint2Textblock" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Control Point 3" FontSize="25" Margin="0,10" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="ControlPoint3Textblock" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="Control Point 3" FontSize="25" Margin="0,10" HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="ControlPoint3Textblock" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Grid>
+            
 
 
-        </StackPanel>
+        </Grid>
 
         <Canvas x:Name="FieldCanvas" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
             <!--Field Bounderies-->
