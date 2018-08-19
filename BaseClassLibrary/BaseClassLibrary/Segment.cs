@@ -121,4 +121,13 @@ public class Segment
     public double[] getControlptFour() {
         return controlptFour;
     }
+
+    public double[][] toArry() {
+        double[][] output = new double[4][];
+        output[0] = getControlptOne();
+        output[1] = getControlptTwo();
+        output[2] = getControlptThree();
+        output[3] = getControlptFour();
+        return output;
+    }
 }

@@ -118,6 +118,9 @@
     <Compile Include="RobotPage.xaml.cs">
       <DependentUpon>RobotPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="warningCD.xaml.cs">
+      <DependentUpon>warningCD.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -164,6 +167,10 @@
     <Page Include="RobotPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="warningCD.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

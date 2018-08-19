@@ -147,7 +147,10 @@ public class Path{
 
     public double[][][] toArray() {
         //Currently a placeholder that will be implemented later.
-        double[][][] output = new double[3][][];
+        double[][][] output = new double[pathList.Count][][];
+        for(int i = 0; i < pathList.Count; i++) {
+            output[i] = pathList[i].toArry();
+        }
         return output;
     }
 

@@ -69,16 +69,11 @@ namespace BaseClassLibrary
         }
 
         public double[][] toArray() {
-            double[][] output = new double[3][];
-            for(int i= 0; i< output.Length; i++) {
-                output[i] = new double[position.Length];
+            double[][] output = new double[position.Length][];
+            for(int i = 0; i < output.Length; i++) {
+                output[i] = new double[] { position[i], velocity[i], heading[i] };
             }
-
-            for(int i = 0; i< position.Length; i++) {
-                output[0][i] = position[i];
-                output[1][i] = velocity[i];
-                output[2][i] = heading[i];
-            }
+            
             return output;
 
         }
