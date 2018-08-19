@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,19 +29,9 @@ namespace WindowsInterface
             } else {
                 MaxAccelBox.Text = "";
                 MaxVelbox.Text = "";
-                DisplayWarningDialog("Error: Bad Input", "This field only accepts numeric input.");
+                WarningCD warning = new WarningCD("Error: Bad Input", "This field may only contain numeric input.");
+                warning.Show();
             }
-        }
-
-        private async void DisplayWarningDialog(string title, string content) {
-            //Generic Warning box
-            ContentDialog warning = new ContentDialog() {
-                Title = title,
-                Content = content,
-                CloseButtonText = "OK"
-            };
-
-            await warning.ShowAsync();
         }
     }
 }

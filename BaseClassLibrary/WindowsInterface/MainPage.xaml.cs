@@ -55,10 +55,23 @@ namespace WindowsInterface
             FileSavePicker fileSelector = new FileSavePicker();
             fileSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
             fileSelector.FileTypeChoices.Add("csv", new List<string>() { ".csv" });
+            fileSelector.SuggestedFileName = "Profile0";
+
             StorageFile file = await fileSelector.PickSaveFileAsync();
-            String path = file.Path;
+            //More safety needs to be added. Popups for exported and failed to export should also eventually appear.
+            if(file != null) {
+                CachedFileManager.DeferUpdates(file);
+
+                await FileIO.WriteLinesAsync(file, SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot), "placeholder"));
+
+                Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+
+                if(status == Windows.Storage.Provider.FileUpdateStatus.Complete) {
+                    //Yay it saved.
+                }
+            }
             StorageApplicationPermissions.FutureAccessList.Add(file);
-            SaveFile.WriteSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
+            //SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
         }
 
         private void ImportButton_Click(object sender, RoutedEventArgs e) {

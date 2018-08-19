@@ -46,7 +46,8 @@ namespace WindowsInterface
             } else {
                 xPointInputTextBox.Text = "";
                 yPointInputTextBox.Text = "";
-                DisplayWarningDialog("Error: Bad Input", "This field may only contain numeric input.");
+                WarningCD warning = new WarningCD("Error: Bad Input", "This field may only contain numeric input.");
+                warning.Show();
             }
             
         }
@@ -254,17 +255,6 @@ namespace WindowsInterface
             currentControlPointThreeEllipse = controlPointThreeEllipse;
 
             displayPath(selectedSegment);
-        }
-
-        private async void DisplayWarningDialog(string title, string content) {
-            //Generic Warning Box
-            ContentDialog warning = new ContentDialog() {
-                Title = title,
-                Content = content,
-                CloseButtonText = "OK"
-            };
-
-            await warning.ShowAsync();
         }
     }
 }
