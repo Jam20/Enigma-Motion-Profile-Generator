@@ -22,7 +22,7 @@ namespace BaseClassLibrary
             pos.Add(0);
             vel.Add(0);
             head.Add(path.getDirectionat(0));
-            while (Math.Abs(path.getTotalDistance()-pos[pos.Count-1])>.1) {
+            while (Math.Abs(path.getTotalDistance()-pos[pos.Count-1])>.01) {
                 double currentPosition = pos[pos.Count - 1];
                 double currentVelocity = vel[vel.Count - 1];
 

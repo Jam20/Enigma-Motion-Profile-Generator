@@ -70,7 +70,7 @@ namespace WindowsInterface
                     //Yay it saved.
                 }
             }
-            StorageApplicationPermissions.FutureAccessList.Add(file);
+            
             //SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
         }
 

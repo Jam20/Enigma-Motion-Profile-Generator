@@ -137,6 +137,7 @@ public class Path{
             currentSegment--;
             currentDistance -= pathList[currentSegment].getSegmentLength();
         }
+        if(currentDistance == 0) return pathList[currentSegment].getDirectionAt(dist);
         return pathList[currentSegment].getDirectionAt(currentDistance - dist);
     }
 

@@ -98,11 +98,14 @@ public class Segment
     public double getDirectionAt(double d)
     {
         double t = d / getSegmentLength(); //getTBasedOnDistance(d);
-        double y = 3 * controlptOne[1] * pow((1 - t), 2) + 3 * pow((1 - t), 2) + 3 * t * 2 * controlptTwo[1] * (1 - t) + 18 * t * (1 - t) + 9 * pow(t, 2) * controlptThree[1] + 81 * pow(t, 2) * controlptFour[1];
-        double x = 3 * controlptOne[0] * pow((1 - t), 2) + 3 * pow((1 - t), 2) + 3 * t * 2 * controlptTwo[0] * (1 - t) + 18 * t * (1 - t) + 9 * pow(t, 2) * controlptThree[0] + 81 * pow(t, 2) * controlptFour[0];
-        if (x == 0 && y > 0) return 90.0;
-        else if (y == 0) return 270.0;
-        else return Math.Atan2(y, x);
+        double y = 3*Math.Pow(1-t,2)*(controlptTwo[1]-controlptOne[1])+6*(1-t)*t*(controlptThree[1]-controlptTwo[1])+3*Math.Pow(t,2)*(controlptFour[1]-controlptThree[1]);
+        double x = 3 * Math.Pow(1 - t, 2) * (controlptTwo[0] - controlptOne[0]) + 6 * (1 - t) * t * (controlptThree[0] - controlptTwo[0]) + 3 * Math.Pow(t, 2) * (controlptFour[0] - controlptThree[0]);
+        if (x == 0 && y > 0) return 0;
+        else if (x==0) return 180;
+        double output = Math.Atan2(y, x) / Math.PI * 180;
+        if (output < 90) return 90 - output;
+        else return output + 90;
+        
     }
 
     //getter methods for the control points
