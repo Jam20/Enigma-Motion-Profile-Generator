@@ -1,74 +1,64 @@
-﻿using System;
+﻿using BaseClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using BaseClassLibrary;
-
 
 public static class SaveFile {
-    public static List<string> GetSaveFile(MotionProfile motionProfile, String path) {
-        //Person will push out the class that has the path
-        //We will be taking a "motion profile" as a parameter and it will return a 3D array
-        //[Segment(0 -> pathLength), ControlPoint(0 -> 3), x or y(0 -> 1)]
-        //FileInfo fi = new FileInfo(path);
+    /// <summary>
+    /// Returns strings containing the segments used to make the profile and the profile for the robot
+    /// </summary>
+    public static List<string> GetSaveFile(MotionProfile motionProfile) {
         List<string> output = new List<string>();
 
-        //using(StreamWriter sw = fi.CreateText()) {
-            
-            double[][][] segments = motionProfile.path.toArray();
-            double[][] profile = motionProfile.toArray();
-            double timeDifference = motionProfile.robot.timeIncrementInSec*1000;
-            /*
-            double[][][] segments = new double[][][] {
-                new double[4][] {
-                    new double[2] {1, 2},
-                    new double[2] {3, 4},
-                    new double[2] {5, 6},
-                    new double[2] {7, 8}
-                },
-                new double[4][] {
-                    new double[2] {10, 20},
-                    new double[2] {30, 40},
-                    new double[2] {50, 60},
-                    new double[2] {70, 80}
-                },
-                new double[4][] {
-                    new double[2] {14, 24},
-                    new double[2] {34, 44},
-                    new double[2] {54, 64},
-                    new double[2] {74, 84}
-                }
-            };
-            double[][] profile = new double[][] {
-                new double[4] {77, 88, 99, 1010},
-                new double[4] {777, 888, 99, 101010},
-                new double[4] {7777, 8888, 999, 10101010}
-            };
-            double timeDifference = 10;
-            */
+        double[][][] segments = motionProfile.path.toArray();
+        double[][] profile = motionProfile.toArray();
+        double timeDifference = motionProfile.robot.timeIncrementInSec*1000;
 
-            //Writes the file header
-            foreach(double[][] segment in segments) {
-                output.Add(SegmentToLine(segment));
-                //sw.WriteLine(SegmentToLine(segment));
+        /*
+        double[][][] segments = new double[][][] {
+            new double[4][] {
+                new double[2] {1, 2},
+                new double[2] {3, 4},
+                new double[2] {5, 6},
+                new double[2] {7, 8}
+            },
+            new double[4][] {
+                new double[2] {10, 20},
+                new double[2] {30, 40},
+                new double[2] {50, 60},
+                new double[2] {70, 80}
+            },
+            new double[4][] {
+                new double[2] {14, 24},
+                new double[2] {34, 44},
+                new double[2] {54, 64},
+                new double[2] {74, 84}
             }
-
-            //Writes the motion profile
-            foreach(double[] point in profile){
-                output.Add(PointToString(point) + timeDifference.ToString());
-                //sw.WriteLine(PointToString(point) + timeDifference.ToString());
-            }
-            /*
-            sw.Close();
-        }
+        };
+        double[][] profile = new double[][] {
+            new double[4] {77, 88, 99, 1010},
+            new double[4] {777, 888, 99, 101010},
+            new double[4] {7777, 8888, 999, 10101010}
+        };
+        double timeDifference = 10;
         */
 
-        //The next thing will be outputted and will be the position, velocity, direction, and interval. 3 1D arrays
-        //and a constant increment determined by motionProfile.getInterval
+        //Writes the file header
+        foreach(double[][] segment in segments) {
+            output.Add(SegmentToLine(segment));
+        }
 
+        //Writes the motion profile
+        foreach(double[] point in profile) {
+            output.Add(PointToString(point) + timeDifference.ToString());
+        }
         return output;
     }
 
     private static String SegmentToLine(double[][] segment) {
+        /// <summary>
+        /// Returns a path segment as a line for saving.
+        /// </summary>
         String output = "";
         for(int i = 0; i <= 3; i++) {
             output += PairItems(segment[i]) + ",";
@@ -77,11 +67,16 @@ public static class SaveFile {
     }
 
     private static String PairItems(double[] point) {
-        //Generates the control point pairs.
+        /// <returns>
+        /// Returns paired control points for saving.
+        /// </returns>
         return point[0].ToString() + ":" + point[1].ToString();
     }
 
     private static String PointToString(double[] point) {
+        /// <returns>
+        /// Returns a motion profile point as a line for saving.
+        /// </returns>
         String output = ",";
         foreach(double number in point) {
             output += number.ToString() + ",";
@@ -90,6 +85,9 @@ public static class SaveFile {
     }
 
     public static double[][][] ReadSaveFile(String path) {
+        /// <returns>
+        /// Returns an array of segments to be parsed into an interactive path that can be modified.
+        /// </returns>
         FileInfo fi = new FileInfo(path);
         StreamReader sr = new StreamReader(path);
         Boolean reachedEnd = false;
@@ -110,6 +108,9 @@ public static class SaveFile {
     }
 
     private static double[][] LineToSegments(String[] points) {
+        /// <returns>
+        /// Returns an array representing a path segment given an array of control point pairs.
+        /// </returns>
         double[][] output = new double[points.Length][];
         for(int i = 0; i < points.Length; i++) {
             String[] point = points[i].Split(':');

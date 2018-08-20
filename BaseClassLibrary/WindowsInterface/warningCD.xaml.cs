@@ -15,19 +15,15 @@ using Windows.UI.Xaml.Navigation;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace WindowsInterface
-{
-    public sealed partial class WarningCD : ContentDialog
-    {
-        public WarningCD(string title, string content)
-        {
+namespace WindowsInterface {
+    public sealed partial class WarningCD : ContentDialog {
+        public WarningCD(string title, string content) {
             this.InitializeComponent();
             Title = title;
             Content = content;
         }
 
-        public async void Show()
-        {
+        public async void Show() {
             await ShowAsync();
         }
     }

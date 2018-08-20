@@ -39,7 +39,13 @@ namespace WindowsInterface
             FieldListItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 255, 255, 255));
             SettingsListItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 255, 255, 255));
             selectedItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 3, 255, 0));
-            
+
+
+            switch(selectedItem)
+            {
+
+            }
+
             if (selectedItem == HomeListItem) MainFrame.Navigate(typeof(HomePage));
             else if(selectedItem == FieldListItem) MainFrame.Navigate(typeof(Field));
             else if (selectedItem == RobotListItem) MainFrame.Navigate(typeof(RobotPage));
@@ -62,7 +68,7 @@ namespace WindowsInterface
             if(file != null) {
                 CachedFileManager.DeferUpdates(file);
 
-                await FileIO.WriteLinesAsync(file, SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot), "placeholder"));
+                await FileIO.WriteLinesAsync(file, SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot)));
 
                 Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
 
