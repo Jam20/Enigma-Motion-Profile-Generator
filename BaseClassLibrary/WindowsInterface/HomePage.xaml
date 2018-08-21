@@ -101,280 +101,95 @@
         </Grid>
 
         <Canvas x:Name="FieldCanvas" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
+
+            
+            
             <!--Field Bounderies-->
-            <Line
-            X1="0" Y1="36"
-            X2="30" Y2="0"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="30" Y1="0"
-            X2="294" Y2="0"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="294" Y1="0"
-            X2="324" Y2="36"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="324" Y1="36"
-            X2="324" Y2="612"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="324" Y1="612"
-            X2="294" Y2="648"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="294" Y1="648"
-            X2="30" Y2="648"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="30" Y1="648"
-            X2="0" Y2="612"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="0" Y1="612"
-            X2="0" Y2="36"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
+            <Polygon Points="0,36,30,0,294,0,324,36,324,612,294,648,30,648,0,612,0,36" Fill="LightGray" Stroke="Black" StrokeThickness="2"/>
+
+            <!--Zones-->
+            <Line X1="0" X2="324" Y1="120" Y2="120" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="99" Canvas.Left="138" Width="45" Height="42" Fill="Blue" Stroke="Gray" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="0" Canvas.Left="166" Width="48" Height="36" Fill="Blue" Stroke="Gray" StrokeThickness="1"/>
+            
+            
+            <Line Y1="196" X1="95" X2="95" Y2="452" Stroke="Black" StrokeThickness="1"/>
+            <Line Y1="196" X1="229" X2="229" Y2="452" Stroke="Black" StrokeThickness="1"/>
+
+            <Line X1="0" Y1="288" X2="95" Y2="288" Stroke="White" StrokeThickness="2"/>
+            <Line X1="0" Y1="360" X2="95" Y2="360" Stroke="White" StrokeThickness="2"/>
+
+            <Line X1="229" Y1="288" X2="324" Y2="288" Stroke="White" StrokeThickness="2"/>
+            <Line X1="229" Y1="360" X2="324" Y2="360" Stroke="White" StrokeThickness="2"/>
+
+            <Line X1="0" X2="324" Y1="528" Y2="528" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="508" Canvas.Left="138" Width="45" Height="42" Fill="Red" Stroke="Gray" StrokeThickness="2"/>
+            <Rectangle Canvas.Top="612" Canvas.Left="166" Width="48" Height="36" Fill="Red"  Stroke="Gray" StrokeThickness="2"/>
+
+
 
             <!--Switch 1-->
-            <Line
-            X1="85" Y1="140"
-            X2="239" Y2="140"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="85" Y1="196"
-            X2="239" Y2="196"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="239" Y1="140"
-            X2="239" Y2="196"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="85" Y1="140"
-            X2="85" Y2="196"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-
+            <Rectangle Canvas.Top="140" Canvas.Left="85" Width="154" Height="56" Stroke="black" Fill="LightGray" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="144" Canvas.Left="89" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="162" Canvas.Left="124" Width="78" Height="12" Fill="White" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="144" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
+            
             <!--Switch 2-->
-            <Line
-            X1="85" Y1="508"
-            X2="239" Y2="508"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="85" Y1="452"
-            X2="239" Y2="452"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="239" Y1="508"
-            X2="239" Y2="452"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="85" Y1="508"
-            X2="85" Y2="452"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
+            <Rectangle Canvas.Top="452" Canvas.Left="85" Width="154" Height="56" Fill="LightGray" Stroke="black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="456" Canvas.Left="89" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="474" Canvas.Left="124" Width="78" Height="12" Fill="White" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="456" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
 
             <!--Scale -->
-            <Line
-            X1="72" Y1="300"
-            X2="72" Y2="348"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="108" Y1="300"
-            X2="108" Y2="348"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="72" Y1="300"
-            X2="108" Y2="300"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="72" Y1="348"
-            X2="108" Y2="348"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="212" Y1="312"
-            X2="108" Y2="312"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="212" Y1="336"
-            X2="108" Y2="336"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="212" Y1="300"
-            X2="212" Y2="348"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="248" Y1="300"
-            X2="248" Y2="348"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="248" Y1="300"
-            X2="212" Y2="300"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="248" Y1="348"
-            X2="212" Y2="348"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="160" Y1="312"
-            X2="160" Y2="336"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
+
+            <Rectangle Canvas.Top="300" Canvas.Left="72" Width="36" Height="48" Stroke="Black" Fill="Gray" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="300" Canvas.Left="212" Width="36" Height="48" Stroke="Black" Fill="Gray" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="312" Canvas.Left="108" Width="104" Height="24" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Line X1="160" Y1="312" X2="160" Y2="336" StrokeThickness="1" Stroke="Black"/>
 
             <!--Ramp-->
-            <!--Outer Ramp-->
-            <Line
-            X1="95" Y1="261"
-            X2="229" Y2="261"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="95" Y1="387"
-            X2="229" Y2="387"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="95" Y1="348"
-            X2="95" Y2="387"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="95" Y1="300"
-            X2="95" Y2="261"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="229" Y1="348"
-            X2="229" Y2="387"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="229" Y1="300"
-            X2="229" Y2="261"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
+            <Polygon Points="95,261,229,261,212,271,108,271" Fill="Blue"  Stroke="Black" StrokeThickness="1"/>
+            <Polygon Points="95,261,95,300,108,300,108,271" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+            <Polygon Points="229,261,229,300,212,300,212,271" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+            <Polygon Points="108,271,212,271,212,312,108,312" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+            
+            <Polygon Points="95,387,229,387,212,377,108,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+            <Polygon Points="95,387,95,348,108,348,108,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+            <Polygon Points="229,387,229,348,212,348,212,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+            <Polygon Points="108,377,212,377,212,336,108,336" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+            
+            <!--Cubes-->
+            <Rectangle Canvas.Top="508" Canvas.Left="154" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="508" Canvas.Left="141" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="508" Canvas.Left="167" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="521" Canvas.Left="147" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="521" Canvas.Left="160" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="534" Canvas.Left="154" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
 
-            <!--Inner Ramp-->
-            <Line
-            X1="108" Y1="377"
-            X2="212" Y2="377"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="108" Y1="271"
-            X2="212" Y2="271"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="108" Y1="336"
-            X2="108" Y2="377"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="212" Y1="271"
-            X2="212" Y2="312"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="108" Y1="271"
-            X2="108" Y2="312"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="212" Y1="336"
-            X2="212" Y2="377"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
+            <Rectangle Canvas.Top="127" Canvas.Left="154" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="127" Canvas.Left="141" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="127" Canvas.Left="167" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="114" Canvas.Left="147" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="114" Canvas.Left="160" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="101" Canvas.Left="154" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
 
+            <Rectangle Canvas.Top="196" Canvas.Left="85" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="196" Canvas.Left="109" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="196" Canvas.Left="133" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="196" Canvas.Left="157" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="196" Canvas.Left="180" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="196" Canvas.Left="203" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="196" Canvas.Left="226" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
 
-            <Line
-            X1="212" Y1="377"
-            X2="229" Y2="387"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="108" Y1="377"
-            X2="95" Y2="387"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="212" Y1="271"
-            X2="229" Y2="261"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-            <Line
-            X1="108" Y1="271"
-            X2="95" Y2="261"
-            StrokeThickness="4"
-            Stroke="Black"
-            />
-
-           
+            <Rectangle Canvas.Top="439" Canvas.Left="85" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="439" Canvas.Left="109" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="439" Canvas.Left="133" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="439" Canvas.Left="157" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="439" Canvas.Left="180" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="439" Canvas.Left="203" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Canvas.Top="439" Canvas.Left="226" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+            
+            
         </Canvas>
         
     </Grid>
