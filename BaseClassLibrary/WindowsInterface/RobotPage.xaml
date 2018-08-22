@@ -31,20 +31,22 @@
             <StackPanel Orientation="Horizontal" Margin="0,30,0,0" HorizontalAlignment="Center">
                 <StackPanel>
                     <TextBlock Text="Robot Width" FontSize="25"/>
-                    <Slider x:Name="RobotWidthSlider" Minimum="1" Maximum="100" />
+                    <Slider x:Name="RobotWidthSlider" Minimum="1" Maximum="50" />
                 </StackPanel>
                 <Rectangle Fill="Black" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center" Margin="7,0"/>
                 <StackPanel>
                     <TextBlock Text="Robot Length" FontSize="25"/>
-                    <Slider x:Name="RobotLengthSlider" Minimum="1" Maximum="100" />
+                    <Slider x:Name="RobotLengthSlider" Minimum="1" Maximum="50" />
                 </StackPanel>
             </StackPanel>
-            <TextBlock Text="Using Bumpers" FontSize="25" HorizontalAlignment="Center" Margin="0,20,0,0"/>
-            <ToggleSwitch HorizontalAlignment="Center" OnContent="Yes" OffContent="No" Width="auto" Margin="0,3,0,0"/>
-            <TextBlock Text="Max Acceleration" FontSize="25" HorizontalAlignment="Center" Padding="0,10,0,0"/>
-            <TextBox x:Name="MaxAccelBox" HorizontalAlignment="Center" Width="200" Height="10" Margin="0,15,0,0"/>
-            <TextBlock Text="Max Velocity" FontSize="25" HorizontalAlignment="Center" Padding="0,20,0,0"/>
+            <TextBlock Text="Max Velocity (In/Sec)" FontSize="25" HorizontalAlignment="Center" Padding="0,20,0,0"/>
             <TextBox x:Name="MaxVelbox" HorizontalAlignment="Center" Width="200" Height="10" Margin="0,15,0,0"/>
+            <TextBlock Text="Max Acceleration (In/Sec²)" FontSize="25" HorizontalAlignment="Center" Padding="0,10,0,0"/>
+            <TextBox x:Name="MaxAccelBox" HorizontalAlignment="Center" Width="200" Height="10" Margin="0,15,0,0"/>
+            <TextBlock Text="Using Bumpers" FontSize="25" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+            <ToggleSwitch x:Name="bumperToggleSwitch" HorizontalAlignment="Center" OnContent="Yes" OffContent="No" Width="auto" Margin="0,3,0,0"/>
+            <TextBlock Text="Bumper Thickness (In)" FontSize="25" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            <Slider x:Name="bumperThicknessSwitch" Minimum="1" Maximum="15" Width="200" Margin="0,10,0,0"/>
 
         </StackPanel>
         

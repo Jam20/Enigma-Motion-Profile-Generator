@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using BaseClassLibrary;
+using Windows.Storage;
+using System.Threading.Tasks;
 
 namespace WindowsInterface
 {
@@ -43,9 +45,18 @@ namespace WindowsInterface
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+            try
+            {
+                StorageFile robotFile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync("robotSaveFile.csv");
+                currentRobot = new Robot( await FileIO.ReadTextAsync(robotFile));
+            }
+            catch (Exception)
+            {
+                currentRobot = new Robot();
+            }
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -96,11 +107,23 @@ namespace WindowsInterface
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            await writeRobotToFile();
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
-            deferral.Complete();
+            StorageFile robotFile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync("robotSaveFile.csv");
+            try
+            {
+                deferral.Complete();
+            }
+            catch (Exception) { }
+        }
+        private async Task writeRobotToFile()
+        {
+            StorageFile robotSaveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("robotSaveFile.csv", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(robotSaveFile, currentRobot.ToString());
+            
         }
     }
 }
