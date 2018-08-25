@@ -51,13 +51,11 @@ namespace WindowsInterface
             try
             {
                 StorageFile robotFile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync("robotSaveFile.csv");
-                currentRobot = new Robot( await FileIO.ReadTextAsync(robotFile));
+                currentRobot = new Robot(await FileIO.ReadTextAsync(robotFile));
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 currentRobot = new Robot();
             }
-
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
@@ -107,23 +105,13 @@ namespace WindowsInterface
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private async void OnSuspending(object sender, SuspendingEventArgs e)
+        private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            await writeRobotToFile();
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
-            StorageFile robotFile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync("robotSaveFile.csv");
-            try
-            {
                 deferral.Complete();
-            }
-            catch (Exception) { }
+           
         }
-        private async Task writeRobotToFile()
-        {
-            StorageFile robotSaveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("robotSaveFile.csv", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(robotSaveFile, currentRobot.ToString());
-            
-        }
+        
     }
 }

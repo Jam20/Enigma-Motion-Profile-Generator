@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -26,7 +27,7 @@ namespace WindowsInterface
             }
         }
 
-        private void RobotSaveBtn_Click(object sender, RoutedEventArgs e) {
+        private async void RobotSaveBtn_Click(object sender, RoutedEventArgs e) {
             if(double.TryParse(MaxAccelBox.Text, out double accel) && double.TryParse(MaxVelbox.Text, out double vel) && double.TryParse(WheelSizeTextBox.Text, out double wheels)) {
                 App.currentRobot.maxAccel = accel;
                 App.currentRobot.maxVel = vel;
@@ -44,7 +45,9 @@ namespace WindowsInterface
             App.currentRobot.usingBumpers = bumperToggleSwitch.IsOn;
             if (App.currentRobot.usingBumpers) App.currentRobot.bumperThickness = bumperThicknessSwitch.Value;
             else App.currentRobot.bumperThickness = 0;
-
+            StorageFile robotSaveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("robotSaveFile.csv", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(robotSaveFile, App.currentRobot.ToString());
         }
+        
     }
 }
