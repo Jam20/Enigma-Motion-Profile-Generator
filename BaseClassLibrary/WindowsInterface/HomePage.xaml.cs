@@ -127,7 +127,7 @@ namespace WindowsInterface
             displayPath();
         }
 
-        private void displayPath() {
+        public void displayPath() {
             for (int i = 0; i < bezierPathList.Count; i++) {
                 FieldCanvas.Children.Remove(bezierPathList[i]);
             }

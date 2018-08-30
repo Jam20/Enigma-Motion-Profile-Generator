@@ -40,12 +40,6 @@ namespace WindowsInterface
             SettingsListItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 255, 255, 255));
             selectedItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 3, 255, 0));
 
-
-            switch(selectedItem)
-            {
-
-            }
-
             if (selectedItem == HomeListItem) MainFrame.Navigate(typeof(HomePage));
             else if(selectedItem == FieldListItem) MainFrame.Navigate(typeof(Field));
             else if (selectedItem == RobotListItem) MainFrame.Navigate(typeof(RobotPage));
@@ -74,13 +68,41 @@ namespace WindowsInterface
 
                 if(status == Windows.Storage.Provider.FileUpdateStatus.Complete) {
                     //Yay it saved.
+                    WarningCD warning = new WarningCD("Alert", "File Successfully saved.");
+                    warning.Show();
                 }
+            }
+            else
+            {
+                WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
+                warning.Show();
             }
             
             //SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
         }
 
-        private void ImportButton_Click(object sender, RoutedEventArgs e) {
+        private async void ImportButton_Click(object sender, RoutedEventArgs e) {
+            FileOpenPicker fileSelector = new FileOpenPicker();
+            fileSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            fileSelector.FileTypeFilter.Add(".csv");
+
+            StorageFile file = await fileSelector.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                CachedFileManager.DeferUpdates(file);
+                IList<String> lines = await FileIO.ReadLinesAsync(file);
+                App.currentPath = new Path(SaveFile.ReadSaveFile(lines).ToList());
+                /*
+                HomePage homePage = new HomePage();
+                homePage.displayPath();
+                */
+            }
+            else
+            {
+                WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
+                warning.Show();
+            }
 
         }
     }

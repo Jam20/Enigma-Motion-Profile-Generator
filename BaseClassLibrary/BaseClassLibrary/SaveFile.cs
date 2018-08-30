@@ -13,41 +13,12 @@ public static class SaveFile {
         double[][][] segments = motionProfile.path.toArray();
         double[][] profile = motionProfile.toArray();
         double timeDifference = motionProfile.robot.timeIncrementInSec*1000;
-
-        /*
-        double[][][] segments = new double[][][] {
-            new double[4][] {
-                new double[2] {1, 2},
-                new double[2] {3, 4},
-                new double[2] {5, 6},
-                new double[2] {7, 8}
-            },
-            new double[4][] {
-                new double[2] {10, 20},
-                new double[2] {30, 40},
-                new double[2] {50, 60},
-                new double[2] {70, 80}
-            },
-            new double[4][] {
-                new double[2] {14, 24},
-                new double[2] {34, 44},
-                new double[2] {54, 64},
-                new double[2] {74, 84}
-            }
-        };
-        double[][] profile = new double[][] {
-            new double[4] {77, 88, 99, 1010},
-            new double[4] {777, 888, 99, 101010},
-            new double[4] {7777, 8888, 999, 10101010}
-        };
-        double timeDifference = 10;
-        */
-
+        
         //Writes the file header
         foreach(double[][] segment in segments) {
             output.Add(SegmentToLine(segment));
         }
-
+        
         //Writes the motion profile
         foreach(double[] point in profile) {
             output.Add(PointToString(point) + timeDifference.ToString());
@@ -84,40 +55,43 @@ public static class SaveFile {
         return output;
     }
 
-    public static double[][][] ReadSaveFile(String path) {
+    public static IList<Segment> ReadSaveFile(IList<String> lines) {
         /// <returns>
         /// Returns an array of segments to be parsed into an interactive path that can be modified.
         /// </returns>
-        FileInfo fi = new FileInfo(path);
-        StreamReader sr = new StreamReader(path);
-        Boolean reachedEnd = false;
-        String line = "";
-        List<double[][]> output = new List<double[][]>();
+        IList<Segment> output = new List<Segment>();
 
-        while(!reachedEnd) {
-            line = sr.ReadLine();
+        foreach (String line in lines)
+        {
             //Lines starting with a comma are the profile lines
-            if(line[0] == ',') {
+            if(line[0] == ',')
+            {
                 break;
             }
-            //Prevents an empty term at the end of the array
-            line = line.TrimEnd(',');
-            output.Add(LineToSegments(line.Split(',')));
+            //Prevents an empty term at the end of the array and then splits the line
+            output.Add(LineToSegments(line.TrimEnd(',').Split(',')));
         }
-        return output.ToArray();
+        return output;
     }
 
-    private static double[][] LineToSegments(String[] points) {
+    private static Segment LineToSegments(String[] points) {
         /// <returns>
         /// Returns an array representing a path segment given an array of control point pairs.
         /// </returns>
-        double[][] output = new double[points.Length][];
-        for(int i = 0; i < points.Length; i++) {
+        double[][] output = new double[4][]
+        {
+            new double[2],
+            new double[2],
+            new double[2],
+            new double[2]
+        };
+        
+        for (int i = 0; i < points.Length; i++) {
             String[] point = points[i].Split(':');
             output[i][0] = Convert.ToDouble(point[0]);
             output[i][1] = Convert.ToDouble(point[1]);
         }
-        return output;
+        return new Segment(output[0], output[1], output[2], output[3]);
     }
 
 }

@@ -25,6 +25,16 @@ public class Segment
         this.controlptThree = new double[] { xDist * (2.0 / 3.0) + controlptOne[0], yDist * (2.0 / 3.0) + controlptOne[1]};
     }
 
+    //Constructor for segements from the save file
+    //Need to check if this method is actually needed or if the 2 point one is good enough
+    public Segment(double[] controlptOne, double[] controlptTwo, double[] controlptThree, double[] controlptFour)
+    {
+        this.controlptOne = controlptOne;
+        this.controlptTwo = controlptTwo;
+        this.controlptThree = controlptThree;
+        this.controlptFour = controlptFour;
+    }
+
     //Setter methods for the 4 control points
     public void setControlptOne(double[] newPoint) {
         controlptOne = newPoint;
@@ -133,4 +143,6 @@ public class Segment
         output[3] = getControlptFour();
         return output;
     }
+
+
 }
