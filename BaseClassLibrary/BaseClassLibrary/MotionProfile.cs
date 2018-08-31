@@ -10,6 +10,7 @@ namespace BaseClassLibrary
         private double[] position, velocity, heading;
         public double profileTime;
 
+        //Motion profile Constructor creates a profile based on a path object
         public MotionProfile(Path p, Robot r) {
             path = p;
             robot = r;
@@ -30,28 +31,42 @@ namespace BaseClassLibrary
                 double timeToDeccel = currentVelocity / robot.maxAccel;
                 double distToDeccel =currentVelocity * timeToDeccel - .5 * robot.maxAccel * Math.Pow(timeToDeccel, 2);
 
-                if (currentPosition < path.getTotalDistance() - distToDeccel) {
-                    if (currentVelocity < robot.maxVel) {
+                if (currentPosition < path.getTotalDistance() - distToDeccel)
+                {
+                    if (currentVelocity < robot.maxVel)
+                    {
                         double newVel = currentVelocity + robot.maxAccel * robot.timeIncrementInSec;
-                        if (newVel > robot.maxVel) {
+                        if (newVel > robot.maxVel)
+                        {
                             double timeToMaxVel = (robot.maxVel - currentVelocity) / robot.maxAccel;
                             double pos1 = currentPosition + currentVelocity * (robot.timeIncrementInSec - timeToMaxVel) + .5 * robot.maxAccel * Math.Pow(robot.timeIncrementInSec - timeToMaxVel, 2);
-                            pos.Add(pos1+robot.maxVel*timeToMaxVel+.5*robot.maxAccel*Math.Pow(timeToMaxVel,2));
+                            pos.Add(pos1 + robot.maxVel * timeToMaxVel + .5 * robot.maxAccel * Math.Pow(timeToMaxVel, 2));
                             vel.Add(robot.maxVel);
                         }
-                        else {
+                        else
+                        {
                             pos.Add(currentPosition + currentVelocity * robot.timeIncrementInSec + .5 * robot.maxAccel * Math.Pow(robot.timeIncrementInSec, 2));
                             vel.Add(newVel);
                         }
                     }
-                    else {
+                    else
+                    {
                         pos.Add(currentPosition + robot.maxVel * robot.timeIncrementInSec);
                         vel.Add(robot.maxVel);
                     }
                 }
-                else {
-                    pos.Add(currentPosition + currentVelocity * robot.timeIncrementInSec - .5 * robot.maxAccel * Math.Pow(robot.timeIncrementInSec, 2));
-                    vel.Add(currentVelocity - robot.maxAccel * robot.timeIncrementInSec);
+                else
+                {
+                    if (currentPosition + currentVelocity * robot.timeIncrementInSec - .5 * robot.maxAccel * Math.Pow(robot.timeIncrementInSec, 2) > path.getTotalDistance())
+                    {
+                        pos.Add(path.getTotalDistance());
+                        vel.Add(0);
+                    }
+                    else
+                    {
+                        pos.Add(currentPosition + currentVelocity * robot.timeIncrementInSec - .5 * robot.maxAccel * Math.Pow(robot.timeIncrementInSec, 2));
+                        vel.Add(currentVelocity - robot.maxAccel * robot.timeIncrementInSec);
+                    }
                 }
                 head.Add(path.getDirectionat(pos[pos.Count - 1]));
                 timeInMs += (int)(robot.timeIncrementInSec * 1000);
@@ -68,6 +83,7 @@ namespace BaseClassLibrary
             }
         }
 
+        //outputs the profile to an array to be outputted into a save file
         public double[][] toArray() {
             double[][] output = new double[position.Length][];
             for(int i = 0; i < output.Length; i++) {
