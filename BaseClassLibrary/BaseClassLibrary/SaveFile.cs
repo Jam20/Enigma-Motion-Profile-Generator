@@ -1,6 +1,7 @@
 ﻿using BaseClassLibrary;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 public static class SaveFile {
@@ -12,17 +13,28 @@ public static class SaveFile {
 
         double[][][] segments = motionProfile.path.toArray();
         double[][] profile = motionProfile.toArray();
-        double timeDifference = motionProfile.robot.timeIncrementInSec*1000;
-        
+        String timeDifference = (motionProfile.robot.timeIncrementInSec*1000).ToString();
+
+        var watchHeader = System.Diagnostics.Stopwatch.StartNew();
         //Writes the file header
+        //Runs in only a couple milliseconds
         foreach(double[][] segment in segments) {
             output.Add(SegmentToLine(segment));
+            Debug.WriteLine(watchHeader.ElapsedMilliseconds);
         }
-        
+        watchHeader.Stop();
+        Debug.WriteLine(watchHeader.ElapsedMilliseconds);
+
+        var watchProfile = System.Diagnostics.Stopwatch.StartNew();
         //Writes the motion profile
+        //Very Slow
         foreach(double[] point in profile) {
-            output.Add(PointToString(point) + timeDifference.ToString());
+            output.Add(PointToString(point) + timeDifference);
+            Debug.WriteLine(watchProfile.ElapsedMilliseconds);
         }
+        watchProfile.Stop();
+        Debug.WriteLine(watchProfile.ElapsedMilliseconds);
+
         return output;
     }
 
