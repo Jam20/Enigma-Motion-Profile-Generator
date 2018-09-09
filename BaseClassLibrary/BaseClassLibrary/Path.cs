@@ -42,7 +42,14 @@ public class Path{
         for (int i = 0; i < pathList.Count-1; i++) {
             double ratioOne = (pathList[i].getControlptThree()[1] - pathList[i].getControlptFour()[1]) / (pathList[i].getControlptThree()[0] - pathList[i].getControlptFour()[0]);
             double ratioTwo = (pathList[i+1].getControlptTwo()[1] - pathList[i].getControlptFour()[1]) / (pathList[i+1].getControlptTwo()[0] - pathList[i].getControlptFour()[0]);
-            if(ratioOne != ratioTwo) {
+            if((pathList[i].getControlptThree()[0] - pathList[i].getControlptFour()[0]) ==0)
+            {
+                
+                double dist =Math.Sqrt( Math.Pow(pathList[i + 1].getControlptTwo()[1] - pathList[i].getControlptFour()[1], 2) + Math.Pow(pathList[i + 1].getControlptTwo()[0] - pathList[i].getControlptFour()[0], 2));
+                pathList[i + 1].setControlptTwo(new double[] { pathList[i].getControlptFour()[0], pathList[i].getControlptFour()[1] + dist * -Math.Sign((pathList[i].getControlptThree()[1] - pathList[i].getControlptFour()[1])) });
+                
+            }
+            else if(ratioOne != ratioTwo) {
                 double xDist = Math.Abs(pathList[i + 1].getControlptTwo()[0] - pathList[i].getControlptFour()[0]);
                 double yDist = Math.Abs(pathList[i + 1].getControlptTwo()[1] - pathList[i].getControlptFour()[1]);
                 double distance = Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));

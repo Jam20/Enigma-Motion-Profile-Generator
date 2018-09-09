@@ -31,6 +31,7 @@ namespace WindowsInterface
             MainFrame.Navigate(typeof(HomePage));
         }
 
+        //Navigates to the selected page in the Hamburger Navigation
         private void NavigationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxItem selectedItem = NavigationListBox.SelectedItem as ListBoxItem;
@@ -46,11 +47,13 @@ namespace WindowsInterface
             else if (selectedItem == SettingsListItem) MainFrame.Navigate(typeof(Settings));
         }
 
+        //Opens the pane when the burger button is clicked
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationSplitView.IsPaneOpen = !NavigationSplitView.IsPaneOpen;
         }
 
+        //Exports the current path to a csv file including the path itself and a motion profile based on it
         private async void ExportButton_Click(object sender, RoutedEventArgs e) {
             FileSavePicker fileSelector = new FileSavePicker();
             fileSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
@@ -81,6 +84,7 @@ namespace WindowsInterface
             //SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
         }
 
+        //imports a path file with and sets the current path equal to it than reloads to the homePage
         private async void ImportButton_Click(object sender, RoutedEventArgs e) {
             FileOpenPicker fileSelector = new FileOpenPicker();
             fileSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
@@ -93,10 +97,7 @@ namespace WindowsInterface
                 CachedFileManager.DeferUpdates(file);
                 IList<String> lines = await FileIO.ReadLinesAsync(file);
                 App.currentPath = new Path(SaveFile.ReadSaveFile(lines).ToList());
-                /*
-                HomePage homePage = new HomePage();
-                homePage.displayPath();
-                */
+                MainFrame.Navigate(typeof(HomePage));
             }
             else
             {
