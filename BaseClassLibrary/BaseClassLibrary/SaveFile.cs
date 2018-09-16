@@ -14,10 +14,10 @@ public static class SaveFile {
         double[][][] segments = motionProfile.Path.ToArray();
         double[][] profile = motionProfile.ToArray();
         double timeDifference = motionProfile.Robot.TimeIncrementInSec*1000;
-        
+        var watchHeader = System.Diagnostics.Stopwatch.StartNew();
         //Writes the file header
         //Runs in only a couple milliseconds
-        foreach(double[][] segment in segments) {
+        foreach (double[][] segment in segments) {
             output.Add(SegmentToLine(segment));
             Debug.WriteLine(watchHeader.ElapsedMilliseconds);
         }
