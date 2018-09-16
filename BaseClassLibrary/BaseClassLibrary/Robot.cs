@@ -1,17 +1,16 @@
-﻿using System;
-public class Robot
+﻿public class Robot
 {
-    public double maxVel;
-    public double maxAccel;
-    public double timeIncrementInSec;
+    public double MaxVel;
+    public double MaxAccel;
+    public double TimeIncrementInSec;
 
     //useful information on the robot to be used in graphical interfaces
     public enum DrivetrainType { Tank }
-    public double width;
-    public double length;
-    public double wheelSize;
-    public bool usingBumpers;
-    public double bumperThickness;
+    public double Width;
+    public double Length;
+    public double WheelSize;
+    public bool UsingBumpers;
+    public double BumperThickness;
 
     public Robot()
     {
@@ -19,20 +18,21 @@ public class Robot
     }
     public Robot(string input)
     {
-        String[] data = input.Split(' ');
-        maxVel = Double.Parse(data[0]);
-        maxAccel = Double.Parse(data[1]);
-        timeIncrementInSec = Double.Parse(data[2]);
-        width = Double.Parse(data[3]);
-        length = Double.Parse(data[4]);
-        wheelSize = Double.Parse(data[5]);
-        usingBumpers = bool.Parse(data[6]);
-        bumperThickness = Double.Parse(data[7]);
+        string[] data = input.Split(' ');
+        MaxVel = double.Parse(data[0]);
+        MaxAccel = double.Parse(data[1]);
+        TimeIncrementInSec = double.Parse(data[2]);
+        Width = double.Parse(data[3]);
+        Length = double.Parse(data[4]);
+        WheelSize = double.Parse(data[5]);
+        UsingBumpers = bool.Parse(data[6]);
+        BumperThickness = double.Parse(data[7]);
     }
 
 
-    public override string ToString() {
-        return "" + maxVel + " " + maxAccel + " " + timeIncrementInSec + " " + width + " " + length + " " + wheelSize + " " + usingBumpers + " " + bumperThickness;
+    public override string ToString()
+    {
+        return "" + MaxVel + " " + MaxAccel + " " + TimeIncrementInSec + " " + Width + " " + Length + " " + WheelSize + " " + UsingBumpers + " " + BumperThickness;
     }
 
 

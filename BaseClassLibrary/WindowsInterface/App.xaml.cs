@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using BaseClassLibrary;
-using Windows.Storage;
-using System.Threading.Tasks;
 
 namespace WindowsInterface
 {
@@ -25,7 +13,7 @@ namespace WindowsInterface
     /// </summary>
     sealed partial class App : Application
     {
-        
+
         internal static Robot currentRobot;
         internal static Path currentPath;
 
@@ -37,7 +25,7 @@ namespace WindowsInterface
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            
+
         }
 
         /// <summary>
@@ -45,7 +33,7 @@ namespace WindowsInterface
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected async override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
             try
@@ -53,7 +41,8 @@ namespace WindowsInterface
                 StorageFile robotFile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync("robotSaveFile.csv");
                 currentRobot = new Robot(await FileIO.ReadTextAsync(robotFile));
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 currentRobot = new Robot();
             }
             // Do not repeat app initialization when the Window already has content,
@@ -109,9 +98,9 @@ namespace WindowsInterface
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
-                deferral.Complete();
-           
+            deferral.Complete();
+
         }
-        
+
     }
 }

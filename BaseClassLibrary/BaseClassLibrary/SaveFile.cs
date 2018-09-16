@@ -10,9 +10,9 @@ public static class SaveFile {
     public static List<string> GetSaveFile(MotionProfile motionProfile) {
         List<string> output = new List<string>();
 
-        double[][][] segments = motionProfile.path.toArray();
-        double[][] profile = motionProfile.toArray();
-        double timeDifference = motionProfile.robot.timeIncrementInSec*1000;
+        double[][][] segments = motionProfile.Path.ToArray();
+        double[][] profile = motionProfile.ToArray();
+        double timeDifference = motionProfile.Robot.TimeIncrementInSec*1000;
         
         //Writes the file header
         foreach(double[][] segment in segments) {

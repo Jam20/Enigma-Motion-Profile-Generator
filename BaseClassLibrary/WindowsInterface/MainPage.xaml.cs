@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
-using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -42,7 +33,7 @@ namespace WindowsInterface
             selectedItem.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 3, 255, 0));
 
             if (selectedItem == HomeListItem) MainFrame.Navigate(typeof(HomePage));
-            else if(selectedItem == FieldListItem) MainFrame.Navigate(typeof(Field));
+            else if (selectedItem == FieldListItem) MainFrame.Navigate(typeof(Field));
             else if (selectedItem == RobotListItem) MainFrame.Navigate(typeof(RobotPage));
             else if (selectedItem == SettingsListItem) MainFrame.Navigate(typeof(Settings));
         }
@@ -54,22 +45,27 @@ namespace WindowsInterface
         }
 
         //Exports the current path to a csv file including the path itself and a motion profile based on it
-        private async void ExportButton_Click(object sender, RoutedEventArgs e) {
-            FileSavePicker fileSelector = new FileSavePicker();
-            fileSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        private async void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            FileSavePicker fileSelector = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
             fileSelector.FileTypeChoices.Add("csv", new List<string>() { ".csv" });
             fileSelector.SuggestedFileName = "Profile0";
 
             StorageFile file = await fileSelector.PickSaveFileAsync();
             //More safety needs to be added. Popups for exported and failed to export should also eventually appear.
-            if(file != null) {
+            if (file != null)
+            {
                 CachedFileManager.DeferUpdates(file);
 
                 await FileIO.WriteLinesAsync(file, SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot)));
 
                 Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
 
-                if(status == Windows.Storage.Provider.FileUpdateStatus.Complete) {
+                if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
+                {
                     //Yay it saved.
                     WarningCD warning = new WarningCD("Alert", "File Successfully saved.");
                     warning.Show();
@@ -80,14 +76,17 @@ namespace WindowsInterface
                 WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
                 warning.Show();
             }
-            
+
             //SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
         }
 
         //imports a path file with and sets the current path equal to it than reloads to the homePage
-        private async void ImportButton_Click(object sender, RoutedEventArgs e) {
-            FileOpenPicker fileSelector = new FileOpenPicker();
-            fileSelector.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        private async void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker fileSelector = new FileOpenPicker
+            {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
             fileSelector.FileTypeFilter.Add(".csv");
 
             StorageFile file = await fileSelector.PickSingleFileAsync();
@@ -95,7 +94,7 @@ namespace WindowsInterface
             if (file != null)
             {
                 CachedFileManager.DeferUpdates(file);
-                IList<String> lines = await FileIO.ReadLinesAsync(file);
+                IList<string> lines = await FileIO.ReadLinesAsync(file);
                 App.currentPath = new Path(SaveFile.ReadSaveFile(lines).ToList());
                 MainFrame.Navigate(typeof(HomePage));
             }

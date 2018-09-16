@@ -16,38 +16,43 @@ namespace WindowsInterface
         {
             this.InitializeComponent();
             if (App.currentRobot == null) App.currentRobot = new Robot();
-            else {
-                MaxAccelBox.Text = App.currentRobot.maxAccel.ToString();
-                MaxVelbox.Text = App.currentRobot.maxVel.ToString();
-                RobotWidthSlider.Value = App.currentRobot.width;
-                RobotLengthSlider.Value = App.currentRobot.length;
-                WheelSizeTextBox.Text = App.currentRobot.wheelSize.ToString();
-                bumperToggleSwitch.IsOn = App.currentRobot.usingBumpers;
-                bumperThicknessSwitch.Value = App.currentRobot.bumperThickness;
+            else
+            {
+                MaxAccelBox.Text = App.currentRobot.MaxAccel.ToString();
+                MaxVelbox.Text = App.currentRobot.MaxVel.ToString();
+                RobotWidthSlider.Value = App.currentRobot.Width;
+                RobotLengthSlider.Value = App.currentRobot.Length;
+                WheelSizeTextBox.Text = App.currentRobot.WheelSize.ToString();
+                bumperToggleSwitch.IsOn = App.currentRobot.UsingBumpers;
+                bumperThicknessSwitch.Value = App.currentRobot.BumperThickness;
             }
         }
 
-        private async void RobotSaveBtn_Click(object sender, RoutedEventArgs e) {
-            if(double.TryParse(MaxAccelBox.Text, out double accel) && double.TryParse(MaxVelbox.Text, out double vel) && double.TryParse(WheelSizeTextBox.Text, out double wheels)) {
-                App.currentRobot.maxAccel = accel;
-                App.currentRobot.maxVel = vel;
-                App.currentRobot.timeIncrementInSec = .01;
-                App.currentRobot.wheelSize = wheels;
-            } else {
+        private async void RobotSaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (double.TryParse(MaxAccelBox.Text, out double accel) && double.TryParse(MaxVelbox.Text, out double vel) && double.TryParse(WheelSizeTextBox.Text, out double wheels))
+            {
+                App.currentRobot.MaxAccel = accel;
+                App.currentRobot.MaxVel = vel;
+                App.currentRobot.TimeIncrementInSec = .01;
+                App.currentRobot.WheelSize = wheels;
+            }
+            else
+            {
                 MaxAccelBox.Text = "";
                 MaxVelbox.Text = "";
                 WarningCD warning = new WarningCD("Error: Bad Input", "This field may only contain numeric input.");
                 warning.Show();
             }
 
-            App.currentRobot.width = RobotWidthSlider.Value;
-            App.currentRobot.length = RobotLengthSlider.Value;
-            App.currentRobot.usingBumpers = bumperToggleSwitch.IsOn;
-            if (App.currentRobot.usingBumpers) App.currentRobot.bumperThickness = bumperThicknessSwitch.Value;
-            else App.currentRobot.bumperThickness = 0;
+            App.currentRobot.Width = RobotWidthSlider.Value;
+            App.currentRobot.Length = RobotLengthSlider.Value;
+            App.currentRobot.UsingBumpers = bumperToggleSwitch.IsOn;
+            if (App.currentRobot.UsingBumpers) App.currentRobot.BumperThickness = bumperThicknessSwitch.Value;
+            else App.currentRobot.BumperThickness = 0;
             StorageFile robotSaveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("robotSaveFile.csv", CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(robotSaveFile, App.currentRobot.ToString());
         }
-        
+
     }
 }

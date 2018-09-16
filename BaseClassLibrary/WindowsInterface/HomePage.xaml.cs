@@ -1,71 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using System.Collections.Generic;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
 namespace WindowsInterface
 {
 
-    public sealed partial class HomePage : Page{
+    public sealed partial class HomePage : Page
+    {
 
         List<Ellipse> currentPointEllipses;
         List<Windows.UI.Xaml.Shapes.Path> bezierPathList;
         Ellipse currentControlPointTwoEllipse;
         Ellipse currentControlPointThreeEllipse;
         private int pointTableSelectedIndex = 0;
-        
+
         //constructs the page and initalizes variables needed for proper function
-        public HomePage(){
+        public HomePage()
+        {
             this.InitializeComponent();
             currentPointEllipses = new List<Ellipse>();
             bezierPathList = new List<Windows.UI.Xaml.Shapes.Path>();
-            if (App.currentPath == null) {
+            if (App.currentPath == null)
+            {
                 App.currentPath = new Path();
             }
-            else {
-                importPath();
+            else
+            {
+                ImportPath();
             }
-            
+
         }
-       
+
         //edits a point in the pathlist to the contents of the text boxes above it
-        private void savePointBtn_Click(object sender, RoutedEventArgs e) {
+        private void SavePointBtn_Click(object sender, RoutedEventArgs e)
+        {
             //Added number check to prevent crashes from bad input
-            if (double.TryParse(xPointInputTextBox.Text, out double x) && double.TryParse(yPointInputTextBox.Text, out double y) && pointNumberListBox.Items.Count>0){
-                App.currentPath.modifyPoint(pointTableSelectedIndex, new double[] { x, y });
-                importPath();
-            } else {
+            if (double.TryParse(xPointInputTextBox.Text, out double x) && double.TryParse(yPointInputTextBox.Text, out double y) && pointNumberListBox.Items.Count > 0)
+            {
+                App.currentPath.ModifyPoint(pointTableSelectedIndex, new double[] { x, y });
+                ImportPath();
+            }
+            else
+            {
                 xPointInputTextBox.Text = "";
                 yPointInputTextBox.Text = "";
                 WarningCD warning = new WarningCD("Error: Bad Input", "This field may only contain numeric input.");
                 warning.Show();
             }
-            
+
         }
 
         //selects the list box items that are in line with the one selected and readies the point to be modified
-        private void pointsTableSelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void PointsTableSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             ListBox senderListBox = (ListBox)sender;
-            if(senderListBox == xValuesListBox) {
+            if (senderListBox == xValuesListBox)
+            {
                 yValuesListBox.SelectedIndex = senderListBox.SelectedIndex;
                 pointNumberListBox.SelectedIndex = senderListBox.SelectedIndex;
             }
-            else if(senderListBox == yValuesListBox) {
+            else if (senderListBox == yValuesListBox)
+            {
                 xValuesListBox.SelectedIndex = senderListBox.SelectedIndex;
                 pointNumberListBox.SelectedIndex = senderListBox.SelectedIndex;
             }
-            else {
+            else
+            {
                 xValuesListBox.SelectedIndex = senderListBox.SelectedIndex;
                 yValuesListBox.SelectedIndex = senderListBox.SelectedIndex;
             }
@@ -76,29 +80,32 @@ namespace WindowsInterface
                 yPointInputTextBox.Text = "";
                 return;
             }
-            xPointInputTextBox.Text = "" + App.currentPath.getPoint(pointTableSelectedIndex)[0];
-            yPointInputTextBox.Text = "" + App.currentPath.getPoint(pointTableSelectedIndex)[1];
+            xPointInputTextBox.Text = "" + App.currentPath.GetPoint(pointTableSelectedIndex)[0];
+            yPointInputTextBox.Text = "" + App.currentPath.GetPoint(pointTableSelectedIndex)[1];
         }
 
         //imports the path items and creates a list box item and an ellipse for each
-        private void importPath() {
+        private void ImportPath()
+        {
             xValuesListBox.Items.Clear();
             yValuesListBox.Items.Clear();
             pointNumberListBox.Items.Clear();
             SegmentListComboBox.Items.Clear();
-            for (int i = 0; i < currentPointEllipses.Count; i++) {
+            for (int i = 0; i < currentPointEllipses.Count; i++)
+            {
                 FieldCanvas.Children.Remove(currentPointEllipses[i]);
             }
 
             currentPointEllipses.Clear();
-            
-            if (App.currentPath.getPoints() == null) return;
-            for (int i = 0; i < App.currentPath.getPoints().Length; i++) {
+
+            if (App.currentPath.GetPoints() == null) return;
+            for (int i = 0; i < App.currentPath.GetPoints().Length; i++)
+            {
                 ListBoxItem xValueListBoxItem = new ListBoxItem();
                 ListBoxItem yValueListBoxItem = new ListBoxItem();
                 ListBoxItem numberListBoxItem = new ListBoxItem();
-                xValueListBoxItem.Content = App.currentPath.getPoints()[i][0].ToString();
-                yValueListBoxItem.Content = App.currentPath.getPoints()[i][1].ToString();
+                xValueListBoxItem.Content = App.currentPath.GetPoints()[i][0].ToString();
+                yValueListBoxItem.Content = App.currentPath.GetPoints()[i][1].ToString();
                 numberListBoxItem.Content = pointNumberListBox.Items.Count + 1;
                 xValueListBoxItem.FontSize = 30;
                 yValueListBoxItem.FontSize = 30;
@@ -107,46 +114,56 @@ namespace WindowsInterface
                 yValuesListBox.Items.Add(yValueListBoxItem);
                 pointNumberListBox.Items.Add(numberListBoxItem);
 
-                Ellipse dataPt = new Ellipse();
-                dataPt.Width = 6;
-                dataPt.Height = 6;
-                dataPt.Fill = new SolidColorBrush(Windows.UI.Colors.Black);
-                dataPt.Name = pointNumberListBox.Items.Count.ToString();
-                dataPt.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
-                dataPt.ManipulationDelta += pointManipulationDelta;
-                Canvas.SetTop(dataPt, FieldCanvas.Height - (App.currentPath.getPoints()[i][1]+3));
-                Canvas.SetLeft(dataPt, App.currentPath.getPoints()[i][0]-3);
+                Ellipse dataPt = new Ellipse
+                {
+                    Width = 6,
+                    Height = 6,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Black),
+                    Name = pointNumberListBox.Items.Count.ToString(),
+                    ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
+                };
+                dataPt.ManipulationDelta += PointManipulationDelta;
+                Canvas.SetTop(dataPt, FieldCanvas.Height - (App.currentPath.GetPoints()[i][1] + 3));
+                Canvas.SetLeft(dataPt, App.currentPath.GetPoints()[i][0] - 3);
                 Canvas.SetZIndex(dataPt, 1000);
                 FieldCanvas.Children.Add(dataPt);
                 currentPointEllipses.Add(dataPt);
             }
 
-            for (int i = 0; i < App.currentPath.getPathList().Count; i++) {
-                ComboBoxItem comboBoxItemSeg = new ComboBoxItem();
-                comboBoxItemSeg.Content = (i + 1).ToString();
-                comboBoxItemSeg.Name = i.ToString();
-                comboBoxItemSeg.FontSize = 25;
+            for (int i = 0; i < App.currentPath.PathList.Count; i++)
+            {
+                ComboBoxItem comboBoxItemSeg = new ComboBoxItem
+                {
+                    Content = (i + 1).ToString(),
+                    Name = i.ToString(),
+                    FontSize = 25
+                };
                 SegmentListComboBox.Items.Add(comboBoxItemSeg);
             }
-            displayPath();
+            DisplayPath();
         }
 
         //displays the visual path on the screen by importing the geometry of each segment
-        public void displayPath() {
-            for (int i = 0; i < bezierPathList.Count; i++) {
+        public void DisplayPath()
+        {
+            for (int i = 0; i < bezierPathList.Count; i++)
+            {
                 FieldCanvas.Children.Remove(bezierPathList[i]);
             }
             bezierPathList.Clear();
-            for (int i = 0; i < App.currentPath.getPathList().Count; i++) {
+            for (int i = 0; i < App.currentPath.PathList.Count; i++)
+            {
                 Windows.UI.Xaml.Shapes.Path segmentBezierPath = new Windows.UI.Xaml.Shapes.Path();
                 PathGeometry geometry = new PathGeometry();
                 PathFigure figure = new PathFigure();
-                Point controlPtOnePoint = new Point(App.currentPath.getPathList()[i].getControlptOne()[0], FieldCanvas.Height - App.currentPath.getPathList()[i].getControlptOne()[1]);
+                Point controlPtOnePoint = new Point(App.currentPath.PathList[i].ControlptOne[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptOne[1]);
                 figure.StartPoint = controlPtOnePoint;
-                BezierSegment bezierSegment = new BezierSegment();
-                bezierSegment.Point1 = new Point(App.currentPath.getPathList()[i].getControlptTwo()[0], FieldCanvas.Height - App.currentPath.getPathList()[i].getControlptTwo()[1]);
-                bezierSegment.Point2 = new Point(App.currentPath.getPathList()[i].getControlptThree()[0], FieldCanvas.Height- App.currentPath.getPathList()[i].getControlptThree()[1]);
-                bezierSegment.Point3 = new Point(App.currentPath.getPathList()[i].getControlptFour()[0], FieldCanvas.Height - App.currentPath.getPathList()[i].getControlptFour()[1]);
+                BezierSegment bezierSegment = new BezierSegment
+                {
+                    Point1 = new Point(App.currentPath.PathList[i].ControlptTwo[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptTwo[1]),
+                    Point2 = new Point(App.currentPath.PathList[i].ControlptThree[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptThree[1]),
+                    Point3 = new Point(App.currentPath.PathList[i].ControlptFour[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptFour[1])
+                };
                 figure.Segments.Add(bezierSegment);
                 geometry.Figures.Add(figure);
                 segmentBezierPath.Data = geometry;
@@ -158,24 +175,30 @@ namespace WindowsInterface
         }
 
         //overload with the difference of having the selected segment have a green coloring
-        private void displayPath(Segment selectedSegment) {
-            for (int i = 0; i < bezierPathList.Count; i++) {
+        private void DisplayPath(Segment selectedSegment)
+        {
+            for (int i = 0; i < bezierPathList.Count; i++)
+            {
                 FieldCanvas.Children.Remove(bezierPathList[i]);
             }
-            for (int i = 0; i < App.currentPath.getPathList().Count; i++) {
+            for (int i = 0; i < App.currentPath.PathList.Count; i++)
+            {
                 Windows.UI.Xaml.Shapes.Path segmentBezierPath = new Windows.UI.Xaml.Shapes.Path();
                 PathGeometry geometry = new PathGeometry();
                 PathFigure figure = new PathFigure();
-                Point controlPtOnePoint = new Point(App.currentPath.getPathList()[i].getControlptOne()[0], FieldCanvas.Height - App.currentPath.getPathList()[i].getControlptOne()[1]);
+                Point controlPtOnePoint = new Point(App.currentPath.PathList[i].ControlptOne[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptOne[1]);
                 figure.StartPoint = controlPtOnePoint;
-                BezierSegment bezierSegment = new BezierSegment();
-                bezierSegment.Point1 = new Point(App.currentPath.getPathList()[i].getControlptTwo()[0], FieldCanvas.Height - App.currentPath.getPathList()[i].getControlptTwo()[1]);
-                bezierSegment.Point2 = new Point(App.currentPath.getPathList()[i].getControlptThree()[0], FieldCanvas.Height - App.currentPath.getPathList()[i].getControlptThree()[1]);
-                bezierSegment.Point3 = new Point(App.currentPath.getPathList()[i].getControlptFour()[0], FieldCanvas.Height - App.currentPath.getPathList()[i].getControlptFour()[1]);
+                BezierSegment bezierSegment = new BezierSegment
+                {
+                    Point1 = new Point(App.currentPath.PathList[i].ControlptTwo[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptTwo[1]),
+                    Point2 = new Point(App.currentPath.PathList[i].ControlptThree[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptThree[1]),
+                    Point3 = new Point(App.currentPath.PathList[i].ControlptFour[0], FieldCanvas.Height - App.currentPath.PathList[i].ControlptFour[1])
+                };
                 figure.Segments.Add(bezierSegment);
                 geometry.Figures.Add(figure);
                 segmentBezierPath.Data = geometry;
-                if (selectedSegment == App.currentPath.getPathList()[i]) {
+                if (selectedSegment == App.currentPath.PathList[i])
+                {
                     segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Green);
                 }
                 else segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Purple);
@@ -184,99 +207,108 @@ namespace WindowsInterface
                 bezierPathList.Add(segmentBezierPath);
             }
         }
-        
-        //Method to be called when a major control point i.g One or Four is manipulated 
-        private void pointManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
-            Ellipse sentEllipse = sender as Ellipse;
-            int pointTableNum = Int32.Parse(sentEllipse.Name);
-            App.currentPath.modifyPoint(pointTableNum - 1, new double[] { App.currentPath.getPoint(pointTableNum - 1)[0] + e.Delta.Translation.X, App.currentPath.getPoint(pointTableNum - 1)[1] - e.Delta.Translation.Y });
-            Canvas.SetLeft(sentEllipse, App.currentPath.getPoint(pointTableNum-1)[0]-3);
-            Canvas.SetTop(sentEllipse, FieldCanvas.Height-(App.currentPath.getPoint(pointTableNum - 1)[1]+3));
 
-            
+        //Method to be called when a major control point i.g One or Four is manipulated 
+        private void PointManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            Ellipse sentEllipse = sender as Ellipse;
+            int pointTableNum = int.Parse(sentEllipse.Name);
+            App.currentPath.ModifyPoint(pointTableNum - 1, new double[] { App.currentPath.GetPoint(pointTableNum - 1)[0] + e.Delta.Translation.X, App.currentPath.GetPoint(pointTableNum - 1)[1] - e.Delta.Translation.Y });
+            Canvas.SetLeft(sentEllipse, App.currentPath.GetPoint(pointTableNum - 1)[0] - 3);
+            Canvas.SetTop(sentEllipse, FieldCanvas.Height - (App.currentPath.GetPoint(pointTableNum - 1)[1] + 3));
+
+
             ListBoxItem xValueListBoxItem = (ListBoxItem)xValuesListBox.Items[pointTableNum - 1];
             ListBoxItem yValueListBoxItem = (ListBoxItem)yValuesListBox.Items[pointTableNum - 1];
 
             xValueListBoxItem.Content = Canvas.GetLeft(sentEllipse);
             yValueListBoxItem.Content = FieldCanvas.Height - Canvas.GetTop(sentEllipse);
-            
-            if(SegmentListComboBox.SelectedItem != null) {
-                displayPath(App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)]);
+
+            if (SegmentListComboBox.SelectedItem != null)
+            {
+                DisplayPath(App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)]);
             }
             else
-            displayPath();
+                DisplayPath();
 
         }
 
         //Method to be called when a control point two is manipulated
-        private void controlPointTwoManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
-            Segment selectedSegment = App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+        private void ControlPointTwoManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
             Ellipse sentControlPoint = sender as Ellipse;
-            double[] newControlPointTwo = new double[] { selectedSegment.getControlptTwo()[0] + e.Delta.Translation.X, selectedSegment.getControlptTwo()[1] - e.Delta.Translation.Y };
-            selectedSegment.setControlptTwo(newControlPointTwo);
-            App.currentPath.standardizePath();
-            Canvas.SetTop(sentControlPoint,FieldCanvas.Height - (selectedSegment.getControlptTwo()[1]+3));
-            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptTwo()[0]-3);
-            ControlPoint2TextboxX.Text = "" + selectedSegment.getControlptTwo()[0];
-            ControlPoint2TextboxY.Text = "" + selectedSegment.getControlptTwo()[1];
+            double[] newControlPointTwo = new double[] { selectedSegment.ControlptTwo[0] + e.Delta.Translation.X, selectedSegment.ControlptTwo[1] - e.Delta.Translation.Y };
+            selectedSegment.ControlptTwo = newControlPointTwo;
+            App.currentPath.StandardizePath();
+            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptTwo[1] + 3));
+            Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptTwo[0] - 3);
+            ControlPoint2TextboxX.Text = "" + selectedSegment.ControlptTwo[0];
+            ControlPoint2TextboxY.Text = "" + selectedSegment.ControlptTwo[1];
 
-            displayPath(selectedSegment);
+            DisplayPath(selectedSegment);
         }
 
         //Method to be called when a control point three is manipulated
-        private void controlPointThreeManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e) {
-            Segment selectedSegment = App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+        private void ControlPointThreeManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
             Ellipse sentControlPoint = sender as Ellipse;
-            double[] newControlPointThree = new double[] { selectedSegment.getControlptThree()[0] + e.Delta.Translation.X, selectedSegment.getControlptThree()[1] - e.Delta.Translation.Y };
-            selectedSegment.setControlptThree(newControlPointThree);
-            App.currentPath.standardizePath();
-            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.getControlptThree()[1]+3));
-            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptThree()[0]-3);
-            ControlPoint3TextboxX.Text = "" + selectedSegment.getControlptThree()[0];
-            ControlPoint3TextboxY.Text = "" + selectedSegment.getControlptThree()[1];
-            displayPath(selectedSegment);
+            double[] newControlPointThree = new double[] { selectedSegment.ControlptThree[0] + e.Delta.Translation.X, selectedSegment.ControlptThree[1] - e.Delta.Translation.Y };
+            selectedSegment.ControlptThree = newControlPointThree;
+            App.currentPath.StandardizePath();
+            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptThree[1] + 3));
+            Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptThree[0] - 3);
+            ControlPoint3TextboxX.Text = "" + selectedSegment.ControlptThree[0];
+            ControlPoint3TextboxY.Text = "" + selectedSegment.ControlptThree[1];
+            DisplayPath(selectedSegment);
         }
 
         //Changes the selected segment based on the combo box selection
-        private void SegmentListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void SegmentListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             FieldCanvas.Children.Remove(currentControlPointTwoEllipse);
             FieldCanvas.Children.Remove(currentControlPointThreeEllipse);
 
             ComboBox comboBoxSender = sender as ComboBox;
             if (comboBoxSender.SelectedItem == null) return;
-            Segment selectedSegment = App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)comboBoxSender.SelectedItem).Name)];
-            ControlPoint2TextboxX.Text = "" + selectedSegment.getControlptTwo()[0];
-            ControlPoint2TextboxY.Text = "" + selectedSegment.getControlptTwo()[1];
-            ControlPoint3TextboxX.Text = "" + selectedSegment.getControlptThree()[0];
-            ControlPoint3TextboxY.Text = "" + selectedSegment.getControlptThree()[1];
+            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)comboBoxSender.SelectedItem).Name)];
+            ControlPoint2TextboxX.Text = "" + selectedSegment.ControlptTwo[0];
+            ControlPoint2TextboxY.Text = "" + selectedSegment.ControlptTwo[1];
+            ControlPoint3TextboxX.Text = "" + selectedSegment.ControlptThree[0];
+            ControlPoint3TextboxY.Text = "" + selectedSegment.ControlptThree[1];
 
-            Ellipse controlPointTwoEllipse = new Ellipse();
-            controlPointTwoEllipse.Width = 6;
-            controlPointTwoEllipse.Height = 6;
-            controlPointTwoEllipse.Fill = new SolidColorBrush(Windows.UI.Colors.Red);
-            controlPointTwoEllipse.Name = "CurrentControlPointTwo";
-            controlPointTwoEllipse.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
-            controlPointTwoEllipse.ManipulationDelta += controlPointTwoManipulationDelta;
-            Canvas.SetTop(controlPointTwoEllipse, FieldCanvas.Height - (selectedSegment.getControlptTwo()[1]+3));
-            Canvas.SetLeft(controlPointTwoEllipse, selectedSegment.getControlptTwo()[0]-3);
+            Ellipse controlPointTwoEllipse = new Ellipse
+            {
+                Width = 6,
+                Height = 6,
+                Fill = new SolidColorBrush(Windows.UI.Colors.Red),
+                Name = "CurrentControlPointTwo",
+                ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
+            };
+            controlPointTwoEllipse.ManipulationDelta += ControlPointTwoManipulationDelta;
+            Canvas.SetTop(controlPointTwoEllipse, FieldCanvas.Height - (selectedSegment.ControlptTwo[1] + 3));
+            Canvas.SetLeft(controlPointTwoEllipse, selectedSegment.ControlptTwo[0] - 3);
             Canvas.SetZIndex(controlPointTwoEllipse, 1001);
             FieldCanvas.Children.Add(controlPointTwoEllipse);
             currentControlPointTwoEllipse = controlPointTwoEllipse;
 
-            Ellipse controlPointThreeEllipse = new Ellipse();
-            controlPointThreeEllipse.Width = 5;
-            controlPointThreeEllipse.Height = 5;
-            controlPointThreeEllipse.Fill = new SolidColorBrush(Windows.UI.Colors.Yellow);
-            controlPointThreeEllipse.Name = "CurrentControlPointThree";
-            controlPointThreeEllipse.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
-            controlPointThreeEllipse.ManipulationDelta += controlPointThreeManipulationDelta;
-            Canvas.SetTop(controlPointThreeEllipse, FieldCanvas.Height - selectedSegment.getControlptThree()[1]);
-            Canvas.SetLeft(controlPointThreeEllipse, selectedSegment.getControlptThree()[0]);
+            Ellipse controlPointThreeEllipse = new Ellipse
+            {
+                Width = 5,
+                Height = 5,
+                Fill = new SolidColorBrush(Windows.UI.Colors.Yellow),
+                Name = "CurrentControlPointThree",
+                ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
+            };
+            controlPointThreeEllipse.ManipulationDelta += ControlPointThreeManipulationDelta;
+            Canvas.SetTop(controlPointThreeEllipse, FieldCanvas.Height - selectedSegment.ControlptThree[1]);
+            Canvas.SetLeft(controlPointThreeEllipse, selectedSegment.ControlptThree[0]);
             Canvas.SetZIndex(controlPointThreeEllipse, 1001);
             FieldCanvas.Children.Add(controlPointThreeEllipse);
             currentControlPointThreeEllipse = controlPointThreeEllipse;
 
-            displayPath(selectedSegment);
+            DisplayPath(selectedSegment);
         }
 
         //Makes a point when the mouse is doubleTapped on the canvas
@@ -285,41 +317,41 @@ namespace WindowsInterface
             double x = e.GetPosition(FieldCanvas).X;
             double y = FieldCanvas.Height - e.GetPosition(FieldCanvas).Y;
             double[] newpt = new double[] { x, y };
-            App.currentPath.addPoint(newpt);
-            importPath();
+            App.currentPath.AddPoint(newpt);
+            ImportPath();
         }
 
         //modifies the control point two based on the text boxes above
         private void ControlPointTwoSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             if (SegmentListComboBox.SelectedItem == null) return;
-            Segment selectedSegment = App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
             Ellipse sentControlPoint = currentControlPointTwoEllipse;
-            double[] newControlPointTwo = new double[] { Double.Parse(ControlPoint2TextboxX.Text), Double.Parse(ControlPoint2TextboxY.Text)};
-            selectedSegment.setControlptTwo(newControlPointTwo);
-            App.currentPath.standardizePath();
-            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.getControlptTwo()[1] + 3));
-            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptTwo()[0] - 3);
-            ControlPoint2TextboxX.Text = "" + selectedSegment.getControlptTwo()[0];
-            ControlPoint2TextboxY.Text = "" + selectedSegment.getControlptTwo()[1];
+            double[] newControlPointTwo = new double[] { double.Parse(ControlPoint2TextboxX.Text), double.Parse(ControlPoint2TextboxY.Text) };
+            selectedSegment.ControlptTwo = newControlPointTwo;
+            App.currentPath.StandardizePath();
+            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptTwo[1] + 3));
+            Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptTwo[0] - 3);
+            ControlPoint2TextboxX.Text = "" + selectedSegment.ControlptTwo[0];
+            ControlPoint2TextboxY.Text = "" + selectedSegment.ControlptTwo[1];
 
-            displayPath(selectedSegment);
+            DisplayPath(selectedSegment);
         }
 
         //modifies the control point three based on the text boxes above
         private void ControlPointThreeSaveBtn_Click(object sender, RoutedEventArgs e)
         {
             if (SegmentListComboBox.SelectedItem == null) return;
-            Segment selectedSegment = App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
             Ellipse sentControlPoint = currentControlPointThreeEllipse;
-            double[] newControlPointThree = new double[] { Double.Parse(ControlPoint3TextboxX.Text), Double.Parse(ControlPoint3TextboxY.Text)};
-            selectedSegment.setControlptThree(newControlPointThree);
-            App.currentPath.standardizePath();
-            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.getControlptThree()[1] + 3));
-            Canvas.SetLeft(sentControlPoint, selectedSegment.getControlptThree()[0] - 3);
-            ControlPoint3TextboxX.Text = "" + selectedSegment.getControlptThree()[0];
-            ControlPoint3TextboxY.Text = "" + selectedSegment.getControlptThree()[1];
-            displayPath(selectedSegment);
+            double[] newControlPointThree = new double[] { double.Parse(ControlPoint3TextboxX.Text), double.Parse(ControlPoint3TextboxY.Text) };
+            selectedSegment.ControlptThree = newControlPointThree;
+            App.currentPath.StandardizePath();
+            Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptThree[1] + 3));
+            Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptThree[0] - 3);
+            ControlPoint3TextboxX.Text = "" + selectedSegment.ControlptThree[0];
+            ControlPoint3TextboxY.Text = "" + selectedSegment.ControlptThree[1];
+            DisplayPath(selectedSegment);
         }
     }
 }

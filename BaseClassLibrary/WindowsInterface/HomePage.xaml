@@ -36,21 +36,21 @@
                     <StackPanel x:Name="ptNumberColumn" Grid.Column="0" >
                         <TextBlock Text="0" FontSize="30" HorizontalAlignment="Center"/>
                         <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
-                        <ListBox x:Name="pointNumberListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+                        <ListBox x:Name="pointNumberListBox" SelectionChanged="PointsTableSelectionChanged" SelectionMode="Single">
 
                         </ListBox>
                     </StackPanel>
                     <StackPanel x:Name="xValuesColumn" Grid.Column="2">
                         <TextBlock Text="X values" FontSize="30" HorizontalAlignment="Center"/>
                         <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
-                        <ListBox x:Name="xValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+                        <ListBox x:Name="xValuesListBox" SelectionChanged="PointsTableSelectionChanged" SelectionMode="Single">
 
                         </ListBox>
                     </StackPanel>
                     <StackPanel  Grid.Column="4">
                         <TextBlock Text="Y values" FontSize="30" HorizontalAlignment="Center"/>
                         <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="Black" Margin="0,0,0,10"/>
-                        <ListBox x:Name="yValuesListBox" SelectionChanged="pointsTableSelectionChanged" SelectionMode="Single">
+                        <ListBox x:Name="yValuesListBox" SelectionChanged="PointsTableSelectionChanged" SelectionMode="Single">
 
                         </ListBox>
 
@@ -76,7 +76,7 @@
                         <TextBox x:Name="yPointInputTextBox" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"/>
                     </StackPanel>
                 </Grid>
-                <Button x:Name="savePointBtn" Content="Save" Background="Gray" Foreground="Black"  HorizontalAlignment="Center" FontSize="30" Width="300" Margin="0,15" Click="savePointBtn_Click"/>
+                <Button x:Name="savePointBtn" Content="Save" Background="Gray" Foreground="Black"  HorizontalAlignment="Center" FontSize="30" Width="300" Margin="0,15" Click="SavePointBtn_Click"/>
             </StackPanel>
             
             <StackPanel Grid.Row="2">
