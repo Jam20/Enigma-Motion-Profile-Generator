@@ -17,11 +17,13 @@ namespace WindowsInterface
         Ellipse currentControlPointTwoEllipse;
         Ellipse currentControlPointThreeEllipse;
         private int pointTableSelectedIndex = 0;
+        private Segment selectedSegment;
 
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
         {
             this.InitializeComponent();
+
             currentPointEllipses = new List<Ellipse>();
             bezierPathList = new List<Windows.UI.Xaml.Shapes.Path>();
             if (App.currentPath == null)
@@ -144,10 +146,10 @@ namespace WindowsInterface
         }
 
         //displays the visual path on the screen by importing the geometry of each segment
-        public void DisplayPath()
-        {
-            for (int i = 0; i < bezierPathList.Count; i++)
-            {
+        public void displayPath() {
+            FieldCanvas.Children.Remove(currentControlPointTwoEllipse);
+            FieldCanvas.Children.Remove(currentControlPointThreeEllipse);
+            for (int i = 0; i < bezierPathList.Count; i++) {
                 FieldCanvas.Children.Remove(bezierPathList[i]);
             }
             bezierPathList.Clear();
@@ -168,7 +170,18 @@ namespace WindowsInterface
                 geometry.Figures.Add(figure);
                 segmentBezierPath.Data = geometry;
                 segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Purple);
-                segmentBezierPath.StrokeThickness = 3;
+                segmentBezierPath.StrokeThickness = (App.currentRobot.width + App.currentRobot.bumperThickness * 2);
+                segmentBezierPath.Opacity = 0.5;
+                segmentBezierPath.StrokeEndLineCap = PenLineCap.Square;
+                segmentBezierPath.StrokeStartLineCap = PenLineCap.Square;
+                //Make the segments selectable
+                segmentBezierPath.Tag = App.currentPath.getPathList()[i];
+                segmentBezierPath.Tapped += delegate (object sender, TappedRoutedEventArgs e)
+                {
+                    selectedSegment = segmentBezierPath.Tag as Segment;
+                    SetSelectedSegment(this.selectedSegment);
+                    e.Handled = true;
+                };
                 FieldCanvas.Children.Add(segmentBezierPath);
                 bezierPathList.Add(segmentBezierPath);
             }
@@ -202,7 +215,16 @@ namespace WindowsInterface
                     segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Green);
                 }
                 else segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Purple);
-                segmentBezierPath.StrokeThickness = 3;
+                segmentBezierPath.Opacity = 0.5;
+                segmentBezierPath.StrokeEndLineCap = PenLineCap.Square;
+                segmentBezierPath.StrokeStartLineCap = PenLineCap.Square;
+                segmentBezierPath.StrokeThickness = (App.currentRobot.width + App.currentRobot.bumperThickness * 2);
+                segmentBezierPath.Tag = App.currentPath.getPathList()[i];
+                segmentBezierPath.Tapped += delegate (object sender, TappedRoutedEventArgs e)
+                {
+                    selectedSegment = segmentBezierPath.Tag as Segment;
+                    SetSelectedSegment(this.selectedSegment);
+                };
                 FieldCanvas.Children.Add(segmentBezierPath);
                 bezierPathList.Add(segmentBezierPath);
             }
@@ -230,6 +252,8 @@ namespace WindowsInterface
             }
             else
                 DisplayPath();
+            selectedSegment = null;
+            displayPath();
 
         }
 
@@ -265,8 +289,22 @@ namespace WindowsInterface
         }
 
         //Changes the selected segment based on the combo box selection
-        private void SegmentListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SegmentListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            ComboBox comboBoxSender = sender as ComboBox;
+            if (comboBoxSender.SelectedItem == null) return;
+            this.selectedSegment = App.currentPath.getPathList()[Int32.Parse(((ComboBoxItem)comboBoxSender.SelectedItem).Name)];
+            SetSelectedSegment(this.selectedSegment);
+            return;
+        }
+
+        private void SetSelectedSegment(Segment selectedSegment)
         {
+            /// <summary>
+            ///     Takes a segment and sets it to be the currently selected segment
+            /// </summary>
+
+            if (selectedSegment == null) return;
+
             FieldCanvas.Children.Remove(currentControlPointTwoEllipse);
             FieldCanvas.Children.Remove(currentControlPointThreeEllipse);
 
@@ -326,6 +364,7 @@ namespace WindowsInterface
         {
             if (SegmentListComboBox.SelectedItem == null) return;
             Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+            if (this.selectedSegment == null) return;
             Ellipse sentControlPoint = currentControlPointTwoEllipse;
             double[] newControlPointTwo = new double[] { double.Parse(ControlPoint2TextboxX.Text), double.Parse(ControlPoint2TextboxY.Text) };
             selectedSegment.ControlptTwo = newControlPointTwo;
@@ -343,6 +382,8 @@ namespace WindowsInterface
         {
             if (SegmentListComboBox.SelectedItem == null) return;
             Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+        { 
+            if (this.selectedSegment == null) return;
             Ellipse sentControlPoint = currentControlPointThreeEllipse;
             double[] newControlPointThree = new double[] { double.Parse(ControlPoint3TextboxX.Text), double.Parse(ControlPoint3TextboxY.Text) };
             selectedSegment.ControlptThree = newControlPointThree;
@@ -352,6 +393,13 @@ namespace WindowsInterface
             ControlPoint3TextboxX.Text = "" + selectedSegment.ControlptThree[0];
             ControlPoint3TextboxY.Text = "" + selectedSegment.ControlptThree[1];
             DisplayPath(selectedSegment);
+        }
+
+        private void DeselectSegment(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            this.selectedSegment = null;
+            displayPath();
+            args.Handled = true;
         }
     }
 }
