@@ -6,17 +6,20 @@ public class Path
 
     public List<Segment> PathList { get; private set; }
     private double[] firstPoint;
+    public double TotalDistance { get; private set; }
 
     //Generic constuctor for first time use
     public Path()
     {
         PathList = new List<Segment>();
+        SetTotalDistance();
     }
 
     //Constructor with already determined Points list
     public Path(List<Segment> pathList)
     {
         this.PathList = pathList;
+        SetTotalDistance();
     }
 
 
@@ -32,13 +35,14 @@ public class Path
             else
             {
                 PathList.Add(new Segment(firstPoint, newPt));
+                SetTotalDistance();
             }
             return;
         }
         Segment newSegment = new Segment(PathList[PathList.Count - 1].ControlptFour, newPt);
         PathList.Add(newSegment);
-        StandardizePath();
-
+        StandardizePath(PathList.Count-2);
+        SetTotalDistance();
     }
 
     //Checks every segment and its ajesent segments for continuity and then ajusts if they are not continous
@@ -47,36 +51,41 @@ public class Path
         if (PathList.Count < 2) return;
         for (int i = 0; i < PathList.Count - 1; i++)
         {
-            double ratioOne = (PathList[i].ControlptThree[1] - PathList[i].ControlptFour[1]) / (PathList[i].ControlptThree[0] - PathList[i].ControlptFour[0]);
-            double ratioTwo = (PathList[i + 1].ControlptTwo[1] - PathList[i].ControlptFour[1]) / (PathList[i + 1].ControlptTwo[0] - PathList[i].ControlptFour[0]);
-            if ((PathList[i].ControlptThree[0] - PathList[i].ControlptFour[0]) == 0)
-            {
-
-                double dist = Math.Sqrt(Math.Pow(PathList[i + 1].ControlptTwo[1] - PathList[i].ControlptFour[1], 2) + Math.Pow(PathList[i + 1].ControlptTwo[0] - PathList[i].ControlptFour[0], 2));
-                PathList[i + 1].ControlptTwo = new double[] { PathList[i].ControlptFour[0], PathList[i].ControlptFour[1] + dist * -Math.Sign((PathList[i].ControlptThree[1] - PathList[i].ControlptFour[1])) };
-
-            }
-            else if (ratioOne != ratioTwo)
-            {
-                double xDist = Math.Abs(PathList[i + 1].ControlptTwo[0] - PathList[i].ControlptFour[0]);
-                double yDist = Math.Abs(PathList[i + 1].ControlptTwo[1] - PathList[i].ControlptFour[1]);
-                double distance = Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
-                double newXValue = Math.Sqrt(Math.Pow(distance, 2) / (Math.Pow(ratioOne, 2) + 1));
-                double newYValue = newXValue * ratioOne;
-                if (PathList[i].ControlptThree[0] < PathList[i].ControlptFour[0])
-                {
-                    PathList[i + 1].ControlptTwo = new double[] { PathList[i].ControlptFour[0] + newXValue, PathList[i].ControlptFour[1] + newYValue };
-                }
-                else
-                {
-                    PathList[i + 1].ControlptTwo = new double[] { PathList[i].ControlptFour[0] - newXValue, PathList[i].ControlptFour[1] - newYValue };
-                }
-                double newRatioTwo = PathList[i + 1].ControlptTwo[1] - PathList[i].ControlptFour[1] / (PathList[i + 1].ControlptTwo[0] - PathList[i].ControlptFour[0]);
-
-            }
+            StandardizePath(i);
         }
     }
 
+    public void StandardizePath(int segmentIndex)
+    {
+        if (segmentIndex == PathList.Count - 1) return;
+        double ratioOne = (PathList[segmentIndex].ControlptThree[1] - PathList[segmentIndex].ControlptFour[1]) / (PathList[segmentIndex].ControlptThree[0] - PathList[segmentIndex].ControlptFour[0]);
+        double ratioTwo = (PathList[segmentIndex + 1].ControlptTwo[1] - PathList[segmentIndex].ControlptFour[1]) / (PathList[segmentIndex + 1].ControlptTwo[0] - PathList[segmentIndex].ControlptFour[0]);
+        if ((PathList[segmentIndex].ControlptThree[0] - PathList[segmentIndex].ControlptFour[0]) == 0)
+        {
+
+            double dist = Math.Sqrt(Math.Pow(PathList[segmentIndex + 1].ControlptTwo[1] - PathList[segmentIndex].ControlptFour[1], 2) + Math.Pow(PathList[segmentIndex + 1].ControlptTwo[0] - PathList[segmentIndex].ControlptFour[0], 2));
+            PathList[segmentIndex + 1].ControlptTwo = new double[] { PathList[segmentIndex].ControlptFour[0], PathList[segmentIndex].ControlptFour[1] + dist * -Math.Sign((PathList[segmentIndex].ControlptThree[1] - PathList[segmentIndex].ControlptFour[1])) };
+
+        }
+        else if (ratioOne != ratioTwo)
+        {
+            double xDist = Math.Abs(PathList[segmentIndex + 1].ControlptTwo[0] - PathList[segmentIndex].ControlptFour[0]);
+            double yDist = Math.Abs(PathList[segmentIndex + 1].ControlptTwo[1] - PathList[segmentIndex].ControlptFour[1]);
+            double distance = Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
+            double newXValue = Math.Sqrt(Math.Pow(distance, 2) / (Math.Pow(ratioOne, 2) + 1));
+            double newYValue = newXValue * ratioOne;
+            if (PathList[segmentIndex].ControlptThree[0] < PathList[segmentIndex].ControlptFour[0])
+            {
+                PathList[segmentIndex + 1].ControlptTwo = new double[] { PathList[segmentIndex].ControlptFour[0] + newXValue, PathList[segmentIndex].ControlptFour[1] + newYValue };
+            }
+            else
+            {
+                PathList[segmentIndex + 1].ControlptTwo = new double[] { PathList[segmentIndex].ControlptFour[0] - newXValue, PathList[segmentIndex].ControlptFour[1] - newYValue };
+            }
+            double newRatioTwo = PathList[segmentIndex + 1].ControlptTwo[1] - PathList[segmentIndex].ControlptFour[1] / (PathList[segmentIndex + 1].ControlptTwo[0] - PathList[segmentIndex].ControlptFour[0]);
+
+        }
+    }
     //based on a @param index the 0 based index of the location of the main point in the path is modified from its original value to @param newPoint
     public void ModifyPoint(int index, double[] newPoint)
     {
@@ -89,32 +98,19 @@ public class Path
         else
         {
             PathList[index - 1].ControlptFour = (newPoint);
-            if (PathList.Count > index) PathList[index].ControlptOne = (newPoint);
+            if (PathList.Count > index)
+            {
+                PathList[index].ControlptOne = (newPoint);
+                StandardizePath(index - 1);
+            }
         }
-        StandardizePath();
     }
 
-    //Does the same as modifyPoint but instead of switching to acompletly new number simpily adds @param x,y to their respective values in the point
-    public void ModifyPointAdd(int index, double x, double y)
-    {
 
-        if (index == 0)
-        {
-            if (PathList.Count == 0) firstPoint = new double[] { firstPoint[0] + x, firstPoint[1] + y };
-            else PathList[0].ControlptOne = (new double[] { firstPoint[0] + x, firstPoint[1] + y });
-        }
-        else
-        {
-            PathList[index - 1].ControlptFour = (new double[] { firstPoint[0] + x, firstPoint[1] + y });
-            if (PathList.Count > index) PathList[index].ControlptOne = (new double[] { firstPoint[0] + x, firstPoint[1] + y });
-        }
-        StandardizePath();
-    }
 
     //gets the a main point from the pathlist at @param index
     public double[] GetPoint(int index)
     {
-
         if (index == 0)
         {
             if (PathList.Count == 0) return firstPoint;
@@ -124,14 +120,14 @@ public class Path
     }
 
     //uses the getSegmentLength method from each segment and totals the distance
-    public double GetTotalDistance()
+    private void SetTotalDistance()
     {
         double output = 0;
         for (int i = 0; i < PathList.Count; i++)
         {
-            output += PathList[i].GetSegmentLength();
+            output += PathList[i].SegmentLength;
         }
-        return output;
+        TotalDistance = output;
     }
 
     //gets a 2d array reperesentation of the pathlist with each dimention 1 being the segment index and dimention 2 being a array of the control points
@@ -160,13 +156,13 @@ public class Path
         int currentSegment = 0;
         while (currentDistance < dist)
         {
-            currentDistance += PathList[currentSegment].GetSegmentLength();
+            currentDistance += PathList[currentSegment].SegmentLength;
             currentSegment++;
         }
         if (currentSegment != 0)
         {
             currentSegment--;
-            currentDistance -= PathList[currentSegment].GetSegmentLength();
+            currentDistance -= PathList[currentSegment].SegmentLength;
         }
         if (currentDistance == 0) return PathList[currentSegment].GetDirectionAt(dist);
         return PathList[currentSegment].GetDirectionAt(currentDistance - dist);

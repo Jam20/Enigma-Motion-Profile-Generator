@@ -8,17 +8,18 @@ public static class SaveFile {
     /// <summary>
     /// Returns strings containing the segments used to make the profile and the profile for the robot
     /// </summary>
-    public static List<string> GetSaveFile(MotionProfile motionProfile) {
-        List<string> output = new List<string>();
+    public static String[] GetSaveFile(MotionProfile motionProfile) {
+        
 
         double[][][] segments = motionProfile.Path.ToArray();
         double[][] profile = motionProfile.ToArray();
+        String[] output = new String[profile.Length + segments.Length];
         double timeDifference = motionProfile.Robot.TimeIncrementInSec*1000;
         var watchHeader = System.Diagnostics.Stopwatch.StartNew();
         //Writes the file header
         //Runs in only a couple milliseconds
-        foreach (double[][] segment in segments) {
-            output.Add(SegmentToLine(segment));
+        for (int i = 0; i < segments.Length; i++) {
+            output[i] = (SegmentToLine(segments[i]));
             Debug.WriteLine(watchHeader.ElapsedMilliseconds);
         }
         watchHeader.Stop();
@@ -27,8 +28,8 @@ public static class SaveFile {
         var watchProfile = System.Diagnostics.Stopwatch.StartNew();
         //Writes the motion profile
         //Very Slow
-        foreach(double[] point in profile) {
-            output.Add(PointToString(point) + timeDifference);
+        for(int i =0; i<profile.Length; i++) {
+            output[segments.Length+i] = (PointToString(profile[i]) + timeDifference);
             Debug.WriteLine(watchProfile.ElapsedMilliseconds);
         }
         watchProfile.Stop();

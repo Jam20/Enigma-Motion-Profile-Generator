@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -255,19 +254,20 @@ namespace WindowsInterface
             }
             else
                 DisplayPath();
-            
-            
+
+
 
         }
 
         //Method to be called when a control point two is manipulated
         private void ControlPointTwoManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+            int segmentIndex = int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name);
+            Segment selectedSegment = App.currentPath.PathList[segmentIndex];
             Ellipse sentControlPoint = sender as Ellipse;
             double[] newControlPointTwo = new double[] { selectedSegment.ControlptTwo[0] + e.Delta.Translation.X, selectedSegment.ControlptTwo[1] - e.Delta.Translation.Y };
             selectedSegment.ControlptTwo = newControlPointTwo;
-            App.currentPath.StandardizePath();
+            App.currentPath.StandardizePath(segmentIndex-1);
             Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptTwo[1] + 3));
             Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptTwo[0] - 3);
             ControlPoint2TextboxX.Text = "" + selectedSegment.ControlptTwo[0];
@@ -279,11 +279,12 @@ namespace WindowsInterface
         //Method to be called when a control point three is manipulated
         private void ControlPointThreeManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+            int segmentIndex = int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name);
+            Segment selectedSegment = App.currentPath.PathList[segmentIndex];
             Ellipse sentControlPoint = sender as Ellipse;
             double[] newControlPointThree = new double[] { selectedSegment.ControlptThree[0] + e.Delta.Translation.X, selectedSegment.ControlptThree[1] - e.Delta.Translation.Y };
             selectedSegment.ControlptThree = newControlPointThree;
-            App.currentPath.StandardizePath();
+            App.currentPath.StandardizePath(segmentIndex);
             Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptThree[1] + 3));
             Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptThree[0] - 3);
             ControlPoint3TextboxX.Text = "" + selectedSegment.ControlptThree[0];
@@ -296,7 +297,7 @@ namespace WindowsInterface
         {
             ComboBox comboBoxSender = sender as ComboBox;
             if (comboBoxSender.SelectedItem == null) return;
-            this.selectedSegment = App.currentPath.PathList[Int32.Parse(((ComboBoxItem)comboBoxSender.SelectedItem).Name)];
+            this.selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)comboBoxSender.SelectedItem).Name)];
             SetSelectedSegment(this.selectedSegment);
             return;
         }
@@ -366,13 +367,14 @@ namespace WindowsInterface
         //modifies the control point two based on the text boxes above
         private void ControlPointTwoSaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            int selectedSegmentIndex = int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name);
             if (SegmentListComboBox.SelectedItem == null) return;
-            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+            Segment selectedSegment = App.currentPath.PathList[selectedSegmentIndex];
             if (this.selectedSegment == null) return;
             Ellipse sentControlPoint = currentControlPointTwoEllipse;
             double[] newControlPointTwo = new double[] { double.Parse(ControlPoint2TextboxX.Text), double.Parse(ControlPoint2TextboxY.Text) };
             selectedSegment.ControlptTwo = newControlPointTwo;
-            App.currentPath.StandardizePath();
+            App.currentPath.StandardizePath(selectedSegmentIndex-1);
             Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptTwo[1] + 3));
             Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptTwo[0] - 3);
             ControlPoint2TextboxX.Text = "" + selectedSegment.ControlptTwo[0];
@@ -384,14 +386,15 @@ namespace WindowsInterface
         //modifies the control point three based on the text boxes above
         private void ControlPointThreeSaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            int selectedSegmentIndex = int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name);
             if (SegmentListComboBox.SelectedItem == null) return;
-            Segment selectedSegment = App.currentPath.PathList[int.Parse(((ComboBoxItem)SegmentListComboBox.SelectedItem).Name)];
+            Segment selectedSegment = App.currentPath.PathList[selectedSegmentIndex];
 
             if (this.selectedSegment == null) return;
             Ellipse sentControlPoint = currentControlPointThreeEllipse;
             double[] newControlPointThree = new double[] { double.Parse(ControlPoint3TextboxX.Text), double.Parse(ControlPoint3TextboxY.Text) };
             selectedSegment.ControlptThree = newControlPointThree;
-            App.currentPath.StandardizePath();
+            App.currentPath.StandardizePath(selectedSegmentIndex);
             Canvas.SetTop(sentControlPoint, FieldCanvas.Height - (selectedSegment.ControlptThree[1] + 3));
             Canvas.SetLeft(sentControlPoint, selectedSegment.ControlptThree[0] - 3);
             ControlPoint3TextboxX.Text = "" + selectedSegment.ControlptThree[0];
