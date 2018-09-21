@@ -44,7 +44,7 @@ public static class SaveFile {
         return point[0].ToString() + ":" + point[1].ToString();
     }
 
-    private static String PointToString(double[] point) {0
+    private static String PointToString(double[] point) {
         /// <returns>
         /// Returns a motion profile point as a line for saving.
         /// </returns>
