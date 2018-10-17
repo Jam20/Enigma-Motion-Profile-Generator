@@ -57,7 +57,7 @@ public class Path
 
     public void StandardizePath(int segmentIndex)
     {
-        if (segmentIndex == PathList.Count - 1) return;
+        if (segmentIndex == PathList.Count - 1 || segmentIndex<0) return;
         double ratioOne = (PathList[segmentIndex].ControlptThree[1] - PathList[segmentIndex].ControlptFour[1]) / (PathList[segmentIndex].ControlptThree[0] - PathList[segmentIndex].ControlptFour[0]);
         double ratioTwo = (PathList[segmentIndex + 1].ControlptTwo[1] - PathList[segmentIndex].ControlptFour[1]) / (PathList[segmentIndex + 1].ControlptTwo[0] - PathList[segmentIndex].ControlptFour[0]);
         if ((PathList[segmentIndex].ControlptThree[0] - PathList[segmentIndex].ControlptFour[0]) == 0)
