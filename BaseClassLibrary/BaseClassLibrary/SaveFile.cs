@@ -1,8 +1,6 @@
 ﻿using BaseClassLibrary;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 
 public static class SaveFile {
     /// <summary>
@@ -14,26 +12,16 @@ public static class SaveFile {
         double[][][] segments = motionProfile.Path.ToArray();
         double[][] profile = motionProfile.ToArray();
         String[] output = new String[profile.Length + segments.Length];
-        double timeDifference = motionProfile.Robot.TimeIncrementInSec*1000;
-        var watchHeader = System.Diagnostics.Stopwatch.StartNew();
+        String timeDifference = (motionProfile.Robot.TimeIncrementInSec*1000).ToString();
         //Writes the file header
         //Runs in only a couple milliseconds
         for (int i = 0; i < segments.Length; i++) {
             output[i] = (SegmentToLine(segments[i]));
-            Debug.WriteLine(watchHeader.ElapsedMilliseconds);
         }
-        watchHeader.Stop();
-        Debug.WriteLine(watchHeader.ElapsedMilliseconds);
 
-        var watchProfile = System.Diagnostics.Stopwatch.StartNew();
-        //Writes the motion profile
-        //Very Slow
         for(int i =0; i<profile.Length; i++) {
             output[segments.Length+i] = (PointToString(profile[i]) + timeDifference);
-            Debug.WriteLine(watchProfile.ElapsedMilliseconds);
         }
-        watchProfile.Stop();
-        Debug.WriteLine(watchProfile.ElapsedMilliseconds);
 
         return output;
     }
