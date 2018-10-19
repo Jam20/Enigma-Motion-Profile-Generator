@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="DarkGray">
+    <!--<Grid Background="DarkGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
@@ -152,10 +152,10 @@
 
             
             
-            <!--Field Bounderies-->
+            --><!--Field Bounderies--><!--
             <Polygon Points="0,36,30,0,294,0,324,36,324,612,294,648,30,648,0,612,0,36" Fill="LightGray" Stroke="Black" StrokeThickness="2" />
 
-            <!--Zones-->
+            --><!--Zones--><!--
             <Line X1="0" X2="324" Y1="120" Y2="120" Stroke="Black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="99" Canvas.Left="138" Width="45" Height="42" Fill="Blue" Stroke="Gray" StrokeThickness="1"/>
             <Rectangle Canvas.Top="0" Canvas.Left="166" Width="48" Height="36" Fill="Blue" Stroke="Gray" StrokeThickness="1"/>
@@ -176,26 +176,26 @@
 
 
 
-            <!--Switch 1-->
+            --><!--Switch 1--><!--
             <Rectangle Canvas.Top="140" Canvas.Left="85" Width="154" Height="56" Stroke="black" Fill="LightGray" StrokeThickness="1"/>
             <Rectangle Canvas.Top="144" Canvas.Left="89" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="162" Canvas.Left="124" Width="78" Height="12" Fill="White" Stroke="Black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="144" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
             
-            <!--Switch 2-->
+            --><!--Switch 2--><!--
             <Rectangle Canvas.Top="452" Canvas.Left="85" Width="154" Height="56" Fill="LightGray" Stroke="black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="456" Canvas.Left="89" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="474" Canvas.Left="124" Width="78" Height="12" Fill="White" Stroke="Black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="456" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
 
-            <!--Scale -->
+            --><!--Scale --><!--
 
             <Rectangle Canvas.Top="300" Canvas.Left="72" Width="36" Height="48" Stroke="Black" Fill="Gray" StrokeThickness="1"/>
             <Rectangle Canvas.Top="300" Canvas.Left="212" Width="36" Height="48" Stroke="Black" Fill="Gray" StrokeThickness="1"/>
             <Rectangle Canvas.Top="312" Canvas.Left="108" Width="104" Height="24" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
             <Line X1="160" Y1="312" X2="160" Y2="336" StrokeThickness="1" Stroke="Black"/>
 
-            <!--Ramp-->
+            --><!--Ramp--><!--
             <Polygon Points="95,261,229,261,212,271,108,271" Fill="Blue"  Stroke="Black" StrokeThickness="1"/>
             <Polygon Points="95,261,95,300,108,300,108,271" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
             <Polygon Points="229,261,229,300,212,300,212,271" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
@@ -206,7 +206,7 @@
             <Polygon Points="229,387,229,348,212,348,212,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
             <Polygon Points="108,377,212,377,212,336,108,336" Fill="Red" Stroke="Black" StrokeThickness="1"/>
             
-            <!--Cubes-->
+            --><!--Cubes--><!--
             <Rectangle Canvas.Top="508" Canvas.Left="154" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="508" Canvas.Left="141" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
             <Rectangle Canvas.Top="508" Canvas.Left="167" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
@@ -240,5 +240,35 @@
             
         </Canvas>
         
+    </Grid>-->
+    <Grid Background="DarkGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Column One-->
+        <StackPanel Grid.Column="0">
+            
+        </StackPanel>
+        
+        <!--Column Two-->
+        <StackPanel Grid.Column="1">
+            
+        </StackPanel>
+        
+        <!--Column Three-->
+        <StackPanel Grid.Column="2" Background="DarkGray" Width="25" FlowDirection="RightToLeft">
+            
+            <Button Content="Segment" Width="Auto" FontSize="8">
+                <Button.RenderTransform>
+                    
+                    <RotateTransform Angle="-90" CenterX=".5" CenterY=".5"/>
+                </Button.RenderTransform>
+            </Button>
+        </StackPanel>
+
     </Grid>
+    
 </Page>

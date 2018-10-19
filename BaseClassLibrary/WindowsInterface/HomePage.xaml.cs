@@ -36,6 +36,7 @@ namespace WindowsInterface
             }
 
         }
+     
 
         //edits a point in the pathlist to the contents of the text boxes above it
         private void SavePointBtn_Click(object sender, RoutedEventArgs e)
