@@ -93,5 +93,4 @@ public static class SaveFile {
         }
         return new Segment(output[0], output[1], output[2], output[3]);
     }
-
 }

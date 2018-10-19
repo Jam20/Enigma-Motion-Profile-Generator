@@ -255,18 +255,23 @@
         
         <!--Column Two-->
         <StackPanel Grid.Column="1">
-            
+            <StackPanel Name="SegmentPopOutStackPanel" Visibility="Collapsed">
+                <TextBlock Text="segment"/>
+            </StackPanel>
+            <StackPanel Name="LayerPopOutStackPanel" Visibility="Collapsed">
+                <TextBlock Text="layers"/>
+            </StackPanel>
+
         </StackPanel>
         
         <!--Column Three-->
-        <StackPanel Grid.Column="2" Background="DarkGray" Width="25" FlowDirection="RightToLeft">
+        <StackPanel Grid.Column="2" Background="Gray" Width="Auto" FlowDirection="RightToLeft">
+
+            <ListBox Name="RightNaviationListBox" SelectionMode="Single" Background="Gray" SelectionChanged="RightNaviationListBox_SelectionChanged">
+                <ListBoxItem Name="SegmentListBoxItem" Content="Segments"/>
+                <ListBoxItem Name="LayerListBoxItem" Content="Layers"/>
+            </ListBox>
             
-            <Button Content="Segment" Width="Auto" FontSize="8">
-                <Button.RenderTransform>
-                    
-                    <RotateTransform Angle="-90" CenterX=".5" CenterY=".5"/>
-                </Button.RenderTransform>
-            </Button>
         </StackPanel>
 
     </Grid>
