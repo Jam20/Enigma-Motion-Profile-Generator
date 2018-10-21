@@ -425,10 +425,35 @@ namespace WindowsInterface
                 SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
-            else
+            else if(item.Name.Equals("LayerListBoxItem"))
             {
                 SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            }
+            else
+            {
+                SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ToggleSwitch_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            ToggleSwitch switchSender = sender as ToggleSwitch;
+            if (switchSender.IsOn)
+            {
+                DegreeModeStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                CoordinateModeStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+            else
+            {
+                DegreeModeStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                CoordinateModeStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
         }
     }
