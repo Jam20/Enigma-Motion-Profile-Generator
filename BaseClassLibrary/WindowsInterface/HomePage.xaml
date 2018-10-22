@@ -256,14 +256,14 @@
         <!--Column Two-->
         <StackPanel Grid.Column="1">
             <StackPanel Name="SegmentPopOutStackPanel" Visibility="Visible">
-                <TextBlock Text="Segment Selector" FontSize="30" Margin="0,0,10,0"/>
+                <TextBlock Text="Segment Selector" FontSize="30" Margin="0,0,10,0" HorizontalAlignment="Center"/>
                 <ComboBox HorizontalAlignment="Stretch" Margin="0,10,0,0" SelectionChanged="ComboBox_SelectionChanged"/>
                 <Rectangle HorizontalAlignment="Stretch" Height="30"/>
-                <TextBlock Text="Segment Editor" FontSize="30"/>
+                <TextBlock Text="Segment Editor" FontSize="30" HorizontalAlignment="Center"/>
                 <TextBlock Text="Editor Style" FontFamily="20" Margin="0,10,0,0" HorizontalAlignment="Center"/>
                 <ToggleSwitch Name="EditorStyleToggleSwitch" HorizontalAlignment="Center" OnContent="Degrees" OffContent="Coordinantes" Toggled="ToggleSwitch_Toggled" FontSize="15"/>
 
-                <StackPanel Name="CoordinateModeStackPanel" Visibility="Visible">
+                <StackPanel Name="CoordinateModeStackPanel" Visibility="Collapsed">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -274,31 +274,31 @@
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Control Point One" FontSize="10" HorizontalAlignment="Center"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox Name="ControlPointOneXTextBox" FontSize="10" Margin="0,5,10,0" HorizontalAlignment="Center"/>
-                                <TextBox Name="ControlPointOneYTextBox" FontSize="10" Margin="0,5,0,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointOneXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointOneYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                             </StackPanel>
                             <TextBlock Text="Control Point Two" FontSize="10" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox Name="ControlPointThreeXTextBox" FontSize="10" Margin="0,5,10,0" HorizontalAlignment="Center"/>
-                                <TextBox Name="ControlPointThreeYTextBox" FontSize="10" Margin="0,5,0,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointThreeXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointThreeYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="10,0,0,0">
                             <TextBlock Text="Control Point One" FontSize="10" HorizontalAlignment="Center"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox Name="ControlPointTwoXTextBox" FontSize="10" Margin="0,5,10,0" HorizontalAlignment="Center"/>
-                                <TextBox Name="ControlPointTwoYTextBox" FontSize="10" Margin="0,5,0,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointTwoXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointTwoYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                             </StackPanel>
                             <TextBlock Text="Control Point Two" FontSize="10" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox Name="ControlPointFourXTextBox" FontSize="10" Margin="0,5,10,0" HorizontalAlignment="Center"/>
-                                <TextBox Name="ControlPointFourYTextBox" FontSize="10" Margin="0,5,0,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointFourXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="ControlPointFourYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
                     <Button Grid.Column="0" Content="Save" FontSize="10" HorizontalAlignment="Stretch" Grid.Row="1" Margin="0,5,0,0"/>
                 </StackPanel>
-                <StackPanel Name="DegreeModeStackPanel" Visibility="Collapsed">
+                <StackPanel Name="DegreeModeStackPanel" Visibility="Visible">
                     
                 </StackPanel>
             </StackPanel>
