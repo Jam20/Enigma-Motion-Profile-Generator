@@ -416,19 +416,54 @@ namespace WindowsInterface
 
           }*/
 
-        private void RightNaviationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        
+
+
+
+        //METHODS FOR RIGHT SIDE MENU
+
+        
+        //Navigation Bar Methods
+        //@param sender name  as a list box item is toggle the different windows on and off
+        private void RightNavigationListBoxItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            ListBox boxsent = (ListBox)sender;
-            ListBoxItem item = (ListBoxItem)boxsent.SelectedItem;
-            if (item.Name.Equals("SegmentListBoxItem"))
-            {
-                SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            }
-            else if(item.Name.Equals("LayerListBoxItem"))
+            ListBoxItem item = sender as ListBoxItem;
+
+            if (item == null)
             {
                 SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+            else if (item.Name.Equals("SegmentListBoxItem"))
+            {
+                if (SegmentPopOutStackPanel.Visibility == Windows.UI.Xaml.Visibility.Visible)
+                {
+                    SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    RightNaviationListBox.SelectedIndex = -1;
+                }
+                else
+                {
+
+                    SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                }
+            }
+            else if (item.Name.Equals("LayerListBoxItem"))
+            {
+                if (LayerPopOutStackPanel.Visibility == Windows.UI.Xaml.Visibility.Visible)
+                {
+                    SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                }
+                else
+                {
+
+                    SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    RightNaviationListBox.SelectedIndex = -1;
+                }
             }
             else
             {
@@ -437,11 +472,29 @@ namespace WindowsInterface
             }
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        
+        //Save Button Click Events For The Segment Selector Menu
+
+        //saves the degrees and points off of the menu to the path
+        private void SaveDegreeButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+        //saves the direct coordinates of the points to the path
+        private void CoordinateSaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
 
         }
 
+        
+        //Segment Selector Menu Control Events
+
+        //selects a segment and displays it on the screen
+        private void SegmentSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        //switches between coordinate and degree mode
         private void ToggleSwitch_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             ToggleSwitch switchSender = sender as ToggleSwitch;
@@ -457,7 +510,7 @@ namespace WindowsInterface
             }
         }
 
-        private void SaveDegreeButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void LayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
