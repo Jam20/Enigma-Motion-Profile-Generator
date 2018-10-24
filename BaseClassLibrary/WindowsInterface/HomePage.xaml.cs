@@ -14,7 +14,6 @@ namespace WindowsInterface
         Ellipse currentControlPointThreeEllipse;
         private int pointTableSelectedIndex = 0;
         private Segment selectedSegment;
-
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
         {
@@ -430,22 +429,18 @@ namespace WindowsInterface
         {
             ListBoxItem item = sender as ListBoxItem;
 
-            if (item == null)
-            {
-                SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            }
-            else if (item.Name.Equals("SegmentListBoxItem"))
+            if (item.Name.Equals("SegmentListBoxItem"))
             {
                 if (SegmentPopOutStackPanel.Visibility == Windows.UI.Xaml.Visibility.Visible)
                 {
                     SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                     LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    ColumnTwoStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                     RightNaviationListBox.SelectedIndex = -1;
                 }
                 else
                 {
-
+                    ColumnTwoStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
                     SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
                     LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 }
@@ -456,12 +451,14 @@ namespace WindowsInterface
                 {
                     SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                     LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    ColumnTwoStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 }
                 else
                 {
-
+                    ColumnTwoStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
                     SegmentPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                     LayerPopOutStackPanel.Visibility = Windows.UI.Xaml.Visibility.Visible;
+
                     RightNaviationListBox.SelectedIndex = -1;
                 }
             }
@@ -512,7 +509,7 @@ namespace WindowsInterface
 
         private void LayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
         
     }

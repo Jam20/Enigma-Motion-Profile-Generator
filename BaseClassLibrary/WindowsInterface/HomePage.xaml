@@ -254,7 +254,7 @@
         </StackPanel>
         
         <!--Column Two-->
-        <StackPanel Grid.Column="1" >
+        <StackPanel Name="ColumnTwoStackPanel" Grid.Column="1" Visibility="Collapsed" >
             <StackPanel Orientation="Horizontal" Background="LightGray">
                 <Rectangle Fill="Black" Width="2" Margin="0,0,3,0"/>
                 <StackPanel Name="SegmentPopOutStackPanel" Visibility="Collapsed">

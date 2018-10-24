@@ -102,6 +102,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Layer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="ProgressBarCD.xaml.cs">
       <DependentUpon>ProgressBarCD.xaml</DependentUpon>
     </Compile>

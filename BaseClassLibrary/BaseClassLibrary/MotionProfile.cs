@@ -5,8 +5,8 @@ namespace BaseClassLibrary
 {
     public class MotionProfile
     {
-        public Path Path;
-        public Robot Robot;
+        public Path Path { get; private set; }
+        public Robot Robot { get; private set; }
         private double[] position, velocity, heading;
         public double ProfileTime;
 
@@ -15,6 +15,11 @@ namespace BaseClassLibrary
         {
             Path = p;
             Robot = r;
+            CalcProfile();
+        }
+
+        public void CalcProfile()
+        {
             List<double> pos, vel, head;
             pos = new List<double>();
             vel = new List<double>();
@@ -97,5 +102,7 @@ namespace BaseClassLibrary
             return output;
 
         }
+
+
     }
 }

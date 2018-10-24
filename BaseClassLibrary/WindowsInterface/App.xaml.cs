@@ -13,9 +13,9 @@ namespace WindowsInterface
     /// </summary>
     sealed partial class App : Application
     {
+        static public int FieldHeight { get; private set; }
+        static public int FieldWidth { get; private set; }
 
-        internal static Robot currentRobot;
-        internal static Path currentPath;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -36,15 +36,6 @@ namespace WindowsInterface
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
-            try
-            {
-                StorageFile robotFile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync("robotSaveFile.csv");
-                currentRobot = new Robot(await FileIO.ReadTextAsync(robotFile));
-            }
-            catch (Exception)
-            {
-                currentRobot = new Robot();
-            }
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)

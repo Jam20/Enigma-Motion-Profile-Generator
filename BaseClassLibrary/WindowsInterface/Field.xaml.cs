@@ -9,6 +9,9 @@ namespace WindowsInterface
     /// </summary>
     public sealed partial class Field : Page
     {
+        public int FieldCanvasHeight { get; private set; }
+        public int FieldCanvasWidth { get; private set; }
+
         public Field()
         {
             this.InitializeComponent();
