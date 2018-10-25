@@ -11,21 +11,24 @@ namespace WindowsInterface
 {
     class Player
     {
-        private List<MotionProfile> layers;
+        private Robot robot;
+        private List<Layer> layers;
         public Canvas MainCanvas { get; private set; }
 
         public Player()
         {
-            layers = new List<MotionProfile>();
+            layers = new List<Layer>();
             MainCanvas = new Canvas();
         }
 
         private void CompileCanvas()
         {
-            foreach(MotionProfile layer in layers)
-            {
+            
+        }
 
-            }
+        public void CreateLayer()
+        {
+            layers.Add(new Layer(new MotionProfile(new Path(),robot)));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BaseClassLibrary;
+﻿using System;
+using BaseClassLibrary;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -15,16 +16,19 @@ namespace WindowsInterface
         public int SelectedSegmentIndex;
         public Canvas MainCanvas { get; private set; }
 
-        private Layer(MotionProfile profile)
+        public Layer(MotionProfile profile)
         {
             this.profile = profile;
         }
 
+        //modifies the canvas 
         private void CompileCanvas()
         {
+            profile.CalcProfile();
             Canvas newCanvas = new Canvas();
             newCanvas.Height = App.FieldHeight;
             newCanvas.Width = App.FieldWidth;
+            newCanvas.DoubleTapped += CanvasDoubleTapped;
             Ellipse[] ellipses = GetUIEllipseObjects();
             Windows.UI.Xaml.Shapes.Path[] paths = GetUIPathObjects();
             foreach (Ellipse ellipse in ellipses) newCanvas.Children.Add(ellipse);
@@ -32,6 +36,26 @@ namespace WindowsInterface
             MainCanvas = newCanvas;
         }
 
+        
+        //Gets and sets startpoints/endpoints as to prevent access to the profile
+        private void SetStartPoint(double[] startPoint)
+        {
+            profile.Path.ModifyPoint(0, startPoint);
+        }
+        private double[] GetStartPoint()
+        {
+            return profile.Path.GetPoint(0);
+        }
+        private void SetEndPoint(double[] endPoint)
+        {
+            profile.Path.ModifyPoint(profile.Path.GetPoints().Length-1, endPoint);
+        }
+        private double[] GetEndPoint()
+        {
+            return profile.Path.GetPoint(profile.Path.GetPoints().Length - 1);
+        }
+
+        //Returns an array of UI ellipse objects to be displayed 
         private Ellipse[] GetUIEllipseObjects()
         {
             Ellipse[] EllipseOutputs = new Ellipse[profile.Path.GetPoints().Length+2];
@@ -82,6 +106,8 @@ namespace WindowsInterface
             return EllipseOutputs;
 
         }
+
+        //Returns an array of UI path objects that can be displayed
         private Windows.UI.Xaml.Shapes.Path[] GetUIPathObjects()
         {
             Windows.UI.Xaml.Shapes.Path[] PathOutputs = new Windows.UI.Xaml.Shapes.Path[profile.Path.PathList.Count];
@@ -111,6 +137,7 @@ namespace WindowsInterface
             return PathOutputs;
         }
 
+        //Code for when the points are moved around by dragging
         private void PointManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             Ellipse sentEllipse = sender as Ellipse;
@@ -120,19 +147,30 @@ namespace WindowsInterface
         }
         private void ControlPointTwoManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            Segment selectedSegment = App.currentPath.PathList[SelectedSegmentIndex];
+            Segment selectedSegment = profile.Path.PathList[SelectedSegmentIndex];
             double[] newControlPointTwo = new double[] { selectedSegment.ControlptTwo[0] + e.Delta.Translation.X, selectedSegment.ControlptTwo[1] - e.Delta.Translation.Y };
             selectedSegment.ControlptTwo = newControlPointTwo;
-            App.currentPath.StandardizePath(SelectedSegmentIndex - 1);
+            profile.Path.StandardizePath(SelectedSegmentIndex - 1);
             CompileCanvas();
         }
         private void ControlPointThreeManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            Segment selectedSegment = App.currentPath.PathList[SelectedSegmentIndex];
+            Segment selectedSegment = profile.Path.PathList[SelectedSegmentIndex];
             double[] newControlPointThree = new double[] { selectedSegment.ControlptThree[0] + e.Delta.Translation.X, selectedSegment.ControlptThree[1] - e.Delta.Translation.Y };
             selectedSegment.ControlptThree = newControlPointThree;
             profile.Path.StandardizePath(SelectedSegmentIndex);
             CompileCanvas();
         }
+
+        //code that adds a new point to the path when double clicked
+        private void CanvasDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            double x = e.GetPosition(MainCanvas).X;
+            double y = MainCanvas.Height - e.GetPosition(MainCanvas).Y;
+            double[] newpt = new double[] { x, y };
+            profile.Path.AddPoint(newpt);
+            CompileCanvas();
+        }
+
     }
 }
