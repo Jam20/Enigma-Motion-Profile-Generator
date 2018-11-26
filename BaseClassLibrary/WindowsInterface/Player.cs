@@ -13,22 +13,40 @@ namespace WindowsInterface
     {
         private Robot robot;
         private List<Layer> layers;
+        public int SelectedLayer;
         public Canvas MainCanvas { get; private set; }
 
-        public Player()
+        public Player(double width, double height)
         {
             layers = new List<Layer>();
             MainCanvas = new Canvas();
+            MainCanvas.Height = height;
+            MainCanvas.Width = width;
         }
 
-        private void CompileCanvas()
+        public void CompileCanvas()
         {
-            
+            Canvas output = new Canvas();
+            output.Height = MainCanvas.Height;
+            output.Width = MainCanvas.Width;
+            for (int i = 0; i < layers.Count; i++)
+            {
+                if (i != SelectedLayer)
+                {
+                    MainCanvas.Children.Add(layers[i].MainCanvas);
+                }
+                else
+                {
+                    Canvas.SetZIndex(layers[i].MainCanvas, 1000);
+                    output.Children.Add(layers[i].MainCanvas);
+                }
+            }
         }
 
         public void CreateLayer()
         {
-            layers.Add(new Layer(new MotionProfile(new Path(),robot)));
+            layers.Add(new Layer(new MotionProfile(new Path(),robot), MainCanvas.Width, MainCanvas.Height));
         }
+
     }
 }

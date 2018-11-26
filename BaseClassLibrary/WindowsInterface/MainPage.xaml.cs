@@ -47,7 +47,7 @@ namespace WindowsInterface
         //Exports the current path to a csv file including the path itself and a motion profile based on it
         private async void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-            FileSavePicker fileSelector = new FileSavePicker
+           /* FileSavePicker fileSelector = new FileSavePicker
             {
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary
             };
@@ -76,14 +76,14 @@ namespace WindowsInterface
                 WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
                 warning.Show();
             }
-
+            */
             //SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
         }
 
         //imports a path file with and sets the current path equal to it than reloads to the homePage
         private async void ImportButton_Click(object sender, RoutedEventArgs e)
         {
-            FileOpenPicker fileSelector = new FileOpenPicker
+           /* FileOpenPicker fileSelector = new FileOpenPicker
             {
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary
             };
@@ -102,7 +102,7 @@ namespace WindowsInterface
             {
                 WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
                 warning.Show();
-            }
+            }*/
 
         }
     }

@@ -13,8 +13,7 @@ namespace WindowsInterface
     /// </summary>
     sealed partial class App : Application
     {
-        static public int FieldHeight { get; private set; }
-        static public int FieldWidth { get; private set; }
+       
 
 
         /// <summary>

@@ -1,35 +1,23 @@
 ﻿using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Shapes;
-
+using BaseClassLibrary;
 namespace WindowsInterface
 {
 
     public sealed partial class HomePage : Page
     {
 
-        List<Ellipse> currentPointEllipses;
-        List<Windows.UI.Xaml.Shapes.Path> bezierPathList;
-        Ellipse currentControlPointTwoEllipse;
-        Ellipse currentControlPointThreeEllipse;
-        private int pointTableSelectedIndex = 0;
-        private Segment selectedSegment;
+        
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
         {
             this.InitializeComponent();
-
-            currentPointEllipses = new List<Ellipse>();
-            bezierPathList = new List<Windows.UI.Xaml.Shapes.Path>();
-            if (App.currentPath == null)
-            {
-                App.currentPath = new Path();
-            }
-            else
-            {
-                //ImportPath();
-            }
-
+            Player test = new Player( FieldCanvas.Width, FieldCanvas.Height);
+            test.CreateLayer();
+            test.CompileCanvas();
+            Layer testlayer = new Layer(new MotionProfile(new Path(), new Robot()), FieldCanvas.Width, FieldCanvas.Height);
+            FieldGrid.Children.Add(testlayer.MainCanvas);
         }
 
 

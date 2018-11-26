@@ -20,6 +20,7 @@ namespace BaseClassLibrary
 
         public void CalcProfile()
         {
+            if (Path.PathList.Count == 0) return;
             List<double> pos, vel, head;
             pos = new List<double>();
             vel = new List<double>();

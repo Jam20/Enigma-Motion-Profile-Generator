@@ -14,7 +14,7 @@ namespace WindowsInterface
     {
         public RobotPage()
         {
-            this.InitializeComponent();
+           /* this.InitializeComponent();
             if (App.currentRobot == null) App.currentRobot = new Robot();
             else
             {
@@ -25,12 +25,12 @@ namespace WindowsInterface
                 WheelSizeTextBox.Text = App.currentRobot.WheelSize.ToString();
                 bumperToggleSwitch.IsOn = App.currentRobot.UsingBumpers;
                 bumperThicknessSwitch.Value = App.currentRobot.BumperThickness;
-            }
+            }*/
         }
 
         private async void RobotSaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (double.TryParse(MaxAccelBox.Text, out double accel) && double.TryParse(MaxVelbox.Text, out double vel) && double.TryParse(WheelSizeTextBox.Text, out double wheels))
+           /* if (double.TryParse(MaxAccelBox.Text, out double accel) && double.TryParse(MaxVelbox.Text, out double vel) && double.TryParse(WheelSizeTextBox.Text, out double wheels))
             {
                 App.currentRobot.MaxAccel = accel;
                 App.currentRobot.MaxVel = vel;
@@ -51,7 +51,7 @@ namespace WindowsInterface
             if (App.currentRobot.UsingBumpers) App.currentRobot.BumperThickness = bumperThicknessSwitch.Value;
             else App.currentRobot.BumperThickness = 0;
             StorageFile robotSaveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("robotSaveFile.csv", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(robotSaveFile, App.currentRobot.ToString());
+            await FileIO.WriteTextAsync(robotSaveFile, App.currentRobot.ToString());*/
         }
 
     }

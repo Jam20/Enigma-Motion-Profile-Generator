@@ -16,24 +16,28 @@ namespace WindowsInterface
         public int SelectedSegmentIndex;
         public Canvas MainCanvas { get; private set; }
 
-        public Layer(MotionProfile profile)
+        public Layer(MotionProfile profile, double width, double height)
         {
             this.profile = profile;
+            Canvas newCanvas = new Canvas();
+            newCanvas.DoubleTapped += CanvasDoubleTapped;
+            newCanvas.Width = width;
+            newCanvas.Height = height;
+            newCanvas.Name = "layer1";
+            MainCanvas = newCanvas;
+            CompileCanvas();
         }
 
         //modifies the canvas 
         private void CompileCanvas()
         {
+            
             profile.CalcProfile();
-            Canvas newCanvas = new Canvas();
-            newCanvas.Height = App.FieldHeight;
-            newCanvas.Width = App.FieldWidth;
-            newCanvas.DoubleTapped += CanvasDoubleTapped;
+            if (profile.Path.PathList.Count == 0) return;
             Ellipse[] ellipses = GetUIEllipseObjects();
             Windows.UI.Xaml.Shapes.Path[] paths = GetUIPathObjects();
-            foreach (Ellipse ellipse in ellipses) newCanvas.Children.Add(ellipse);
-            foreach (Windows.UI.Xaml.Shapes.Path path in paths) newCanvas.Children.Add(path);
-            MainCanvas = newCanvas;
+            foreach (Ellipse ellipse in ellipses) MainCanvas.Children.Add(ellipse);
+            foreach (Windows.UI.Xaml.Shapes.Path path in paths) MainCanvas.Children.Add(path);
         }
 
         
