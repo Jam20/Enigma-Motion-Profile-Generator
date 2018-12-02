@@ -14,7 +14,10 @@
 
     public Robot()
     {
-
+        MaxAccel = 1;
+        MaxVel = 1;
+        TimeIncrementInSec = .01;
+        Width = 32;
     }
     public Robot(string input)
     {

@@ -7,7 +7,7 @@ namespace WindowsInterface
 
     public sealed partial class HomePage : Page
     {
-
+        private Layer selectedLayer;
         
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
@@ -17,6 +17,7 @@ namespace WindowsInterface
             test.CreateLayer();
             test.CompileCanvas();
             Layer testlayer = new Layer(new MotionProfile(new Path(), new Robot()), FieldCanvas.Width, FieldCanvas.Height);
+            selectedLayer = testlayer;
             FieldGrid.Children.Add(testlayer.MainCanvas);
         }
 
@@ -499,7 +500,14 @@ namespace WindowsInterface
         {
             
         }
-        
+
+        private void FieldCanvas_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        {
+            double x = e.GetPosition(FieldCanvas).X;
+            double y = FieldCanvas.Height - e.GetPosition(FieldCanvas).Y;
+            double[] newpt = new double[] { x, y };
+            selectedLayer.AddPoint(newpt);
+        }
     }
 }
 

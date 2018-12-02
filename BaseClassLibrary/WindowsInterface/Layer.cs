@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BaseClassLibrary;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
@@ -11,7 +12,8 @@ namespace WindowsInterface
     class Layer
     {
         private const int POINTSIZE = 4;
-
+        private Ellipse[] ellipses;
+        private Windows.UI.Xaml.Shapes.Path[] paths;
         private MotionProfile profile;
         public int SelectedSegmentIndex;
         public Canvas MainCanvas { get; private set; }
@@ -20,7 +22,6 @@ namespace WindowsInterface
         {
             this.profile = profile;
             Canvas newCanvas = new Canvas();
-            newCanvas.DoubleTapped += CanvasDoubleTapped;
             newCanvas.Width = width;
             newCanvas.Height = height;
             newCanvas.Name = "layer1";
@@ -34,12 +35,19 @@ namespace WindowsInterface
             
             profile.CalcProfile();
             if (profile.Path.PathList.Count == 0) return;
-            Ellipse[] ellipses = GetUIEllipseObjects();
-            Windows.UI.Xaml.Shapes.Path[] paths = GetUIPathObjects();
-            foreach (Ellipse ellipse in ellipses) MainCanvas.Children.Add(ellipse);
-            foreach (Windows.UI.Xaml.Shapes.Path path in paths) MainCanvas.Children.Add(path);
+            RefreshEllipses();
+            RefreshPaths();
         }
 
+        public void AddPoint(double[] point)
+        {
+            profile.Path.AddPoint(point);
+            MainCanvas.Children.Clear();
+            if (profile.Path.PathList.Count == 0) return;
+            foreach (Ellipse ellipse in GetUIEllipseObjects()) MainCanvas.Children.Add(ellipse);
+            foreach (Windows.UI.Xaml.Shapes.Path path in GetUIPathObjects()) MainCanvas.Children.Add(path);
+            CompileCanvas();
+        }
         
         //Gets and sets startpoints/endpoints as to prevent access to the profile
         private void SetStartPoint(double[] startPoint)
@@ -99,14 +107,14 @@ namespace WindowsInterface
                 Fill = new SolidColorBrush(Windows.UI.Colors.Purple),
                 ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
             };
-            cpThree.ManipulationDelta += ControlPointTwoManipulationDelta;
+            cpThree.ManipulationDelta += ControlPointThreeManipulationDelta;
             Canvas.SetTop(cpThree, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptThree[1] + 3));
             Canvas.SetLeft(cpThree, profile.Path.PathList[SelectedSegmentIndex].ControlptThree[0] - 3);
             Canvas.SetZIndex(cpThree, 1000);
 
             EllipseOutputs[profile.Path.GetPoints().Length] = cpTwo;
             EllipseOutputs[profile.Path.GetPoints().Length + 1] = cpThree;
-            
+            ellipses = EllipseOutputs;
             return EllipseOutputs;
 
         }
@@ -138,6 +146,7 @@ namespace WindowsInterface
                 segmentBezierPath.StrokeStartLineCap = PenLineCap.Square;
                 PathOutputs[i] = segmentBezierPath;
             }
+            paths = PathOutputs;
             return PathOutputs;
         }
 
@@ -166,14 +175,53 @@ namespace WindowsInterface
             CompileCanvas();
         }
 
-        //code that adds a new point to the path when double clicked
-        private void CanvasDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private void RefreshEllipses()
         {
-            double x = e.GetPosition(MainCanvas).X;
-            double y = MainCanvas.Height - e.GetPosition(MainCanvas).Y;
-            double[] newpt = new double[] { x, y };
-            profile.Path.AddPoint(newpt);
-            CompileCanvas();
+            for (int i = 0; i < profile.Path.GetPoints().Length; i++)
+            {
+                Ellipse dataPt = ellipses[i];
+                Canvas.SetTop(dataPt, MainCanvas.Height - (profile.Path.GetPoints()[i][1] + 3));
+                Canvas.SetLeft(dataPt, profile.Path.GetPoints()[i][0] - 3);
+                Canvas.SetZIndex(dataPt, 1000);
+                
+            }
+
+            Ellipse cpTwo = ellipses[profile.Path.GetPoints().Length];
+            Canvas.SetTop(cpTwo, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[1] + 3));
+            Canvas.SetLeft(cpTwo, profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[0] - 3);
+            Canvas.SetZIndex(cpTwo, 1000);
+
+            Ellipse cpThree = ellipses[profile.Path.GetPoints().Length+1];
+            Canvas.SetTop(cpThree, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptThree[1] + 3));
+            Canvas.SetLeft(cpThree, profile.Path.PathList[SelectedSegmentIndex].ControlptThree[0] - 3);
+            Canvas.SetZIndex(cpThree, 1000);
+
+        }
+        private void RefreshPaths()
+        {
+            for (int i = 0; i < profile.Path.PathList.Count; i++)
+            {
+                Windows.UI.Xaml.Shapes.Path segmentBezierPath = paths[i];
+                PathGeometry geometry = new PathGeometry();
+                PathFigure figure = new PathFigure();
+                Point controlPtOnePoint = new Point(profile.Path.PathList[i].ControlptOne[0], MainCanvas.Height - profile.Path.PathList[i].ControlptOne[1]);
+                figure.StartPoint = controlPtOnePoint;
+                BezierSegment bezierSegment = new BezierSegment
+                {
+                    Point1 = new Point(profile.Path.PathList[i].ControlptTwo[0], MainCanvas.Height - profile.Path.PathList[i].ControlptTwo[1]),
+                    Point2 = new Point(profile.Path.PathList[i].ControlptThree[0], MainCanvas.Height - profile.Path.PathList[i].ControlptThree[1]),
+                    Point3 = new Point(profile.Path.PathList[i].ControlptFour[0], MainCanvas.Height - profile.Path.PathList[i].ControlptFour[1])
+                };
+                figure.Segments.Add(bezierSegment);
+                geometry.Figures.Add(figure);
+                segmentBezierPath.Data = geometry;
+                segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Purple);
+                segmentBezierPath.StrokeThickness = (profile.Robot.Width + profile.Robot.BumperThickness * 2);
+                segmentBezierPath.Opacity = 0.5;
+                segmentBezierPath.StrokeEndLineCap = PenLineCap.Square;
+                segmentBezierPath.StrokeStartLineCap = PenLineCap.Square;
+            }
+            
         }
 
     }

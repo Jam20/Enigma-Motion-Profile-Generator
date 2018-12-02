@@ -19,7 +19,7 @@
         
         <!--Column One-->
         <Grid Name="FieldGrid">
-            <Canvas x:Name="FieldCanvas" IsHitTestVisible="false" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
+            <Canvas x:Name="FieldCanvas" DoubleTapped="FieldCanvas_DoubleTapped" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
                 <Canvas.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Escape"></KeyboardAccelerator>
                 </Canvas.KeyboardAccelerators>
