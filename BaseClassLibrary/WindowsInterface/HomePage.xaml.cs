@@ -7,18 +7,12 @@ namespace WindowsInterface
 
     public sealed partial class HomePage : Page
     {
-        private Layer selectedLayer;
-        
+        private List<Player> playerList;
+        private Player currentPlayer;
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
         {
             this.InitializeComponent();
-            Player test = new Player( FieldCanvas.Width, FieldCanvas.Height);
-            test.CreateLayer();
-            test.CompileCanvas();
-            Layer testlayer = new Layer(new MotionProfile(new Path(), new Robot()), FieldCanvas.Width, FieldCanvas.Height);
-            selectedLayer = testlayer;
-            FieldGrid.Children.Add(testlayer.MainCanvas);
         }
 
 
@@ -501,6 +495,31 @@ namespace WindowsInterface
             
         }
 
+        private void PlayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void NewPlayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            
+        }
+
+        private void DeletePlayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+
+        private void NewLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+
         private void FieldCanvas_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
         {
             double x = e.GetPosition(FieldCanvas).X;
@@ -508,6 +527,7 @@ namespace WindowsInterface
             double[] newpt = new double[] { x, y };
             selectedLayer.AddPoint(newpt);
         }
+
     }
 }
 

@@ -11,13 +11,15 @@ namespace WindowsInterface
 {
     class Player
     {
+        public String TeamNumber;
         private Robot robot;
         private List<Layer> layers;
         public int SelectedLayer;
         public Canvas MainCanvas { get; private set; }
 
-        public Player(double width, double height)
+        public Player(double width, double height, String teamNum)
         {
+            TeamNumber = teamNum;
             layers = new List<Layer>();
             MainCanvas = new Canvas();
             MainCanvas.Height = height;
@@ -46,6 +48,7 @@ namespace WindowsInterface
         public void CreateLayer()
         {
             layers.Add(new Layer(new MotionProfile(new Path(),robot), MainCanvas.Width, MainCanvas.Height));
+            CompileCanvas();
         }
 
     }
