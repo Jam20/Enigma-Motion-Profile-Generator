@@ -14,11 +14,12 @@ namespace WindowsInterface
         public String TeamNumber;
         private Robot robot;
         private List<Layer> layers;
-        public int SelectedLayer;
+        private int SelectedLayer;
         public Canvas MainCanvas { get; private set; }
 
-        public Player(double width, double height, String teamNum)
+        public Player(double width, double height, String teamNum,Robot robot)
         {
+            this.robot = robot;
             TeamNumber = teamNum;
             layers = new List<Layer>();
             MainCanvas = new Canvas();
@@ -28,20 +29,11 @@ namespace WindowsInterface
 
         public void CompileCanvas()
         {
-            Canvas output = new Canvas();
-            output.Height = MainCanvas.Height;
-            output.Width = MainCanvas.Width;
+            MainCanvas.Children.Clear();
             for (int i = 0; i < layers.Count; i++)
             {
-                if (i != SelectedLayer)
-                {
-                    MainCanvas.Children.Add(layers[i].MainCanvas);
-                }
-                else
-                {
-                    Canvas.SetZIndex(layers[i].MainCanvas, 1000);
-                    output.Children.Add(layers[i].MainCanvas);
-                }
+                Canvas testcanvas = layers[i].MainCanvas;
+                MainCanvas.Children.Add(layers[i].MainCanvas);
             }
         }
 
@@ -49,6 +41,19 @@ namespace WindowsInterface
         {
             layers.Add(new Layer(new MotionProfile(new Path(),robot), MainCanvas.Width, MainCanvas.Height));
             CompileCanvas();
+        }
+
+        public int GetNumberOfLayers()
+        {
+            return layers.Count;
+        }
+        public void SetSelectedLayer(int num)
+        {
+            SelectedLayer = num;
+        }
+        public Layer GetSelectedLayer()
+        {
+            return layers[SelectedLayer];
         }
 
     }

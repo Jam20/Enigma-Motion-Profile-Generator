@@ -19,12 +19,13 @@
         
         <!--Column One-->
         <Grid Name="FieldGrid">
-            <Canvas x:Name="FieldCanvas" DoubleTapped="FieldCanvas_DoubleTapped" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
+            <Canvas x:Name="FieldCanvas"  DoubleTapped="FieldCanvas_DoubleTapped"  Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
+
                 <Canvas.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Escape"></KeyboardAccelerator>
                 </Canvas.KeyboardAccelerators>
 
-                
+
 
                 <!--Field Bounderies-->
                 <Polygon Points="0,36,30,0,294,0,324,36,324,612,294,648,30,648,0,612,0,36" Fill="LightGray" Stroke="Black" StrokeThickness="2" />
@@ -113,7 +114,7 @@
 
 
             </Canvas>
-
+            <Canvas Name="HolderCanvas" Grid.Column="0" Height="648" Width="324" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         
         <!--Column Two-->
@@ -202,7 +203,14 @@
                             <ColumnDefinition Width="*"/>
 
                         </Grid.ColumnDefinitions>
-                        <Button Name="NewPlayerButton" Content="New Player" HorizontalAlignment="Center" Grid.Column="0" Click="NewPlayerButton_Click" />
+                        <Button Name="NewPlayerButton" Content="New Player" HorizontalAlignment="Center" Grid.Column="0" Click="NewPlayerButton_Click"/>
+                        <Popup  Name="NewPlayerPopup" IsOpen="false">
+                            <StackPanel>
+                                <TextBlock Text="Enter Team Number"/>
+                                <TextBox Name="TeamNumberTextBox"/>
+                                <Button Name="ConfirmNewPlayerBtnBtn" Content="Create" Click="ConfirmNewPlayerBtnBtn_Click"/>
+                            </StackPanel>
+                        </Popup>
                         <Button Name="DeletePlayerButton" Content="Delete Player" Grid.Column="1" HorizontalAlignment="Center" Click="DeletePlayerButton_Click" />
                     </Grid>
                     <TextBlock Text="Layer Selector" FontSize="30" HorizontalAlignment="Center"/>

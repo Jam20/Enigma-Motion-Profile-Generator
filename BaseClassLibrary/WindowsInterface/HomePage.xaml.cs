@@ -8,10 +8,13 @@ namespace WindowsInterface
     public sealed partial class HomePage : Page
     {
         private List<Player> playerList;
-        private Player currentPlayer;
+        private int selectedPlayerIndex;
+        private int selectedLayerIndex;
+
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
         {
+            playerList = new List<Player>();
             this.InitializeComponent();
         }
 
@@ -492,17 +495,35 @@ namespace WindowsInterface
 
         private void LayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            ComboBox box = sender as ComboBox;
+            selectedLayerIndex = box.SelectedIndex;
         }
 
         private void PlayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ComboBox box = sender as ComboBox;
+            selectedPlayerIndex = box.SelectedIndex;
+            LayerSelectorComboBox.SelectedIndex = -1;
+            LayerSelectorComboBox.Items.Clear();
+            for (int i = 0; i < playerList[selectedPlayerIndex].GetNumberOfLayers(); i++)
+            {
+                ComboBoxItem comboBoxItem = new ComboBoxItem
+                {
+                    Content = "Layer" + (LayerSelectorComboBox.Items.Count + 1),
+                    FontSize = 25
+                };
+                LayerSelectorComboBox.Items.Add(comboBoxItem);
+            }
+            if (LayerSelectorComboBox.Items.Count > 0)
+            {
+                LayerSelectorComboBox.SelectedIndex = 0;
+                selectedLayerIndex = 0;
+            }
         }
 
         private void NewPlayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            
+            NewPlayerPopup.IsOpen = !NewPlayerPopup.IsOpen;
         }
 
         private void DeletePlayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -512,7 +533,17 @@ namespace WindowsInterface
 
         private void NewLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-
+            playerList[selectedPlayerIndex].CreateLayer();
+            ComboBoxItem comboBoxItem = new ComboBoxItem
+            {
+                Content = "Layer" +(LayerSelectorComboBox.Items.Count+1),
+                FontSize = 25
+            };
+            LayerSelectorComboBox.Items.Add(comboBoxItem);
+            LayerSelectorComboBox.SelectedIndex = LayerSelectorComboBox.Items.Count - 1;
+            selectedLayerIndex = LayerSelectorComboBox.SelectedIndex;
+            RefreshPlayers();
+            playerList[selectedPlayerIndex].CompileCanvas();
         }
 
         private void DeleteLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -525,7 +556,32 @@ namespace WindowsInterface
             double x = e.GetPosition(FieldCanvas).X;
             double y = FieldCanvas.Height - e.GetPosition(FieldCanvas).Y;
             double[] newpt = new double[] { x, y };
-            selectedLayer.AddPoint(newpt);
+            playerList[selectedPlayerIndex].GetSelectedLayer().AddPoint(newpt);
+        }
+
+        private void ConfirmNewPlayerBtnBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            playerList.Add(new Player(FieldCanvas.Width, FieldCanvas.Height, TeamNumberTextBox.Text,App.CurrentRobot));
+            ComboBoxItem comboBoxItem = new ComboBoxItem
+            {
+                Content = "Team " + (TeamNumberTextBox.Text),
+                FontSize = 25
+            };
+            PlayerSelectorComboBox.Items.Add(comboBoxItem);
+            HolderCanvas.Children.Add(playerList[playerList.Count-1].MainCanvas);
+            PlayerSelectorComboBox.SelectedIndex = PlayerSelectorComboBox.Items.Count-1;
+            selectedPlayerIndex = PlayerSelectorComboBox.SelectedIndex;
+            NewPlayerPopup.IsOpen = false;
+        }
+
+        private void RefreshPlayers()
+        {
+            HolderCanvas.Children.Clear();
+            foreach(Player player in playerList)
+            {
+                player.CompileCanvas();
+                HolderCanvas.Children.Add(player.MainCanvas);
+            }
         }
 
     }

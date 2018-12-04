@@ -13,7 +13,8 @@ namespace WindowsInterface
     /// </summary>
     sealed partial class App : Application
     {
-       
+        static public Robot CurrentRobot;
+
 
 
         /// <summary>
