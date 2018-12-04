@@ -14,7 +14,6 @@ namespace WindowsInterface
         public String TeamNumber;
         private Robot robot;
         private List<Layer> layers;
-        private int SelectedLayer;
         public Canvas MainCanvas { get; private set; }
 
         public Player(double width, double height, String teamNum,Robot robot)
@@ -37,6 +36,12 @@ namespace WindowsInterface
             }
         }
 
+        public void DeleteLayer(int index)
+        {
+            layers.RemoveAt(index);
+            CompileCanvas();
+        }
+
         public void CreateLayer()
         {
             layers.Add(new Layer(new MotionProfile(new Path(),robot), MainCanvas.Width, MainCanvas.Height));
@@ -47,13 +52,10 @@ namespace WindowsInterface
         {
             return layers.Count;
         }
-        public void SetSelectedLayer(int num)
+        
+        public Layer GetLayer(int num)
         {
-            SelectedLayer = num;
-        }
-        public Layer GetSelectedLayer()
-        {
-            return layers[SelectedLayer];
+            return layers[num];
         }
 
     }

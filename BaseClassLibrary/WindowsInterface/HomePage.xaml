@@ -222,7 +222,7 @@
 
                         </Grid.ColumnDefinitions>
                         <Button Name="NewLayerButton" Content="New Layer" HorizontalAlignment="Center" Grid.Column="0" Click="NewLayerButton_Click" />
-                        <Button Name="DeleteLayerButton" Content="Delete Layer" Grid.Column="1" HorizontalAlignment="Center" Click="DeleteLayerButton_Click" />
+                        <Button Name="DeleteLayerButton" Content="Delete Layer" Grid.Column="1" HorizontalAlignment="Center" Click="DeleteLayerButton_Click"/>
                     </Grid>
                 </StackPanel>
 

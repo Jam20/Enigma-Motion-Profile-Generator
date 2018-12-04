@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
+using System;
 using Windows.UI.Xaml.Shapes;
 using BaseClassLibrary;
 namespace WindowsInterface
@@ -493,18 +494,11 @@ namespace WindowsInterface
             }
         }
 
-        private void LayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RefreshLayers()
         {
-            ComboBox box = sender as ComboBox;
-            selectedLayerIndex = box.SelectedIndex;
-        }
-
-        private void PlayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox box = sender as ComboBox;
-            selectedPlayerIndex = box.SelectedIndex;
             LayerSelectorComboBox.SelectedIndex = -1;
             LayerSelectorComboBox.Items.Clear();
+            
             for (int i = 0; i < playerList[selectedPlayerIndex].GetNumberOfLayers(); i++)
             {
                 ComboBoxItem comboBoxItem = new ComboBoxItem
@@ -519,6 +513,20 @@ namespace WindowsInterface
                 LayerSelectorComboBox.SelectedIndex = 0;
                 selectedLayerIndex = 0;
             }
+            playerList[selectedPlayerIndex].CompileCanvas();
+        }
+
+        private void LayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            selectedLayerIndex = box.SelectedIndex;
+        }
+
+        private void PlayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            selectedPlayerIndex = box.SelectedIndex;
+            RefreshLayers();
         }
 
         private void NewPlayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -546,8 +554,23 @@ namespace WindowsInterface
             playerList[selectedPlayerIndex].CompileCanvas();
         }
 
-        private void DeleteLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void DeleteLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            ContentDialog deleteFileDialog = new ContentDialog
+            {
+                Title = "Delete file permanently?",
+                Content = "If you delete this file, you won't be able to recover it. Do you want to delete it?",
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await deleteFileDialog.ShowAsync();
+
+            if(result == ContentDialogResult.Primary)
+            {
+                playerList[selectedPlayerIndex].DeleteLayer(selectedLayerIndex);
+                RefreshLayers();
+            }
 
         }
 
@@ -556,7 +579,7 @@ namespace WindowsInterface
             double x = e.GetPosition(FieldCanvas).X;
             double y = FieldCanvas.Height - e.GetPosition(FieldCanvas).Y;
             double[] newpt = new double[] { x, y };
-            playerList[selectedPlayerIndex].GetSelectedLayer().AddPoint(newpt);
+            playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).AddPoint(newpt);
         }
 
         private void ConfirmNewPlayerBtnBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
