@@ -171,10 +171,11 @@ namespace WindowsInterface
 
                 }
             }
-            
-            return new Player(teamNumber, robot, layers)
+
+            return new Player(teamNumber, robot, layers);
         }
 
+        /*
         public static IList<Segment> ReadSaveFile(IList<String> lines)
         {
             /// <returns>
@@ -197,6 +198,7 @@ namespace WindowsInterface
             }
             return output;
         }
+        */
 
         private static Segment LineToSegments(String[] points)
         {
