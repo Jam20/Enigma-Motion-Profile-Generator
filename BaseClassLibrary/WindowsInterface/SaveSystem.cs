@@ -114,9 +114,15 @@ namespace WindowsInterface
 
         public static Player LoadSaveFile(IList<String> lines)
         {
-            String teamNumber;
+            String teamNumber = "";
             String description;
-            String robot;
+            Robot robot = new Robot();
+
+            List<Layer> layers = new List<Layer>();
+            String workingLayerName;
+            List<Segment> workingSegments = new List<Segment>();
+            
+
 
             foreach (String line in lines)
             {
@@ -131,10 +137,11 @@ namespace WindowsInterface
                                 teamNumber = item[1];
                                 break;
                             case "# Description":
-                                description = item[1]
+                                description = item[1];
                                 break;
-
-
+                            case "# Robot Save Code":
+                                robot = new Robot(item[1]);
+                                break;
                         }
                         break;
 
@@ -142,18 +149,30 @@ namespace WindowsInterface
                         //motion profile lines
                         //This will just ignore it and move on
                         break;
+
                     case '=':
                         //indicates start of a new layer
+                        //to make a layer, we need to convert the csv to segments to make a path,
+                        //the path and robot to make a motion profile, and from there make a layer
+
+                        workingLayerName = line.Replace("=", "");
+
+                        if (layers.Count > 0)
+                        {
+                            layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot), App.FieldCanvasWidth, App.FieldCanvasHeight));
+                            workingSegments.Clear();
+                        }
                         break;
                     
                     default:
-                        //segment lines that can start with any number
+                        //segment lines since they can start with any number
+                        workingSegments.Add(LineToSegments(line.TrimEnd(',').Split(',')));
                         break;
 
                 }
             }
             
-            return new Player()
+            return new Player(teamNumber, robot, layers)
         }
 
         public static IList<Segment> ReadSaveFile(IList<String> lines)
