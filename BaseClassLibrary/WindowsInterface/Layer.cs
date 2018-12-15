@@ -14,8 +14,8 @@ namespace WindowsInterface
         private const int POINTSIZE = 4;
         private Ellipse[] ellipses;
         private Windows.UI.Xaml.Shapes.Path[] paths;
-        private MotionProfile profile;
-        public int SelectedSegmentIndex=0;
+        public MotionProfile profile;
+        public int SelectedSegmentIndex =0;
         public Canvas MainCanvas { get; private set; }
 
         public Layer(MotionProfile profile, double width, double height)
@@ -27,6 +27,17 @@ namespace WindowsInterface
             newCanvas.Name = "layer1";
             MainCanvas = newCanvas;
             RefreshCanvas();
+        }
+
+        public Layer(MotionProfile profile, double width, double height, String name)
+        {
+            this.profile = profile;
+            Canvas newCanvas = new Canvas();
+            newCanvas.Width = width;
+            newCanvas.Height = height;
+            newCanvas.Name = name;
+            MainCanvas = newCanvas;
+            CompileCanvas();
         }
 
         //modifies the canvas 

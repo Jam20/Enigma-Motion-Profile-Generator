@@ -17,6 +17,8 @@ namespace WindowsInterface
         {
             playerList = new List<Player>();
             this.InitializeComponent();
+            App.FieldCanvasHeight = FieldCanvas.Height;
+            App.FieldCanvasWidth = FieldCanvas.Width;
         }
 
 

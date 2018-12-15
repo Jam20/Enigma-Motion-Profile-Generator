@@ -14,7 +14,8 @@ namespace WindowsInterface
     sealed partial class App : Application
     {
         static public Robot CurrentRobot;
-
+        static public double FieldCanvasHeight { get; set; }
+        static public double FieldCanvasWidth { get; set; }
 
 
         /// <summary>
