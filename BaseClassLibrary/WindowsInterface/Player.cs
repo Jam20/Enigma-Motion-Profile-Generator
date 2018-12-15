@@ -26,26 +26,46 @@ namespace WindowsInterface
             MainCanvas.Width = width;
         }
 
-        public void CompileCanvas()
+        public void CompileCanvas(int selectedLayerIndex)
         {
             MainCanvas.Children.Clear();
             for (int i = 0; i < layers.Count; i++)
             {
-                Canvas testcanvas = layers[i].MainCanvas;
-                MainCanvas.Children.Add(layers[i].MainCanvas);
+                if (i != selectedLayerIndex)
+                {
+                    layers[i].CompileCanvasNoEllipse();
+                    MainCanvas.Children.Add(layers[i].MainCanvas);
+                }
+            }
+            if (selectedLayerIndex != -1)
+            {
+                layers[selectedLayerIndex].CompileCanvas();
+                MainCanvas.Children.Add(layers[selectedLayerIndex].MainCanvas);
             }
         }
-
+        
+        
+        
         public void DeleteLayer(int index)
         {
             layers.RemoveAt(index);
-            CompileCanvas();
+            CompileCanvas(-1);
         }
 
         public void CreateLayer()
         {
-            layers.Add(new Layer(new MotionProfile(new Path(),robot), MainCanvas.Width, MainCanvas.Height));
-            CompileCanvas();
+            if (layers.Count > 0)
+            {
+                Path p = new Path();
+                p.AddPoint(layers[layers.Count-1].GetEndPoint());
+                layers.Add(new Layer(new MotionProfile(p, robot), MainCanvas.Width, MainCanvas.Height));
+                CompileCanvas(-1);
+            }
+            else
+            {
+                layers.Add(new Layer(new MotionProfile(new Path(), robot), MainCanvas.Width, MainCanvas.Height));
+                CompileCanvas(-1);
+            }
         }
 
         public int GetNumberOfLayers()

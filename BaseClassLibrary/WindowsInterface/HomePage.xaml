@@ -177,7 +177,7 @@
                                     <TextBox Name="StartPointYTextBlock" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                                 </StackPanel>
                                 <TextBlock Text="Starting Angle" Margin="0,7,0,0" HorizontalAlignment="Center"/>
-                                <TextBox Name="StartingAngleXTextBlock" Margin="0,5,10,0" HorizontalAlignment="Center"/>
+                                <TextBox Name="StartingAngleTextBlock" Margin="0,5,10,0" HorizontalAlignment="Center"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1" Margin="10,0,0,0">

@@ -15,7 +15,7 @@ namespace WindowsInterface
         private Ellipse[] ellipses;
         private Windows.UI.Xaml.Shapes.Path[] paths;
         private MotionProfile profile;
-        public int SelectedSegmentIndex;
+        public int SelectedSegmentIndex=0;
         public Canvas MainCanvas { get; private set; }
 
         public Layer(MotionProfile profile, double width, double height)
@@ -26,11 +26,11 @@ namespace WindowsInterface
             newCanvas.Height = height;
             newCanvas.Name = "layer1";
             MainCanvas = newCanvas;
-            CompileCanvas();
+            RefreshCanvas();
         }
 
         //modifies the canvas 
-        private void CompileCanvas()
+        public void RefreshCanvas()
         {
             
             profile.CalcProfile();
@@ -39,6 +39,25 @@ namespace WindowsInterface
             RefreshPaths();
         }
 
+        public Path GetPath()
+        {
+            return profile.Path;
+        }
+        public void CompileCanvasNoEllipse()
+        {
+            MainCanvas.Children.Clear();
+            if (profile.Path.PathList.Count == 0) return;
+            foreach (Windows.UI.Xaml.Shapes.Path path in GetUIPathObjects()) MainCanvas.Children.Add(path);
+            RefreshCanvas();
+        }
+        public void CompileCanvas()
+        {
+            MainCanvas.Children.Clear();
+            if (profile.Path.PathList.Count == 0) return;
+            foreach (Ellipse ellipse in GetUIEllipseObjects()) MainCanvas.Children.Add(ellipse);
+            foreach (Windows.UI.Xaml.Shapes.Path path in GetUIPathObjects()) MainCanvas.Children.Add(path);
+            RefreshCanvas();
+        }
         public void AddPoint(double[] point)
         {
             profile.Path.AddPoint(point);
@@ -46,7 +65,7 @@ namespace WindowsInterface
             if (profile.Path.PathList.Count == 0) return;
             foreach (Ellipse ellipse in GetUIEllipseObjects()) MainCanvas.Children.Add(ellipse);
             foreach (Windows.UI.Xaml.Shapes.Path path in GetUIPathObjects()) MainCanvas.Children.Add(path);
-            CompileCanvas();
+            RefreshCanvas();
         }
         
         //Gets and sets startpoints/endpoints as to prevent access to the profile
@@ -62,7 +81,7 @@ namespace WindowsInterface
         {
             profile.Path.ModifyPoint(profile.Path.GetPoints().Length-1, endPoint);
         }
-        private double[] GetEndPoint()
+        public double[] GetEndPoint()
         {
             return profile.Path.GetPoint(profile.Path.GetPoints().Length - 1);
         }
@@ -87,33 +106,64 @@ namespace WindowsInterface
                 Canvas.SetZIndex(dataPt, 1000);
                 EllipseOutputs[i] = dataPt;
             }
-
-            Ellipse cpTwo = new Ellipse
+            if (SelectedSegmentIndex !=-1)
             {
-                Width = 6,
-                Height = 6,
-                Fill = new SolidColorBrush(Windows.UI.Colors.Green),
-                ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
-            };
-            cpTwo.ManipulationDelta += ControlPointTwoManipulationDelta;
-            Canvas.SetTop(cpTwo, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[1] + 3));
-            Canvas.SetLeft(cpTwo, profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[0] - 3);
-            Canvas.SetZIndex(cpTwo, 1000);
+                Ellipse cpTwo = new Ellipse
+                {
+                    Width = 6,
+                    Height = 6,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Green),
+                    ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
+                };
+                cpTwo.ManipulationDelta += ControlPointTwoManipulationDelta;
+                Canvas.SetTop(cpTwo, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[1] + 3));
+                Canvas.SetLeft(cpTwo, profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[0] - 3);
+                Canvas.SetZIndex(cpTwo, 1000);
 
-            Ellipse cpThree = new Ellipse
+                Ellipse cpThree = new Ellipse
+                {
+                    Width = 6,
+                    Height = 6,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Purple),
+                    ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
+                };
+                cpThree.ManipulationDelta += ControlPointThreeManipulationDelta;
+                Canvas.SetTop(cpThree, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptThree[1] + 3));
+                Canvas.SetLeft(cpThree, profile.Path.PathList[SelectedSegmentIndex].ControlptThree[0] - 3);
+                Canvas.SetZIndex(cpThree, 1000);
+
+                EllipseOutputs[profile.Path.GetPoints().Length] = cpTwo;
+                EllipseOutputs[profile.Path.GetPoints().Length + 1] = cpThree;
+            }
+            else
             {
-                Width = 6,
-                Height = 6,
-                Fill = new SolidColorBrush(Windows.UI.Colors.Purple),
-                ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
-            };
-            cpThree.ManipulationDelta += ControlPointThreeManipulationDelta;
-            Canvas.SetTop(cpThree, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptThree[1] + 3));
-            Canvas.SetLeft(cpThree, profile.Path.PathList[SelectedSegmentIndex].ControlptThree[0] - 3);
-            Canvas.SetZIndex(cpThree, 1000);
+                Ellipse cpTwo = new Ellipse
+                {
+                    Width = 6,
+                    Height = 6,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Green),
+                    ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
+                };
+                cpTwo.ManipulationDelta += ControlPointTwoManipulationDelta;
+                Canvas.SetTop(cpTwo, MainCanvas.Height - (profile.Path.PathList[0].ControlptTwo[1] + 3));
+                Canvas.SetLeft(cpTwo, profile.Path.PathList[0].ControlptTwo[0] - 3);
+                Canvas.SetZIndex(cpTwo, 1000);
 
-            EllipseOutputs[profile.Path.GetPoints().Length] = cpTwo;
-            EllipseOutputs[profile.Path.GetPoints().Length + 1] = cpThree;
+                Ellipse cpThree = new Ellipse
+                {
+                    Width = 6,
+                    Height = 6,
+                    Fill = new SolidColorBrush(Windows.UI.Colors.Purple),
+                    ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY
+                };
+                cpThree.ManipulationDelta += ControlPointThreeManipulationDelta;
+                Canvas.SetTop(cpThree, MainCanvas.Height - (profile.Path.PathList[0].ControlptThree[1] + 3));
+                Canvas.SetLeft(cpThree, profile.Path.PathList[0].ControlptThree[0] - 3);
+                Canvas.SetZIndex(cpThree, 1000);
+
+                EllipseOutputs[profile.Path.GetPoints().Length] = cpTwo;
+                EllipseOutputs[profile.Path.GetPoints().Length + 1] = cpThree;
+            }
             ellipses = EllipseOutputs;
             return EllipseOutputs;
 
@@ -156,7 +206,7 @@ namespace WindowsInterface
             Ellipse sentEllipse = sender as Ellipse;
             int pointTableNum = int.Parse(sentEllipse.Name);
             profile.Path.ModifyPoint(pointTableNum, new double[] { profile.Path.GetPoint(pointTableNum)[0] + e.Delta.Translation.X, profile.Path.GetPoint(pointTableNum)[1] - e.Delta.Translation.Y });
-            CompileCanvas();
+            RefreshCanvas();
         }
         private void ControlPointTwoManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
@@ -164,7 +214,7 @@ namespace WindowsInterface
             double[] newControlPointTwo = new double[] { selectedSegment.ControlptTwo[0] + e.Delta.Translation.X, selectedSegment.ControlptTwo[1] - e.Delta.Translation.Y };
             selectedSegment.ControlptTwo = newControlPointTwo;
             profile.Path.StandardizePath(SelectedSegmentIndex - 1);
-            CompileCanvas();
+            RefreshCanvas();
         }
         private void ControlPointThreeManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
@@ -172,7 +222,7 @@ namespace WindowsInterface
             double[] newControlPointThree = new double[] { selectedSegment.ControlptThree[0] + e.Delta.Translation.X, selectedSegment.ControlptThree[1] - e.Delta.Translation.Y };
             selectedSegment.ControlptThree = newControlPointThree;
             profile.Path.StandardizePath(SelectedSegmentIndex);
-            CompileCanvas();
+            RefreshCanvas();
         }
 
         private void RefreshEllipses()
@@ -185,7 +235,7 @@ namespace WindowsInterface
                 Canvas.SetZIndex(dataPt, 1000);
                 
             }
-
+            if (SelectedSegmentIndex == -1) return;
             Ellipse cpTwo = ellipses[profile.Path.GetPoints().Length];
             Canvas.SetTop(cpTwo, MainCanvas.Height - (profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[1] + 3));
             Canvas.SetLeft(cpTwo, profile.Path.PathList[SelectedSegmentIndex].ControlptTwo[0] - 3);
