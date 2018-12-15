@@ -10,13 +10,15 @@ namespace WindowsInterface
     {
         private List<Player> playerList;
         private int selectedPlayerIndex;
-        private int selectedLayerIndex;
+        private int selectedLayerIndex;        
 
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
         {
             playerList = new List<Player>();
             this.InitializeComponent();
+            App.FieldCanvasHeight = FieldCanvas.Height;
+            App.FieldCanvasWidth = FieldCanvas.Width;
         }
 
 

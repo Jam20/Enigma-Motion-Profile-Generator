@@ -26,6 +26,16 @@ namespace WindowsInterface
             MainCanvas.Width = width;
         }
 
+        public Player(String teamNum, Robot robot, List<Layer> layers)
+        {
+            this.robot = robot;
+            TeamNumber = teamNum;
+            this.layers = layers;
+            MainCanvas = new Canvas();
+            MainCanvas.Height = App.FieldCanvasHeight;
+            MainCanvas.Width = App.FieldCanvasWidth;
+        }
+
         public void CompileCanvas()
         {
             MainCanvas.Children.Clear();
