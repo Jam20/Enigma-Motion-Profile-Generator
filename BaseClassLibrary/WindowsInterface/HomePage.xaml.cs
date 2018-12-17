@@ -8,7 +8,7 @@ namespace WindowsInterface
 
     public sealed partial class HomePage : Page
     {
-        private List<Player> playerList;
+        private List<Player> playerList = App.PlayerList;
         private int selectedPlayerIndex = -1;
         private int selectedLayerIndex = -1;
 

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -16,6 +18,7 @@ namespace WindowsInterface
         static public Robot CurrentRobot;
         static public double FieldCanvasHeight { get; set; }
         static public double FieldCanvasWidth { get; set; }
+        static internal List<Player> PlayerList;
 
 
         /// <summary>
@@ -93,6 +96,18 @@ namespace WindowsInterface
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+            SavePlayerBackup();
+        }
+
+        public async void SavePlayerBackup()
+        {
+            IReadOnlyCollection<StorageFile> files = (await Windows.Storage.ApplicationData.Current.LocalFolder.GetFilesAsync());
+
+            foreach (StorageFile file in files) await file.DeleteAsync();
+            foreach (Player player in PlayerList){
+                StorageFile saveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("TempProfile "+player.TeamNumber+".csv", CreationCollisionOption.ReplaceExisting);
+                await FileIO.WriteLinesAsync(saveFile, SaveSystem.MakeSaveFile(player));
+            }
 
         }
 

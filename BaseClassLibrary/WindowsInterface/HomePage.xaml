@@ -143,19 +143,19 @@
                                     <TextBox Name="ControlPointOneXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
                                     <TextBox Name="ControlPointOneYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                                 </StackPanel>
-                                <TextBlock Text="Control Point Two" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                                <TextBlock Text="Control Point Three" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox Name="ControlPointThreeXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
                                     <TextBox Name="ControlPointThreeYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                <TextBlock Text="Control Point One" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Control Point Two" HorizontalAlignment="Center"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox Name="ControlPointTwoXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
                                     <TextBox Name="ControlPointTwoYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
                                 </StackPanel>
-                                <TextBlock Text="Control Point Two" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                                <TextBlock Text="Control Point Four" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox Name="ControlPointFourXTextBox" Margin="0,5,10,0" HorizontalAlignment="Center"/>
                                     <TextBox Name="ControlPointFourYTextBox" Margin="0,5,0,0" HorizontalAlignment="Center"/>
@@ -194,7 +194,7 @@
                         <Button Name="SaveDegreeButton" Content="Save" FontSize="12" Click="SaveDegreeButton_Click" HorizontalAlignment="Stretch" Margin="0,7,0,3"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Name="LayerPopOutStackPanel" Visibility="Visible">
+                <StackPanel Name="LayerPopOutStackPanel" Visibility="Collapsed">
                     <TextBlock Text="Player Selector" FontSize="30" HorizontalAlignment="Center" Padding="20,0"/>
                     <ComboBox Name="PlayerSelectorComboBox" HorizontalAlignment="Stretch" Margin="0,10,0,10" SelectionChanged="PlayerSelectorComboBox_SelectionChanged"/>
                     <Grid Padding="0,5,0,10">
