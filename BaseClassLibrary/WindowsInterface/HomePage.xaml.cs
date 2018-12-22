@@ -8,19 +8,28 @@ namespace WindowsInterface
 
     public sealed partial class HomePage : Page
     {
-        private List<Player> playerList = App.PlayerList;
         private int selectedPlayerIndex = -1;
         private int selectedLayerIndex = -1;
 
         //constructs the page and initalizes variables needed for proper function
         public HomePage()
         {
-            playerList = new List<Player>();
             this.InitializeComponent();
+            List<Player> temp = App.PlayerList;
+            RefreshPlayerComboBox();
             App.FieldCanvasHeight = FieldCanvas.Height;
             App.FieldCanvasWidth = FieldCanvas.Width;
+            ResetCanvases();
         }
 
+        public void ResetCanvases(){
+            foreach(Player player in App.PlayerList)
+            {
+                player.ResetPlayerCanvas();
+            }
+            RefreshHolderCanvas();
+
+        }
 
         //METHODS FOR RIGHT SIDE MENU
 
@@ -77,7 +86,7 @@ namespace WindowsInterface
         //saves the degrees and points off of the menu to the path
         private void SaveDegreeButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            Segment selectedSegment = playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
+            Segment selectedSegment = App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
 
             //ControlPointOne
             selectedSegment.ControlptOne[0] = Double.Parse(StartPointXTextBlock.Text);
@@ -100,27 +109,39 @@ namespace WindowsInterface
             //ControlPointFour
             selectedSegment.ControlptFour[0] = Double.Parse(EndPointXTextBlock.Text);
             selectedSegment.ControlptFour[1] = Double.Parse(EndPointYTextBlock.Text);
-            playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).RefreshCanvas();
+            App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).RefreshCanvas();
 
         }
         //saves the direct coordinates of the points to the path
         private void CoordinateSaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            Segment selectedSegment = playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
+            if (!(Double.TryParse(ControlPointOneXTextBox.Text, out double cpOneX) && Double.TryParse(ControlPointOneYTextBox.Text, out double cpOneY) && Double.TryParse(ControlPointTwoXTextBox.Text, out double cpTwoX) && Double.TryParse(ControlPointTwoYTextBox.Text, out double cpTwoY) && Double.TryParse(ControlPointThreeXTextBox.Text, out double cpThreeX) && Double.TryParse(ControlPointThreeYTextBox.Text, out double cpThreeY) && Double.TryParse(ControlPointFourXTextBox.Text, out double cpFourX) && Double.TryParse(ControlPointFourYTextBox.Text, out double cpFourY)))
+            {
+                WarningCD warning = new WarningCD("Please enter only numeric values", "");
+                warning.Show();
+                return;
+            }
+            else if (selectedPlayerIndex == -1 || selectedLayerIndex == -1 || App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex == -1)
+            {
+                WarningCD warning = new WarningCD("Please select", "a Player, a Layer, a Segment");
+                warning.Show();
+                return;
+            }
+            Segment selectedSegment = App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
 
-            selectedSegment.ControlptOne[0] = Double.Parse(ControlPointOneXTextBox.Text);
-            selectedSegment.ControlptOne[1] = Double.Parse(ControlPointOneYTextBox.Text);
+            selectedSegment.ControlptOne[0] = cpOneX;
+            selectedSegment.ControlptOne[1] = cpOneY;
 
-            selectedSegment.ControlptTwo[0] = Double.Parse(ControlPointTwoXTextBox.Text);
-            selectedSegment.ControlptTwo[1] = Double.Parse(ControlPointTwoYTextBox.Text);
+            selectedSegment.ControlptTwo[0] = cpTwoX;
+            selectedSegment.ControlptTwo[1] = cpTwoY;
 
-            selectedSegment.ControlptThree[0] = Double.Parse(ControlPointThreeXTextBox.Text);
-            selectedSegment.ControlptThree[1] = Double.Parse(ControlPointThreeYTextBox.Text);
+            selectedSegment.ControlptThree[0] = cpThreeX;
+            selectedSegment.ControlptThree[1] = cpThreeY;
 
-            selectedSegment.ControlptFour[0] = Double.Parse(ControlPointFourXTextBox.Text);
-            selectedSegment.ControlptFour[1] = Double.Parse(ControlPointFourYTextBox.Text);
+            selectedSegment.ControlptFour[0] = cpFourX;
+            selectedSegment.ControlptFour[1] = cpFourY;
 
-            playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).RefreshCanvas();
+            App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).RefreshCanvas();
 
         }
 
@@ -131,15 +152,15 @@ namespace WindowsInterface
         private void SegmentSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int test = selectedLayerIndex;
-            playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex = SegmentSelectorComboBox.SelectedIndex;
-            playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).CompileCanvas();
+            App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex = SegmentSelectorComboBox.SelectedIndex;
+            App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).CompileCanvas();
             RefreshSegmentModificationBoxes();
         }
 
         private void RefreshSegmentModificationBoxes()
         {
-            if (playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex == -1) return;
-            Segment selectedSegment = playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
+            if (App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex == -1) return;
+            Segment selectedSegment = App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
 
             //ControlPointOne
             ControlPointOneXTextBox.Text = selectedSegment.ControlptOne[0].ToString();
@@ -184,7 +205,7 @@ namespace WindowsInterface
         {
             if (selectedLayerIndex == -1) return;
             SegmentSelectorComboBox.Items.Clear();
-            foreach (Segment segment in playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList)
+            foreach (Segment segment in App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList)
             {
                 ComboBoxItem comboBoxItem = new ComboBoxItem
                 {
@@ -200,7 +221,7 @@ namespace WindowsInterface
         {
             LayerSelectorComboBox.Items.Clear();
             if (selectedPlayerIndex == -1) return;
-            for (int i = 0; i < playerList[selectedPlayerIndex].GetNumberOfLayers(); i++)
+            for (int i = 0; i < App.PlayerList[selectedPlayerIndex].GetNumberOfLayers(); i++)
             {
                 ComboBoxItem comboBoxItem = new ComboBoxItem
                 {
@@ -219,11 +240,11 @@ namespace WindowsInterface
         private void RefreshPlayerComboBox()
         {
             PlayerSelectorComboBox.Items.Clear();
-            for (int i = 0; i < playerList.Count; i++)
+            for (int i = 0; i < App.PlayerList.Count; i++)
             {
                 ComboBoxItem comboBoxItem = new ComboBoxItem
                 {
-                    Content = "Team " + (TeamNumberTextBox.Text),
+                    Content = "Team " + (App.PlayerList[i].TeamNumber),
                     FontSize = 25
                 };
                 PlayerSelectorComboBox.Items.Add(comboBoxItem);
@@ -233,7 +254,7 @@ namespace WindowsInterface
         private void RefreshHolderCanvas()
         {
             HolderCanvas.Children.Clear();
-            foreach (Player player in playerList)
+            foreach (Player player in App.PlayerList)
             {
                 player.CompileCanvas(-1);
                 HolderCanvas.Children.Add(player.MainCanvas);
@@ -247,15 +268,16 @@ namespace WindowsInterface
             selectedLayerIndex = box.SelectedIndex;
             if (selectedPlayerIndex == -1) return;
             RefreshSegmentComboBox();
-            playerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+            App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+            
         }
 
         private void PlayerSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox box = sender as ComboBox;
             selectedPlayerIndex = box.SelectedIndex;
-            RefreshLayerComboBox();
             RefreshHolderCanvas();
+            RefreshLayerComboBox();
         }
 
         private void NewPlayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -276,7 +298,7 @@ namespace WindowsInterface
             ContentDialogResult result = await deleteFileDialog.ShowAsync();
             if(result == ContentDialogResult.Primary)
             {
-                playerList.RemoveAt(selectedPlayerIndex);
+                App.PlayerList.RemoveAt(selectedPlayerIndex);
                 RefreshHolderCanvas();
                 RefreshPlayerComboBox();
                 RefreshLayerComboBox();
@@ -287,7 +309,7 @@ namespace WindowsInterface
         private void NewLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (selectedPlayerIndex == -1) return;
-            playerList[selectedPlayerIndex].CreateLayer();
+            App.PlayerList[selectedPlayerIndex].CreateLayer();
             ComboBoxItem comboBoxItem = new ComboBoxItem
             {
                 Content = "Layer" +(LayerSelectorComboBox.Items.Count+1),
@@ -296,7 +318,7 @@ namespace WindowsInterface
             LayerSelectorComboBox.Items.Add(comboBoxItem);
             LayerSelectorComboBox.SelectedIndex = LayerSelectorComboBox.Items.Count - 1;
             selectedLayerIndex = LayerSelectorComboBox.SelectedIndex;
-            playerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+            App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
         }
 
         private async void DeleteLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -313,7 +335,7 @@ namespace WindowsInterface
 
             if(result == ContentDialogResult.Primary)
             {
-                playerList[selectedPlayerIndex].DeleteLayer(selectedLayerIndex);
+                App.PlayerList[selectedPlayerIndex].DeleteLayer(selectedLayerIndex);
                 RefreshLayerComboBox();
             }
 
@@ -321,24 +343,25 @@ namespace WindowsInterface
 
         private void FieldCanvas_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
         {
-            if (selectedPlayerIndex == -1 || playerList[selectedPlayerIndex].GetNumberOfLayers() == 0) return;
+            if (selectedPlayerIndex == -1 || App.PlayerList[selectedPlayerIndex].GetNumberOfLayers() == 0) return;
             double x = e.GetPosition(FieldCanvas).X;
             double y = FieldCanvas.Height - e.GetPosition(FieldCanvas).Y;
             double[] newpt = new double[] { x, y };
-            playerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).AddPoint(newpt);
+            App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).AddPoint(newpt);
             RefreshSegmentComboBox();
+            App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
         }
 
         private void ConfirmNewPlayerBtnBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            playerList.Add(new Player(FieldCanvas.Width, FieldCanvas.Height, TeamNumberTextBox.Text,App.CurrentRobot));
+            App.PlayerList.Add(new Player(FieldCanvas.Width, FieldCanvas.Height, TeamNumberTextBox.Text,new Robot()));
             ComboBoxItem comboBoxItem = new ComboBoxItem
             {
                 Content = "Team " + (TeamNumberTextBox.Text),
                 FontSize = 25
             };
             PlayerSelectorComboBox.Items.Add(comboBoxItem);
-            HolderCanvas.Children.Add(playerList[playerList.Count-1].MainCanvas);
+            HolderCanvas.Children.Add(App.PlayerList[App.PlayerList.Count-1].MainCanvas);
             PlayerSelectorComboBox.SelectedIndex = PlayerSelectorComboBox.Items.Count-1;
             selectedPlayerIndex = PlayerSelectorComboBox.SelectedIndex;
             RefreshHolderCanvas();

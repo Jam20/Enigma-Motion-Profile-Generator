@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
@@ -15,7 +17,6 @@ namespace WindowsInterface
     /// </summary>
     sealed partial class App : Application
     {
-        static public Robot CurrentRobot;
         static public double FieldCanvasHeight { get; set; }
         static public double FieldCanvasWidth { get; set; }
         static internal List<Player> PlayerList;
@@ -27,6 +28,7 @@ namespace WindowsInterface
         /// </summary>
         public App()
         {
+            PlayerList = new List<Player>();
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
@@ -39,9 +41,16 @@ namespace WindowsInterface
         /// <param name="e">Details about the launch request and process.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            IReadOnlyCollection<StorageFile> files = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFilesAsync();
+            foreach(StorageFile file in files)
+            {
+                if (!file.Name.Contains("TempProfile"))
+                {
+                    file.DeleteAsync();
+                }
+            }
             Frame rootFrame = Window.Current.Content as Frame;
-            StorageFile robotSaveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync("robotSaveFile.csv");
-            CurrentRobot = new Robot(await FileIO.ReadTextAsync(robotSaveFile));
+            await PullPlayerBackup();
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
@@ -91,24 +100,36 @@ namespace WindowsInterface
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            
             var deferral = e.SuspendingOperation.GetDeferral();
+            await SavePlayerBackup();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
-            SavePlayerBackup();
         }
 
-        public async void SavePlayerBackup()
+        public async Task SavePlayerBackup()
         {
             IReadOnlyCollection<StorageFile> files = (await Windows.Storage.ApplicationData.Current.LocalFolder.GetFilesAsync());
 
             foreach (StorageFile file in files) await file.DeleteAsync();
             foreach (Player player in PlayerList){
                 StorageFile saveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("TempProfile "+player.TeamNumber+".csv", CreationCollisionOption.ReplaceExisting);
-                await FileIO.WriteLinesAsync(saveFile, SaveSystem.MakeSaveFile(player));
+                String[] lines = SaveSystem.MakeSaveFile(player);
+                await FileIO.WriteLinesAsync(saveFile, lines);
             }
 
+        }
+        public async Task PullPlayerBackup()
+        {
+            IReadOnlyCollection < StorageFile > files = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFilesAsync();
+            foreach(StorageFile file in files)
+            {
+                PlayerList.Add(SaveSystem.LoadSaveFile(await FileIO.ReadLinesAsync(file)));
+            }
+            List<Player> temp = PlayerList;
+            
         }
 
     }

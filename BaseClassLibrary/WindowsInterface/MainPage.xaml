@@ -97,6 +97,14 @@
                 <Button Name="ImportButton" Style="{StaticResource purpleButtonStyle}" FontFamily="Segoe MDL2 Assets" Content="" Foreground="#943EEB" FontSize="36" Margin="0,10,10,0" Click="ImportButton_Click"/>
                 <Button Name="ExportButton" Style="{StaticResource purpleButtonStyle}" FontFamily="Segoe MDL2 Assets" Content="" Foreground="#943EEB" FontSize="36" Margin="0,10,0,0" Click="ExportButton_Click"/>
             </StackPanel>
+            <Popup Name="SavePlayerPopup" IsOpen="False" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,50,200,0">
+                <StackPanel>
+                    <TextBlock Text="Choose A Player" FontSize="40"/>
+                    <ComboBox Name="PlayerExportComboBox" HorizontalAlignment="Stretch"/>
+                    <Button Name="PlayerSaveButton" Content="Save" HorizontalAlignment="Stretch" FontSize="25" Margin="0,5,0,0" Click="PlayerSaveButton_Click"/>
+                </StackPanel>
+
+            </Popup>
         </RelativePanel>
         <Frame Name="MainFrame" Grid.Column="1" Grid.Row="1"/>
     </Grid>

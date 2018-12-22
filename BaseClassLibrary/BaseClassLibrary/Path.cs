@@ -156,8 +156,12 @@ public class Path
         int currentSegment = 0;
         while (currentDistance < dist)
         {
-            currentDistance += PathList[currentSegment].SegmentLength;
-            currentSegment++;
+            if (currentSegment >= PathList.Count) currentDistance = dist;
+            else
+            {
+                currentDistance += PathList[currentSegment].SegmentLength;
+                currentSegment++;
+            }
         }
         if (currentSegment != 0)
         {

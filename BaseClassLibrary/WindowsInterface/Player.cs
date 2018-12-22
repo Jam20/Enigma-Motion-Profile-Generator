@@ -12,13 +12,13 @@ namespace WindowsInterface
     class Player
     {
         public String TeamNumber;
-        private Robot robot;
+        public Robot Robot;
         private List<Layer> layers;
         public Canvas MainCanvas { get; private set; }
 
         public Player(double width, double height, String teamNum,Robot robot)
         {
-            this.robot = robot;
+            this.Robot = robot;
             TeamNumber = teamNum;
             layers = new List<Layer>();
             MainCanvas = new Canvas();
@@ -28,12 +28,24 @@ namespace WindowsInterface
 
         public Player(String teamNum, Robot robot, List<Layer> layers)
         {
-            this.robot = robot;
+            this.Robot = robot;
             TeamNumber = teamNum;
             this.layers = layers;
             MainCanvas = new Canvas();
             MainCanvas.Height = App.FieldCanvasHeight;
             MainCanvas.Width = App.FieldCanvasWidth;
+        }
+
+        public void ResetPlayerCanvas()
+        {
+            MainCanvas = new Canvas();
+            MainCanvas.Height = App.FieldCanvasHeight;
+            MainCanvas.Width = App.FieldCanvasWidth;
+            foreach (Layer layer in layers)
+            {
+                layer.ResetCanvas();
+            }
+            CompileCanvas(-1);
         }
 
         public void CompileCanvas(int selectedLayerIndex)
@@ -68,12 +80,12 @@ namespace WindowsInterface
             {
                 Path p = new Path();
                 p.AddPoint(layers[layers.Count-1].GetEndPoint());
-                layers.Add(new Layer(new MotionProfile(p, robot), MainCanvas.Width, MainCanvas.Height));
+                layers.Add(new Layer(new MotionProfile(p, Robot), MainCanvas.Width, MainCanvas.Height));
                 CompileCanvas(-1);
             }
             else
             {
-                layers.Add(new Layer(new MotionProfile(new Path(), robot), MainCanvas.Width, MainCanvas.Height));
+                layers.Add(new Layer(new MotionProfile(new Path(), Robot), MainCanvas.Width, MainCanvas.Height));
                 CompileCanvas(-1);
             }
         }

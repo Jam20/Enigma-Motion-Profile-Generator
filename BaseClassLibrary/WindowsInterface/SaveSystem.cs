@@ -25,7 +25,7 @@ namespace WindowsInterface
             output.Add(String.Concat("# Team Number: ", player.TeamNumber.ToString()));
             output.Add(String.Concat("# Description: "));
             output.Add(String.Concat("# Date Created: ", DateTime.Now.ToString()));
-            output.Add(String.Concat("# Robot Save Code: ", player.GetLayer(0).profile.Robot.ToString()));
+            output.Add(String.Concat("# Robot Save Code: ", player.Robot.ToString()));
 
             for (int i = 0; i < player.GetNumberOfLayers(); i++)
             {
@@ -52,24 +52,24 @@ namespace WindowsInterface
             //,314.34234,234.3243,43.34323,10
             //,314.34234,234.3243,43.34323,10
 
-            double[][][] segments = layer.profile.Path.ToArray();
-            double[][] profile = layer.profile.ToArray();
+            double[][][] segments = layer.Profile.Path.ToArray();
+            double[][] profile = layer.Profile.ToArray();
             String[] output = new String[profile.Length + segments.Length + 1];
             //The +1 is there for the first row, which is the layer divider
-            String timeDifference = (layer.profile.Robot.TimeIncrementInSec * 1000).ToString();
+            String timeDifference = (layer.Profile.Robot.TimeIncrementInSec * 1000).ToString();
             //Writes the layer header(the location of the control points)
 
             output[0] = String.Concat("==", layer.MainCanvas.Name, "==");
 
-            for (int i = 1; i <= segments.Length; i++)
+            for (int i = 0; i < segments.Length; i++)
             {
                 //This and the following loop start at 1 to account for the first row
-                output[i] = (SegmentToLine(segments[i]));
+                output[i+1] = (SegmentToLine(segments[i]));
             }
 
-            for (int i = 1; i <= profile.Length; i++)
+            for (int i = 0; i < profile.Length; i++)
             {
-                output[segments.Length + i] = (String.Concat(PointToString(profile[i]), timeDifference));
+                output[segments.Length + i+1] = (String.Concat(PointToString(profile[i]), timeDifference));
             }
 
             return output;
@@ -157,11 +157,9 @@ namespace WindowsInterface
 
                         workingLayerName = line.Replace("=", "");
 
-                        if (layers.Count > 0)
-                        {
-                            layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot), App.FieldCanvasWidth, App.FieldCanvasHeight));
-                            workingSegments.Clear();
-                        }
+                        workingSegments = new List<Segment>();
+                        layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot), App.FieldCanvasWidth, App.FieldCanvasHeight));
+                        
                         break;
                     
                     default:

@@ -45,9 +45,50 @@ namespace WindowsInterface
         }
 
         //Exports the current path to a csv file including the path itself and a motion profile based on it
-        private async void ExportButton_Click(object sender, RoutedEventArgs e)
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-           /* FileSavePicker fileSelector = new FileSavePicker
+            PlayerExportComboBox.Items.Clear();
+            foreach (Player player in App.PlayerList)
+            {
+                ComboBoxItem item = new ComboBoxItem
+                {
+                    FontSize = 25,
+                    Content = player.TeamNumber,
+                };
+                PlayerExportComboBox.Items.Add(item);
+            }
+            SavePlayerPopup.IsOpen = true;
+        }
+
+        //imports a path file with and sets the current path equal to it than reloads to the homePage
+        private async void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker fileSelector = new FileOpenPicker
+            {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
+            fileSelector.FileTypeFilter.Add(".csv");
+
+            StorageFile file = await fileSelector.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                CachedFileManager.DeferUpdates(file);
+                IList<string> lines = await FileIO.ReadLinesAsync(file);
+                App.PlayerList.Add(SaveSystem.LoadSaveFile(lines));
+                MainFrame.Navigate(typeof(HomePage));
+            }
+            else
+            {
+                WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
+                warning.Show();
+            }
+
+        }
+        
+        private async void PlayerSaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            FileSavePicker fileSelector = new FileSavePicker
             {
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary
             };
@@ -59,8 +100,8 @@ namespace WindowsInterface
             if (file != null)
             {
                 CachedFileManager.DeferUpdates(file);
-
-                await FileIO.WriteLinesAsync(file, SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot)));
+                String[] lines = SaveSystem.MakeSaveFile(App.PlayerList[PlayerExportComboBox.SelectedIndex]);
+                await FileIO.WriteLinesAsync(file, lines);
 
                 Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
 
@@ -76,34 +117,7 @@ namespace WindowsInterface
                 WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
                 warning.Show();
             }
-            */
-            //SaveFile.GetSaveFile(new BaseClassLibrary.MotionProfile(App.currentPath, App.currentRobot),path);
-        }
-
-        //imports a path file with and sets the current path equal to it than reloads to the homePage
-        private async void ImportButton_Click(object sender, RoutedEventArgs e)
-        {
-           /* FileOpenPicker fileSelector = new FileOpenPicker
-            {
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
-            };
-            fileSelector.FileTypeFilter.Add(".csv");
-
-            StorageFile file = await fileSelector.PickSingleFileAsync();
-
-            if (file != null)
-            {
-                CachedFileManager.DeferUpdates(file);
-                IList<string> lines = await FileIO.ReadLinesAsync(file);
-                App.currentPath = new Path(SaveFile.ReadSaveFile(lines).ToList());
-                MainFrame.Navigate(typeof(HomePage));
-            }
-            else
-            {
-                WarningCD warning = new WarningCD("Error: File not found", "No file was selected.");
-                warning.Show();
-            }*/
-
+            SavePlayerPopup.IsOpen = false;
         }
     }
 }

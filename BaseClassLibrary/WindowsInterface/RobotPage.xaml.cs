@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,27 +17,38 @@ namespace WindowsInterface
         public RobotPage()
         {
            this.InitializeComponent();
-            if (App.CurrentRobot == null) App.CurrentRobot = new Robot();
-            else
+            List<Player> temp = App.PlayerList;
+            RefreshPlayerComboBox();
+        }
+        private void RefreshPlayerComboBox()
+        {
+            PlayerComboBox.Items.Clear();
+            foreach (Player player in App.PlayerList)
             {
-                MaxAccelBox.Text = App.CurrentRobot.MaxAccel.ToString();
-                MaxVelbox.Text = App.CurrentRobot.MaxVel.ToString();
-                RobotWidthSlider.Value = App.CurrentRobot.Width;
-                RobotLengthSlider.Value = App.CurrentRobot.Length;
-                WheelSizeTextBox.Text = App.CurrentRobot.WheelSize.ToString();
-                bumperToggleSwitch.IsOn = App.CurrentRobot.UsingBumpers;
-                bumperThicknessSwitch.Value = App.CurrentRobot.BumperThickness;
+                ComboBoxItem item = new ComboBoxItem()
+                {
+                    FontSize = 25,
+                    Content = "Team " + player.TeamNumber,
+                };
+                PlayerComboBox.Items.Add(item);
             }
         }
 
-        private async void RobotSaveBtn_Click(object sender, RoutedEventArgs e)
+        private void RobotSaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            if(PlayerComboBox.SelectedIndex == -1)
+            {
+                WarningCD warning = new WarningCD("Please select which robot you wish to change", "");
+                warning.Show();
+                return;
+            }
+            Player selectedPlayer = App.PlayerList[PlayerComboBox.SelectedIndex];
             if (double.TryParse(MaxAccelBox.Text, out double accel) && double.TryParse(MaxVelbox.Text, out double vel) && double.TryParse(WheelSizeTextBox.Text, out double wheels))
             {
-                App.CurrentRobot.MaxAccel = accel;
-                App.CurrentRobot.MaxVel = vel;
-                App.CurrentRobot.TimeIncrementInSec = .01;
-                App.CurrentRobot.WheelSize = wheels;
+                selectedPlayer.Robot.MaxAccel = accel;
+                selectedPlayer.Robot.MaxVel = vel;
+                selectedPlayer.Robot.TimeIncrementInSec = .01;
+                selectedPlayer.Robot.WheelSize = wheels;
             }
             else
             {
@@ -46,14 +58,26 @@ namespace WindowsInterface
                 warning.Show();
             }
 
-            App.CurrentRobot.Width = RobotWidthSlider.Value;
-            App.CurrentRobot.Length = RobotLengthSlider.Value;
-            App.CurrentRobot.UsingBumpers = bumperToggleSwitch.IsOn;
-            if (App.CurrentRobot.UsingBumpers) App.CurrentRobot.BumperThickness = bumperThicknessSwitch.Value;
-            else App.CurrentRobot.BumperThickness = 0;
-            StorageFile robotSaveFile = await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync("robotSaveFile.csv", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(robotSaveFile, App.CurrentRobot.ToString());
+            selectedPlayer.Robot.Width = RobotWidthSlider.Value;
+            selectedPlayer.Robot.Length = RobotLengthSlider.Value;
+            selectedPlayer.Robot.UsingBumpers = bumperToggleSwitch.IsOn;
+            if (selectedPlayer.Robot.UsingBumpers) selectedPlayer.Robot.BumperThickness = bumperThicknessSwitch.Value;
+            else selectedPlayer.Robot.BumperThickness = 0;
+            RefreshPlayerComboBox();
         }
 
+        
+        private void PlayerComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            if (PlayerComboBox.SelectedIndex == -1) return;
+            Robot selectedRobot = App.PlayerList[PlayerComboBox.SelectedIndex].Robot;
+            MaxAccelBox.Text = selectedRobot.MaxAccel.ToString();
+            MaxVelbox.Text = selectedRobot.MaxVel.ToString();
+            WheelSizeTextBox.Text = selectedRobot.WheelSize.ToString();
+            RobotWidthSlider.Value = selectedRobot.Width;
+            RobotLengthSlider.Value = selectedRobot.Length;
+            bumperToggleSwitch.IsOn = selectedRobot.UsingBumpers;
+            bumperThicknessSwitch.Value = selectedRobot.BumperThickness;
+        }
     }
 }
