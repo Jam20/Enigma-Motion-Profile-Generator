@@ -120,7 +120,7 @@ public class Path
     }
 
     //uses the getSegmentLength method from each segment and totals the distance
-    private void SetTotalDistance()
+    public void SetTotalDistance()
     {
         double output = 0;
         for (int i = 0; i < PathList.Count; i++)

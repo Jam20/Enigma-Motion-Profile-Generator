@@ -29,6 +29,7 @@ namespace BaseClassLibrary
             pos.Add(0);
             vel.Add(0);
             head.Add(Path.GetDirectionat(0));
+            Path.SetTotalDistance();
             while (Math.Abs(Path.TotalDistance - pos[pos.Count - 1]) > .01)
             {
                 double currentPosition = pos[pos.Count - 1];

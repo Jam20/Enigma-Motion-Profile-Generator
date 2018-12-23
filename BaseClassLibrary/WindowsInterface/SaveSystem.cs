@@ -69,7 +69,7 @@ namespace WindowsInterface
 
             for (int i = 0; i < profile.Length; i++)
             {
-                output[segments.Length + i+1] = (String.Concat(PointToString(profile[i]), timeDifference));
+                output[segments.Length + i+1] = (String.Concat(PointToString(profile[i]),String.Concat(",", timeDifference)));
             }
 
             return output;
