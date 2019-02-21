@@ -19,7 +19,7 @@
         
         <!--Column One-->
         <Grid Name="FieldGrid">
-            <Canvas x:Name="FieldCanvas"  DoubleTapped="FieldCanvas_DoubleTapped"  Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="648" Width="324">
+            <Canvas x:Name="FieldCanvas"  DoubleTapped="FieldCanvas_DoubleTapped"  Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="650" Width="315">
 
                 <Canvas.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Escape"></KeyboardAccelerator>
@@ -27,11 +27,93 @@
 
 
 
+                
+                
+                <!--2019 Field-->
+
+                <Rectangle Height="650" Width="315" Fill="LightGray" Stroke="Black" StrokeThickness="1"/>
+
+                <Line X1="0" X2="315" Y1="95.28" Y2="95.28" Stroke="Blue" StrokeThickness="2"/>
+                <Line X1="0" X2="315" Y1="555" Y2="555" Stroke="Red" StrokeThickness="2"/>
+                <Line X1="0" X2="315" Y1="325" Y2="325" Stroke="Black" StrokeThickness="2"/>
+                <Line X1="0" X2="315" Y1="334" Y2="334" Stroke="Red" StrokeThickness="1"/>
+                <Line X1="0" X2="315" Y1="316" Y2="316" Stroke="Blue" StrokeThickness="2"/>
+
+
+
+
+                <!--Hab Zone-->
+                <Rectangle Height="48" Width="48" Canvas.Left="133" Canvas.Top="602" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                <Rectangle Height="48" Width="40" Canvas.Left="93" Canvas.Top="602" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                <Rectangle Height="48" Width="40" Canvas.Left="181" Canvas.Top="602" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                
+                <Rectangle Height="36" Width="128" Canvas.Left="93" Canvas.Top="566" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="83,555,231,555,221,566,93,566,83,555" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="83,555,93,566,93,602,83,602,83,555" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="231,555,221,566,221,602,231,602,231,555" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                
+                <Rectangle Height="48" Width="28" Canvas.Left="67" Canvas.Top="602" Stroke="black" StrokeThickness="2"/>
+                <Rectangle Height="48" Width="28" Canvas.Left="221" Canvas.Top="602" Stroke="black" StrokeThickness="2"/>
+                
+                <Rectangle Height="23" Width="2" Canvas.Left="27" Canvas.Top="627" Fill="White"/>
+                <Rectangle Height="23" Width="2" Canvas.Left="288" Canvas.Top="627" Fill="White"/>
+
+
+
+                <Rectangle Height="48" Width="48" Canvas.Left="133" Canvas.Top="0" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+                <Rectangle Height="48" Width="40" Canvas.Left="93" Canvas.Top="0" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+                <Rectangle Height="48" Width="40" Canvas.Left="181" Canvas.Top="0" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+
+                <Rectangle Height="36" Width="128" Canvas.Left="93" Canvas.Top="48" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="83,94,231,94,221,84,93,84,83,94" Stroke="Black" Fill="Blue"/>
+                <Polygon Points="83,94,93,84,93,48,83,48,83,94" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="231,94,221,84,221,48,231,48,231,94" Fill="Blue" Stroke="black" StrokeThickness="1"/>
+
+
+                <Rectangle Height="48" Width="28" Canvas.Left="67" Canvas.Top="0" Stroke="black" StrokeThickness="2"/>
+                <Rectangle Height="48" Width="28" Canvas.Left="221" Canvas.Top="0" Stroke="black" StrokeThickness="2"/>
+                <Rectangle Height="23" Width="2" Canvas.Left="27" Canvas.Top="0" Fill="White"/>
+                <Rectangle Height="23" Width="2" Canvas.Left="288" Canvas.Top="0" Fill="White"/>
+                    <!--Rockets-->
+                <Polygon Points="0,449,7,449,34,437,34,405,7,393,0,393" Stroke="Black" StrokeThickness="1" Fill="Gray"/>
+                <Polygon Points="7,442,27,430,27,412,7,400,7,442" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+
+                <Polygon Points="315,449,308,449,281,437,281,405,308,393,315,393" Stroke="Black" StrokeThickness="1" Fill="Gray" />
+                <Polygon Points="308,442,288,430,288,412,308,400,308,442" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+
+
+                <Polygon Points="0,201,7,201,34,213,34,243,7,257,0,257,0,201" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="7,208,27,220,27,238,7,250,7,208" Fill="Blue" Stroke="blue" StrokeThickness="1"/>
+
+                <Polygon Points="315,201,308,201,281,213,281,243,308,257,315,257,315,201" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="308,208,288,220,288,238,308,250,308,208" Fill="Blue" Stroke="blue" StrokeThickness="1"/>
+                
+                <!--Cargo Ship-->
+                <Rectangle Canvas.Top="334" Canvas.Left="133" Width="49" Height="102" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
+                <Line X1="157.5" X2="157.5" Y1="214" Y2="436" Stroke="Black" StrokeThickness="2"/>
+                <Line X1="133" X2="182" Y1="354" Y2="354" Stroke="Black" StrokeThickness="2"/>
+                <Line X1="133" X2="182" Y1="376" Y2="376" Stroke="Black" StrokeThickness="2"/>
+                <Line X1="133" X2="182" Y1="398" Y2="398" Stroke="Black" StrokeThickness="2"/>
+                <Rectangle Canvas.Top="334" Canvas.Left="149" Width="16" Height="86" Fill="Red" Stroke="Black"/>
+                <Line X1="134" X2="151" Y1="435" Y2="418" Stroke="Red" StrokeThickness="2"/>
+                <Line X1="181" X2="163" Y1="435" Y2="418" Stroke="Red" StrokeThickness="2"/>
+                
+                <Rectangle Canvas.Top="214" Canvas.Left="133" Width="49" Height="102" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
+
+                <Line X1="133" X2="182" Y1="296" Y2="296" Stroke="Black" StrokeThickness="2"/>
+                <Line X1="133" X2="182" Y1="274" Y2="274" Stroke="Black" StrokeThickness="2"/>
+                <Line X1="133" X2="182" Y1="252" Y2="252" Stroke="Black" StrokeThickness="2"/>
+                <Rectangle Canvas.Top="230" Canvas.Left="149" Width="16" Height="86" Fill="Blue" Stroke="Black"/>
+                <Line X1="134" X2="151" Y1="214" Y2="232" Stroke="Blue" StrokeThickness="2"/>
+                <Line X1="181" X2="163" Y1="214" Y2="232" Stroke="Blue" StrokeThickness="2"/>
+
+
+                <!--2018 FIELD-->
                 <!--Field Bounderies-->
-                <Polygon Points="0,36,30,0,294,0,324,36,324,612,294,648,30,648,0,612,0,36" Fill="LightGray" Stroke="Black" StrokeThickness="2" />
+                <!--<Polygon Points="0,36,30,0,294,0,324,36,324,612,294,648,30,648,0,612,0,36" Fill="LightGray" Stroke="Black" StrokeThickness="2" />-->
 
                 <!--Zones-->
-                <Line X1="0" X2="324" Y1="120" Y2="120" Stroke="Black" StrokeThickness="1"/>
+                <!--<Line X1="0" X2="324" Y1="120" Y2="120" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="99" Canvas.Left="138" Width="45" Height="42" Fill="Blue" Stroke="Gray" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="0" Canvas.Left="166" Width="48" Height="36" Fill="Blue" Stroke="Gray" StrokeThickness="1"/>
 
@@ -47,42 +129,33 @@
 
                 <Line X1="0" X2="324" Y1="528" Y2="528" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="508" Canvas.Left="138" Width="45" Height="42" Fill="Red" Stroke="Gray" StrokeThickness="2"/>
-                <Rectangle Canvas.Top="612" Canvas.Left="166" Width="48" Height="36" Fill="Red"  Stroke="Gray" StrokeThickness="2"/>
-
-
-
+                <Rectangle Canvas.Top="612" Canvas.Left="166" Width="48" Height="36" Fill="Red"  Stroke="Gray" StrokeThickness="2"/>-->
                 <!--Switch 1-->
-                <Rectangle Canvas.Top="140" Canvas.Left="85" Width="154" Height="56" Stroke="black" Fill="LightGray" StrokeThickness="1"/>
+                <!--<Rectangle Canvas.Top="140" Canvas.Left="85" Width="154" Height="56" Stroke="black" Fill="LightGray" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="144" Canvas.Left="89" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="162" Canvas.Left="124" Width="78" Height="12" Fill="White" Stroke="Black" StrokeThickness="1"/>
-                <Rectangle Canvas.Top="144" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
-
+                <Rectangle Canvas.Top="144" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>-->
                 <!--Switch 2-->
-                <Rectangle Canvas.Top="452" Canvas.Left="85" Width="154" Height="56" Fill="LightGray" Stroke="black" StrokeThickness="1"/>
+                <!--<Rectangle Canvas.Top="452" Canvas.Left="85" Width="154" Height="56" Fill="LightGray" Stroke="black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="456" Canvas.Left="89" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="474" Canvas.Left="124" Width="78" Height="12" Fill="White" Stroke="Black" StrokeThickness="1"/>
-                <Rectangle Canvas.Top="456" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>
-
+                <Rectangle Canvas.Top="456" Canvas.Left="199" Width="36" Height="48" Fill="Gray" Stroke="Black" StrokeThickness="1"/>-->
                 <!--Scale-->
-
-                <Rectangle Canvas.Top="300" Canvas.Left="72" Width="36" Height="48" Stroke="Black" Fill="Gray" StrokeThickness="1"/>
+                <!--<Rectangle Canvas.Top="300" Canvas.Left="72" Width="36" Height="48" Stroke="Black" Fill="Gray" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="300" Canvas.Left="212" Width="36" Height="48" Stroke="Black" Fill="Gray" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="312" Canvas.Left="108" Width="104" Height="24" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
-                <Line X1="160" Y1="312" X2="160" Y2="336" StrokeThickness="1" Stroke="Black"/>
-
+                <Line X1="160" Y1="312" X2="160" Y2="336" StrokeThickness="1" Stroke="Black"/>-->
                 <!--Ramp-->
-                <Polygon Points="95,261,229,261,212,271,108,271" Fill="Blue"  Stroke="Black" StrokeThickness="1"/>
+                <!-- <Polygon Points="95,261,229,261,212,271,108,271" Fill="Blue"  Stroke="Black" StrokeThickness="1"/>
                 <Polygon Points="95,261,95,300,108,300,108,271" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
                 <Polygon Points="229,261,229,300,212,300,212,271" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
-                <Polygon Points="108,271,212,271,212,312,108,312" Fill="Blue" Stroke="Black" StrokeThickness="1"/>
-
-                <Polygon Points="95,387,229,387,212,377,108,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
+                <Polygon Points="108,271,212,271,212,312,108,312" Fill="Blue" Stroke="Black" StrokeThickness="1"/>-->
+                <!--<Polygon Points="95,387,229,387,212,377,108,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
                 <Polygon Points="95,387,95,348,108,348,108,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
                 <Polygon Points="229,387,229,348,212,348,212,377" Fill="Red" Stroke="Black" StrokeThickness="1"/>
-                <Polygon Points="108,377,212,377,212,336,108,336" Fill="Red" Stroke="Black" StrokeThickness="1"/>
-
+                <Polygon Points="108,377,212,377,212,336,108,336" Fill="Red" Stroke="Black" StrokeThickness="1"/>-->
                 <!--Cubes-->
-                <Rectangle Canvas.Top="508" Canvas.Left="154" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+                <!--<Rectangle Canvas.Top="508" Canvas.Left="154" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="508" Canvas.Left="141" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="508" Canvas.Left="167" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="521" Canvas.Left="147" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
@@ -110,7 +183,7 @@
                 <Rectangle Canvas.Top="439" Canvas.Left="157" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="439" Canvas.Left="180" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
                 <Rectangle Canvas.Top="439" Canvas.Left="203" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
-                <Rectangle Canvas.Top="439" Canvas.Left="226" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>
+                <Rectangle Canvas.Top="439" Canvas.Left="226" Width="13" Height="13" Fill="Yellow" Stroke="Black" StrokeThickness="1"/>-->
 
 
             </Canvas>
