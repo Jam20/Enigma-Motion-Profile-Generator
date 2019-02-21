@@ -125,6 +125,7 @@ public class Path
         double output = 0;
         for (int i = 0; i < PathList.Count; i++)
         {
+            PathList[i].SetSegmentLength();
             output += PathList[i].SegmentLength;
         }
         TotalDistance = output;
@@ -169,7 +170,7 @@ public class Path
             currentDistance -= PathList[currentSegment].SegmentLength;
         }
         if (currentDistance == 0) return PathList[currentSegment].GetDirectionAt(dist);
-        return PathList[currentSegment].GetDirectionAt(currentDistance - dist);
+        return PathList[currentSegment].GetDirectionAt(dist- currentDistance);
     }
 
 

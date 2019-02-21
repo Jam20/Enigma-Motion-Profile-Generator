@@ -61,7 +61,7 @@ public class Segment
 
 
     //uses the accuracy constant to determine the length using the distance formula
-    private void SetSegmentLength()
+    public void SetSegmentLength()
     {
         double output = 0;
         for (double i = 0.0; i < 1.0; i += Length_Accuracy_Const)
@@ -95,6 +95,7 @@ public class Segment
         }
         return output;
     }
+    
 
     //gets the direction at a given distance
     public double GetDirectionAt(double d)
@@ -104,9 +105,16 @@ public class Segment
         double x = 3 * Math.Pow(1 - t, 2) * (ControlptTwo[0] - ControlptOne[0]) + 6 * (1 - t) * t * (ControlptThree[0] - ControlptTwo[0]) + 3 * Math.Pow(t, 2) * (ControlptFour[0] - ControlptThree[0]);
         if (x == 0 && y > 0) return 0;
         else if (x == 0) return 180;
-        double output = Math.Atan2(y, x) / Math.PI * 180;
-        if (output < 90) return 90 - output;
-        else return output + 90;
+        double output = Math.Atan2(x, y) / Math.PI * 180;
+        return output;
+        if(output>90 && output < 360)
+        {
+            return 360 - output + 90;
+        }
+        else
+        {
+            return -output + 90;
+        }
 
     }
 
@@ -120,6 +128,4 @@ public class Segment
         output[3] = ControlptFour;
         return output;
     }
-
-
 }
