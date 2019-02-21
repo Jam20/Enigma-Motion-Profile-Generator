@@ -30,7 +30,8 @@ namespace BaseClassLibrary
             vel.Add(0);
             head.Add(Path.GetDirectionat(0));
             Path.SetTotalDistance();
-            while (Math.Abs(Path.TotalDistance - pos[pos.Count - 1]) > .01)
+            bool isNeg = false;
+            while (Math.Abs(Path.TotalDistance - pos[pos.Count - 1]) > 0.001)
             {
                 double currentPosition = pos[pos.Count - 1];
                 double currentVelocity = vel[vel.Count - 1];
@@ -39,29 +40,52 @@ namespace BaseClassLibrary
                 double timeToDeccel = currentVelocity / Robot.MaxAccel;
                 double distToDeccel = currentVelocity * timeToDeccel - .5 * Robot.MaxAccel * Math.Pow(timeToDeccel, 2);
 
-                if (currentPosition < Path.TotalDistance - distToDeccel)
+                if (currentVelocity < Robot.MaxVel)
                 {
+                    
+                }
+
+                if (Path.TotalDistance - (currentPosition + distToDeccel) > .0001)
+                {
+                    double distTraveledThisLoop;
+                    double velThisLoop;
                     if (currentVelocity < Robot.MaxVel)
                     {
                         double newVel = currentVelocity + Robot.MaxAccel * Robot.TimeIncrementInSec;
+                        
                         if (newVel > Robot.MaxVel)
                         {
                             double timeToMaxVel = (Robot.MaxVel - currentVelocity) / Robot.MaxAccel;
-                            double pos1 = currentPosition + currentVelocity * (Robot.TimeIncrementInSec - timeToMaxVel) + .5 * Robot.MaxAccel * Math.Pow(Robot.TimeIncrementInSec - timeToMaxVel, 2);
-                            pos.Add(pos1 + Robot.MaxVel * timeToMaxVel + .5 * Robot.MaxAccel * Math.Pow(timeToMaxVel, 2));
-                            vel.Add(Robot.MaxVel);
+                            double pos1 = currentVelocity * (Robot.TimeIncrementInSec - timeToMaxVel) + .5 * Robot.MaxAccel * Math.Pow(Robot.TimeIncrementInSec - timeToMaxVel, 2);
+                            distTraveledThisLoop = pos1 + Robot.MaxVel * timeToMaxVel + .5 * Robot.MaxAccel * Math.Pow(timeToMaxVel, 2);
+                            velThisLoop = Robot.MaxVel;
                         }
                         else
                         {
-                            pos.Add(currentPosition + currentVelocity * Robot.TimeIncrementInSec + .5 * Robot.MaxAccel * Math.Pow(Robot.TimeIncrementInSec, 2));
-                            vel.Add(newVel);
+                            distTraveledThisLoop =currentVelocity * Robot.TimeIncrementInSec + .5 * Robot.MaxAccel * Math.Pow(Robot.TimeIncrementInSec, 2);
+                            velThisLoop = newVel;
                         }
+                        
                     }
                     else
                     {
-                        pos.Add(currentPosition + Robot.MaxVel * Robot.TimeIncrementInSec);
-                        vel.Add(Robot.MaxVel);
+                        distTraveledThisLoop = Robot.MaxVel * Robot.TimeIncrementInSec;
+                        velThisLoop = Robot.MaxVel;
                     }
+                    if (Path.TotalDistance - (currentPosition + distTraveledThisLoop) > distToDeccel)
+                    {
+                        pos.Add(currentPosition +distTraveledThisLoop);
+                        vel.Add(velThisLoop);
+                    }
+                    else
+                    {
+                        double distTillDecel = (Path.TotalDistance - currentPosition) - distToDeccel;
+                        double timeTillDecel = distTillDecel / currentVelocity;
+                        double timeDecel = Robot.TimeIncrementInSec - timeTillDecel;
+                        pos.Add((Path.TotalDistance - distToDeccel) + timeDecel * currentVelocity - .5 * Robot.MaxAccel * Math.Pow(timeDecel, 2));
+                        vel.Add(currentVelocity - Robot.MaxAccel * timeDecel);
+                    }
+                    
                 }
                 else
                 {
@@ -76,7 +100,17 @@ namespace BaseClassLibrary
                         vel.Add(currentVelocity - Robot.MaxAccel * Robot.TimeIncrementInSec);
                     }
                 }
-                head.Add(Path.GetDirectionat(pos[pos.Count - 1]));
+                double possibleHeading = Path.GetDirectionat(pos[pos.Count - 1]);
+                if (possibleHeading <0 && head[head.Count-1] >90)
+                {
+                    possibleHeading = (possibleHeading + 360) % 360;
+                }
+                else if(possibleHeading>0 && head[head.Count - 1] < -90)
+                {
+                    possibleHeading = (possibleHeading - 360) % 360;
+                }
+                head.Add(possibleHeading);
+                //head.Add(Path.GetDirectionat(pos[pos.Count - 1]));
                 timeInMs += (int)(Robot.TimeIncrementInSec * 1000);
             }
             ProfileTime = timeInMs / 1000;
