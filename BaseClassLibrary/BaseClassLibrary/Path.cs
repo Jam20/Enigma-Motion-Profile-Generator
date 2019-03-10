@@ -7,6 +7,7 @@ public class Path
     public List<Segment> PathList { get; private set; }
     private double[] firstPoint;
     public double TotalDistance { get; private set; }
+    public bool IsReversed { get; set; }
 
     //Generic constuctor for first time use
     public Path()

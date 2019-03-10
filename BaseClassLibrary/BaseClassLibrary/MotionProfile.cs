@@ -9,10 +9,11 @@ namespace BaseClassLibrary
         public Robot Robot { get; private set; }
         private double[] position, velocity, heading;
         public double ProfileTime;
-
+        MotionProfile previousProfile;
         //Motion profile Constructor creates a profile based on a path object
-        public MotionProfile(Path p, Robot r)
+        public MotionProfile(Path p, Robot r, MotionProfile previousProfile = null) 
         {
+            this.previousProfile = previousProfile;
             Path = p;
             Robot = r;
             CalcProfile();
@@ -28,10 +29,10 @@ namespace BaseClassLibrary
             int timeInMs = 0;
             pos.Add(0);
             vel.Add(0);
-            head.Add(Path.GetDirectionat(0));
+            if (previousProfile != null) head.Add(-previousProfile.heading[previousProfile.heading.Length-1]);
+            else head.Add(Path.GetDirectionat(0));
             Path.SetTotalDistance();
-            bool isNeg = false;
-            while (Math.Abs(Path.TotalDistance - pos[pos.Count - 1]) > 0.001)
+            while (Math.Abs(Path.TotalDistance - pos[pos.Count - 1]) > 0.01)
             {
                 double currentPosition = pos[pos.Count - 1];
                 double currentVelocity = vel[vel.Count - 1];
@@ -45,7 +46,7 @@ namespace BaseClassLibrary
                     
                 }
 
-                if (Path.TotalDistance - (currentPosition + distToDeccel) > .0001)
+                if (Path.TotalDistance - (currentPosition + distToDeccel) > .01)
                 {
                     double distTraveledThisLoop;
                     double velThisLoop;
@@ -118,11 +119,23 @@ namespace BaseClassLibrary
             velocity = new double[vel.Count];
             heading = new double[head.Count];
 
-            for (int i = 0; i < position.Length; i++)
+            if (Path.IsReversed)
             {
-                position[i] = pos[i];
-                velocity[i] = vel[i];
-                heading[i] = head[i];
+                for (int i = 0; i < position.Length; i++)
+                {
+                    position[i] = -pos[i];
+                    velocity[i] = -vel[i];
+                    heading[i] = -180 + -head[i];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < position.Length; i++)
+                {
+                    position[i] = pos[i];
+                    velocity[i] = vel[i];
+                    heading[i] = -head[i];
+                }
             }
         }
 

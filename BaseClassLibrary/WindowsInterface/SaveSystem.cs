@@ -158,8 +158,9 @@ namespace WindowsInterface
                         workingLayerName = line.Replace("=", "");
 
                         workingSegments = new List<Segment>();
-                        layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot), App.FieldCanvasWidth, App.FieldCanvasHeight));
-                        
+                        if(layers.Count == 0) layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot), App.FieldCanvasWidth, App.FieldCanvasHeight));
+                        else layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot,layers[layers.Count-1].Profile), App.FieldCanvasWidth, App.FieldCanvasHeight));
+
                         break;
                     
                     default:

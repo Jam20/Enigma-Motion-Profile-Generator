@@ -204,7 +204,8 @@ namespace WindowsInterface
                 figure.Segments.Add(bezierSegment);
                 geometry.Figures.Add(figure);
                 segmentBezierPath.Data = geometry;
-                segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Purple);
+                if(!Profile.Path.IsReversed) segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Purple);
+                else segmentBezierPath.Stroke = new SolidColorBrush(Windows.UI.Colors.Red);
                 segmentBezierPath.StrokeThickness = (Profile.Robot.Width+ Profile.Robot.BumperThickness * 2);
                 segmentBezierPath.Opacity = 0.5;
                 segmentBezierPath.StrokeEndLineCap = PenLineCap.Square;

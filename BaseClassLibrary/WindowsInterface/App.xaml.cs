@@ -128,7 +128,6 @@ namespace WindowsInterface
             {
                 PlayerList.Add(SaveSystem.LoadSaveFile(await FileIO.ReadLinesAsync(file)));
             }
-            List<Player> temp = PlayerList;
             
         }
 

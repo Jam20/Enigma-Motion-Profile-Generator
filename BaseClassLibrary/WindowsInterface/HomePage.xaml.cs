@@ -266,6 +266,8 @@ namespace WindowsInterface
             if (selectedPlayerIndex == -1) return;
             RefreshSegmentComboBox();
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+            ReverseButton.IsOn = !App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.Path.IsReversed;
+
 
         }
 
@@ -365,6 +367,15 @@ namespace WindowsInterface
             NewPlayerPopup.IsOpen = false;
         }
 
+        private void ReverseButton_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (selectedLayerIndex == -1) return;
+            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
+            App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().IsReversed = !toggleSwitch.IsOn;
+            RefreshSegmentComboBox();
+            App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+
+        }
     }
 }
 

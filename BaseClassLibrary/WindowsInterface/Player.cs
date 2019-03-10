@@ -80,7 +80,7 @@ namespace WindowsInterface
             {
                 Path p = new Path();
                 p.AddPoint(layers[layers.Count-1].GetEndPoint());
-                layers.Add(new Layer(new MotionProfile(p, Robot), MainCanvas.Width, MainCanvas.Height));
+                layers.Add(new Layer(new MotionProfile(p, Robot, layers[layers.Count - 1].Profile), MainCanvas.Width, MainCanvas.Height));
                 CompileCanvas(-1);
             }
             else
