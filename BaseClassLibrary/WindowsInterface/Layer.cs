@@ -226,6 +226,7 @@ namespace WindowsInterface
         }
         private void ControlPointTwoManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
+            if (SelectedSegmentIndex == -1) return;
             Segment selectedSegment = Profile.Path.PathList[SelectedSegmentIndex];
             double[] newControlPointTwo = new double[] { selectedSegment.ControlptTwo[0] + e.Delta.Translation.X, selectedSegment.ControlptTwo[1] - e.Delta.Translation.Y };
             selectedSegment.ControlptTwo = newControlPointTwo;

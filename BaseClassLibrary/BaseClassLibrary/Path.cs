@@ -9,17 +9,13 @@ public class Path
     public double TotalDistance { get; private set; }
     public bool IsReversed { get; set; }
 
-    //Generic constuctor for first time use
-    public Path()
-    {
-        PathList = new List<Segment>();
-        SetTotalDistance();
-    }
-
+    
     //Constructor with already determined Points list
-    public Path(List<Segment> pathList)
+    public Path(List<Segment> pathList = null , bool isReversed = false)
     {
-        this.PathList = pathList;
+        if (pathList == null) pathList = new List<Segment>();
+        IsReversed = isReversed;
+        PathList = pathList;
         SetTotalDistance();
     }
 

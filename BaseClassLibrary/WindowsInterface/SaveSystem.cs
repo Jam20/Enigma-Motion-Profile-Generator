@@ -26,6 +26,7 @@ namespace WindowsInterface
             output.Add(String.Concat("# Description: "));
             output.Add(String.Concat("# Date Created: ", DateTime.Now.ToString()));
             output.Add(String.Concat("# Robot Save Code: ", player.Robot.ToString()));
+            
 
             for (int i = 0; i < player.GetNumberOfLayers(); i++)
             {
@@ -59,8 +60,8 @@ namespace WindowsInterface
             String timeDifference = (layer.Profile.Robot.TimeIncrementInSec * 1000).ToString();
             //Writes the layer header(the location of the control points)
 
-            output[0] = String.Concat("==", layer.MainCanvas.Name, "==");
-
+            output[0] = String.Concat("==", layer.Profile.Path.IsReversed, "==");
+            
             for (int i = 0; i < segments.Length; i++)
             {
                 //This and the following loop start at 1 to account for the first row
@@ -157,9 +158,11 @@ namespace WindowsInterface
 
                         workingLayerName = line.Replace("=", "");
 
+                        bool isReversed = false;
+                        if (workingLayerName.Equals("True")) isReversed = true;
                         workingSegments = new List<Segment>();
-                        if(layers.Count == 0) layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot), App.FieldCanvasWidth, App.FieldCanvasHeight));
-                        else layers.Add(new Layer(new MotionProfile(new Path(workingSegments), robot,layers[layers.Count-1].Profile), App.FieldCanvasWidth, App.FieldCanvasHeight));
+                        if(layers.Count == 0) layers.Add(new Layer(new MotionProfile(new Path(workingSegments, isReversed), robot), App.FieldCanvasWidth, App.FieldCanvasHeight));
+                        else layers.Add(new Layer(new MotionProfile(new Path(workingSegments, isReversed), robot,layers[layers.Count-1].Profile), App.FieldCanvasWidth, App.FieldCanvasHeight));
 
                         break;
                     
