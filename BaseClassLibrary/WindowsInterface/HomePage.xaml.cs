@@ -232,6 +232,12 @@ namespace WindowsInterface
                 LayerSelectorComboBox.SelectedIndex = 0;
                 selectedLayerIndex = 0;
             }
+            else
+            {
+                NewLayerButton_Click(null, null);
+                LayerSelectorComboBox.SelectedIndex = 0;
+                selectedLayerIndex = 0;
+            }
 
         }
         private void RefreshPlayerComboBox()
@@ -264,6 +270,7 @@ namespace WindowsInterface
             ComboBox box = sender as ComboBox;
             selectedLayerIndex = box.SelectedIndex;
             if (selectedPlayerIndex == -1) return;
+            if (selectedLayerIndex == -1) return;
             RefreshSegmentComboBox();
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
             ReverseButton.IsOn = !App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.Path.IsReversed;
