@@ -11,11 +11,15 @@ namespace BaseClassLibrary
         public double ProfileTime;
         MotionProfile previousProfile;
         //Motion profile Constructor creates a profile based on a path object
-        public MotionProfile(Path p, Robot r, MotionProfile previousProfile = null) 
+        public MotionProfile(Path p,Robot robot = null, MotionProfile previousProfile = null) 
         {
             this.previousProfile = previousProfile;
             Path = p;
-            Robot = r;
+            if (robot == null)
+            {
+                Robot = new Robot(previousProfile.Robot.ToString());
+            }
+            else Robot = robot;
             CalcProfile();
         }
 

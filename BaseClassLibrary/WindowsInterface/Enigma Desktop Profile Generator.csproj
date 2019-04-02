@@ -106,7 +106,6 @@
     <Compile Include="Layer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="SaveSystem.cs" />
-    <Compile Include="SaveFile.cs" />
     <Compile Include="ProgressBarCD.xaml.cs">
       <DependentUpon>ProgressBarCD.xaml</DependentUpon>
     </Compile>

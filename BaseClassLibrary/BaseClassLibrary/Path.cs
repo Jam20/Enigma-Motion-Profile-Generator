@@ -18,7 +18,10 @@ public class Path
         PathList = pathList;
         SetTotalDistance();
     }
-
+    public void DeleteSegment()
+    {
+        PathList.RemoveAt(PathList.Count - 1);
+    }
 
     //Adds a point into the pathlist and standardizes the path to make it continous
     public void AddPoint(double[] newPt)

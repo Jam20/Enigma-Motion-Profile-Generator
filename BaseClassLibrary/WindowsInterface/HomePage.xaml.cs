@@ -25,25 +25,13 @@ namespace WindowsInterface
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            TimeSpan period = TimeSpan.FromSeconds(.1);
-
-            ThreadPoolTimer PeriodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
+            foreach(Player p in App.PlayerList)
             {
-                //
-                // TODO: Work
-                //
-
-                //
-                // Update the UI thread by using the UI core dispatcher.
-                //
-                await Dispatcher.RunAsync(CoreDispatcherPriority.High,
-                    () =>
-                    {
-                       RefreshSegmentModificationBoxes();
-                       
-            });
-
-            }, period);
+                for(int i = 0; i < p.GetNumberOfLayers(); i++)
+                {
+                    p.GetLayer(i).PtManipulationMthd = RefreshSegmentModificationBoxes;
+                }
+            }
         }
 
         public void ResetCanvases()
@@ -285,11 +273,9 @@ namespace WindowsInterface
         private void RefreshHolderCanvas()
         {
             HolderCanvas.Children.Clear();
-            foreach (Player player in App.PlayerList)
-            {
-                player.CompileCanvas(-1);
-                HolderCanvas.Children.Add(player.MainCanvas);
-            }
+            if (selectedPlayerIndex == -1) return;
+            App.PlayerList[selectedPlayerIndex].CompileCanvas(-1);
+            HolderCanvas.Children.Add(App.PlayerList[selectedPlayerIndex].MainCanvas);
         }
 
 
@@ -323,8 +309,8 @@ namespace WindowsInterface
         {
             ContentDialog deleteFileDialog = new ContentDialog
             {
-                Title = "Delete Primary Permanently?",
-                Content = "If you delete this primary, you won't be able to recover it. Do you want to delete it?",
+                Title = "Delete Player Permanently?",
+                Content = "If you delete this player, you won't be able to recover it. Do you want to delete it?",
                 PrimaryButtonText = "Delete",
                 CloseButtonText = "Cancel"
             };
@@ -333,8 +319,9 @@ namespace WindowsInterface
             if (result == ContentDialogResult.Primary)
             {
                 App.PlayerList.RemoveAt(selectedPlayerIndex);
-                RefreshHolderCanvas();
+                selectedPlayerIndex = -1;
                 RefreshPlayerComboBox();
+                RefreshHolderCanvas();
                 RefreshLayerComboBox();
             }
 
@@ -343,7 +330,8 @@ namespace WindowsInterface
         private void NewLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (selectedPlayerIndex == -1) return;
-            App.PlayerList[selectedPlayerIndex].CreateLayer();
+            App.PlayerList[selectedPlayerIndex].CreateLayer(RefreshSegmentModificationBoxes);
+            App.PlayerList[selectedPlayerIndex].GetLayer(App.PlayerList[selectedPlayerIndex].GetNumberOfLayers() - 1).PtManipulationMthd = RefreshSegmentModificationBoxes;
             ComboBoxItem comboBoxItem = new ComboBoxItem
             {
                 Content = "Layer" + (LayerSelectorComboBox.Items.Count + 1),
@@ -353,6 +341,7 @@ namespace WindowsInterface
             LayerSelectorComboBox.SelectedIndex = LayerSelectorComboBox.Items.Count - 1;
             selectedLayerIndex = LayerSelectorComboBox.SelectedIndex;
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+
         }
 
         private async void DeleteLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -388,7 +377,7 @@ namespace WindowsInterface
 
         private void ConfirmNewPlayerBtnBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            App.PlayerList.Add(new Player(FieldCanvas.Width, FieldCanvas.Height, TeamNumberTextBox.Text, new Robot()));
+            App.PlayerList.Add(new Player(FieldCanvas.Width, FieldCanvas.Height, TeamNumberTextBox.Text));
             ComboBoxItem comboBoxItem = new ComboBoxItem
             {
                 Content = "Team " + (TeamNumberTextBox.Text),

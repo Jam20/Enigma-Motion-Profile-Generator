@@ -25,7 +25,7 @@ namespace WindowsInterface
             output.Add(String.Concat("# Team Number: ", player.TeamNumber.ToString()));
             output.Add(String.Concat("# Description: "));
             output.Add(String.Concat("# Date Created: ", DateTime.Now.ToString()));
-            output.Add(String.Concat("# Robot Save Code: ", player.Robot.ToString()));
+            output.Add(String.Concat("# Robot Save Code: ", player.GetLayer(0).Profile.Robot.ToString()));
             
 
             for (int i = 0; i < player.GetNumberOfLayers(); i++)
@@ -174,7 +174,7 @@ namespace WindowsInterface
                 }
             }
 
-            return new Player(teamNumber, robot, layers);
+            return new Player(teamNumber, layers);
         }
 
         /*

@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WindowsInterface
 {
+    public delegate void methodsForPointManipulation();
     class Layer
     {
         private const int POINTSIZE = 4;
@@ -17,6 +18,7 @@ namespace WindowsInterface
         public MotionProfile Profile;
         public int SelectedSegmentIndex =0;
         public Canvas MainCanvas { get; private set; }
+        public methodsForPointManipulation PtManipulationMthd;
 
         public Layer(MotionProfile profile, double width, double height)
         {
@@ -25,6 +27,7 @@ namespace WindowsInterface
             MainCanvas.Width = App.FieldCanvasWidth;
             MainCanvas.Height = App.FieldCanvasHeight;
             CompileCanvas();
+            
         }
 
         public Layer(MotionProfile profile, double width, double height, String name)
@@ -81,6 +84,10 @@ namespace WindowsInterface
             foreach (Ellipse ellipse in GetUIEllipseObjects()) MainCanvas.Children.Add(ellipse);
             foreach (Windows.UI.Xaml.Shapes.Path path in GetUIPathObjects()) MainCanvas.Children.Add(path);
             RefreshCanvas();
+        }
+        public void DeleteSegment()
+        {
+            Profile.Path.DeleteSegment();
         }
         
         //Gets and sets startpoints/endpoints as to prevent access to the profile
@@ -223,6 +230,7 @@ namespace WindowsInterface
             int pointTableNum = int.Parse(sentEllipse.Name);
             Profile.Path.ModifyPoint(pointTableNum, new double[] { Profile.Path.GetPoint(pointTableNum)[0] + e.Delta.Translation.X, Profile.Path.GetPoint(pointTableNum)[1] - e.Delta.Translation.Y });
             RefreshCanvas();
+            PtManipulationMthd();
         }
         private void ControlPointTwoManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
@@ -232,6 +240,7 @@ namespace WindowsInterface
             selectedSegment.ControlptTwo = newControlPointTwo;
             Profile.Path.StandardizePath(SelectedSegmentIndex - 1);
             RefreshCanvas();
+            PtManipulationMthd();
         }
         private void ControlPointThreeManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
@@ -240,6 +249,7 @@ namespace WindowsInterface
             selectedSegment.ControlptThree = newControlPointThree;
             Profile.Path.StandardizePath(SelectedSegmentIndex);
             RefreshCanvas();
+            PtManipulationMthd();
         }
 
         private void RefreshEllipses()

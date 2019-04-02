@@ -21,15 +21,18 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0" Padding="0,10,0,0" >
-            <TextBlock Text="Player" FontSize="25" HorizontalAlignment="Center"/>
-            <ComboBox Name="PlayerComboBox" HorizontalAlignment="Center" SelectionChanged="PlayerComboBox_SelectionChanged_1"/>
-            <TextBlock Text="Drive Train Type" FontSize="25" HorizontalAlignment="Center"/>
-            <ComboBox x:Name="DriveTypeComboBox" FontSize="20" Width="auto" Padding="20,10" HorizontalAlignment="Center" Margin="0,3,0,0">
-                <ComboBoxItem Content="TankDrive" IsSelected="True"/>
-            </ComboBox>
-            <TextBlock Text="Wheel Size (In)" FontSize="25" HorizontalAlignment="Center" Margin="0,30,0,0"/>
-            <TextBox x:Name="WheelSizeTextBox" Width="150" Margin="0,3,0,0"/>
-            <TextBlock x:Name="WheelSizeErrorTextBlock"  FontSize="15" Foreground="Red" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Player" FontSize="25" HorizontalAlignment="Center"/>
+                    <ComboBox Name="PlayerComboBox" HorizontalAlignment="Center" SelectionChanged="PlayerComboBox_SelectionChanged_1"/>
+                </StackPanel>
+                <StackPanel Margin="25,0,0,0" >
+                    <TextBlock Text="Layer" FontSize="25" HorizontalAlignment="Center"/>
+                    <ComboBox Name="LayerComboBox" HorizontalAlignment="Center" SelectionChanged="LayerComboBox_SelectionChanged"/>
+                </StackPanel>
+            </StackPanel>
+            
+            
             <StackPanel Orientation="Horizontal" Margin="0,30,0,0" HorizontalAlignment="Center">
                 <StackPanel>
                     <TextBlock Text="Robot Width" FontSize="25"/>
@@ -45,10 +48,6 @@
             <TextBox x:Name="MaxVelbox" HorizontalAlignment="Center" Width="200" Height="10" Margin="0,15,0,0"/>
             <TextBlock Text="Max Acceleration (In/Sec²)" FontSize="25" HorizontalAlignment="Center" Padding="0,10,0,0"/>
             <TextBox x:Name="MaxAccelBox" HorizontalAlignment="Center" Width="200" Height="10" Margin="0,15,0,0"/>
-            <TextBlock Text="Using Bumpers" FontSize="25" HorizontalAlignment="Center" Margin="0,20,0,0"/>
-            <ToggleSwitch x:Name="bumperToggleSwitch" HorizontalAlignment="Center"  OnContent="Yes" OffContent="No" Width="auto" Margin="0,3,0,0"/>
-            <TextBlock Text="Bumper Thickness (In)" FontSize="25" HorizontalAlignment="Center" Margin="0,10,0,0"/>
-            <Slider x:Name="bumperThicknessSwitch" Minimum="1" Maximum="15" Width="200" Margin="0,10,0,0"/>
 
         </StackPanel>
         
