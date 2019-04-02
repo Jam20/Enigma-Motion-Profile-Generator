@@ -266,8 +266,9 @@ namespace WindowsInterface
             if (selectedPlayerIndex == -1) return;
             RefreshSegmentComboBox();
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+            if (selectedLayerIndex == -1) return;
             ReverseButton.IsOn = !App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.Path.IsReversed;
-
+            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
 
         }
 
@@ -318,6 +319,8 @@ namespace WindowsInterface
             LayerSelectorComboBox.SelectedIndex = LayerSelectorComboBox.Items.Count - 1;
             selectedLayerIndex = LayerSelectorComboBox.SelectedIndex;
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
+
         }
 
         private async void DeleteLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -337,6 +340,7 @@ namespace WindowsInterface
                 App.PlayerList[selectedPlayerIndex].DeleteLayer(selectedLayerIndex);
                 RefreshLayerComboBox();
             }
+            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
 
         }
 
@@ -349,6 +353,8 @@ namespace WindowsInterface
             App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).AddPoint(newpt);
             RefreshSegmentComboBox();
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
+            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
+
         }
 
         private void ConfirmNewPlayerBtnBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -365,6 +371,7 @@ namespace WindowsInterface
             selectedPlayerIndex = PlayerSelectorComboBox.SelectedIndex;
             RefreshHolderCanvas();
             NewPlayerPopup.IsOpen = false;
+
         }
 
         private void ReverseButton_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)

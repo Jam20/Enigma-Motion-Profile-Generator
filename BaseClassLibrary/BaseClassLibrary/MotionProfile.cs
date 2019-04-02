@@ -114,7 +114,7 @@ namespace BaseClassLibrary
                 //head.Add(Path.GetDirectionat(pos[pos.Count - 1]));
                 timeInMs += (int)(Robot.TimeIncrementInSec * 1000);
             }
-            ProfileTime = timeInMs / 1000;
+            ProfileTime = timeInMs / 1000.0;
             position = new double[pos.Count];
             velocity = new double[vel.Count];
             heading = new double[head.Count];
