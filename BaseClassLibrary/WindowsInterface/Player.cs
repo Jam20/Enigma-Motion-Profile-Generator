@@ -12,13 +12,12 @@ namespace WindowsInterface
     class Player
     {
         public String TeamNumber;
-        public Robot Robot;
+        
         private List<Layer> layers;
         public Canvas MainCanvas { get; private set; }
 
-        public Player(double width, double height, String teamNum,Robot robot)
+        public Player(double width, double height, String teamNum)
         {
-            this.Robot = robot;
             TeamNumber = teamNum;
             layers = new List<Layer>();
             MainCanvas = new Canvas();
@@ -26,9 +25,8 @@ namespace WindowsInterface
             MainCanvas.Width = width;
         }
 
-        public Player(String teamNum, Robot robot, List<Layer> layers)
+        public Player(String teamNum, List<Layer> layers)
         {
-            this.Robot = robot;
             TeamNumber = teamNum;
             this.layers = layers;
             MainCanvas = new Canvas();
@@ -74,18 +72,18 @@ namespace WindowsInterface
             CompileCanvas(-1);
         }
 
-        public void CreateLayer()
+        public void CreateLayer(methodsForPointManipulation method)
         {
             if (layers.Count > 0)
             {
                 Path p = new Path();
                 p.AddPoint(layers[layers.Count-1].GetEndPoint());
-                layers.Add(new Layer(new MotionProfile(p, Robot, layers[layers.Count - 1].Profile), MainCanvas.Width, MainCanvas.Height));
+                layers.Add(new Layer(new MotionProfile(p, null,layers[layers.Count - 1].Profile), MainCanvas.Width, MainCanvas.Height));
                 CompileCanvas(-1);
             }
             else
             {
-                layers.Add(new Layer(new MotionProfile(new Path(), Robot), MainCanvas.Width, MainCanvas.Height));
+                layers.Add(new Layer(new MotionProfile(new Path(), new Robot()), MainCanvas.Width, MainCanvas.Height));
                 CompileCanvas(-1);
             }
         }

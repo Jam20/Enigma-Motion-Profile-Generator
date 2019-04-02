@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using Windows.System.Threading;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+
 namespace WindowsInterface
 {
 
@@ -17,6 +22,16 @@ namespace WindowsInterface
             RefreshPlayerComboBox();
             App.FieldCanvasHeight = FieldCanvas.Height;
             App.FieldCanvasWidth = FieldCanvas.Width; ResetCanvases();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            foreach(Player p in App.PlayerList)
+            {
+                for(int i = 0; i < p.GetNumberOfLayers(); i++)
+                {
+                    p.GetLayer(i).PtManipulationMthd = RefreshSegmentModificationBoxes;
+                }
+            }
         }
 
         public void ResetCanvases()
@@ -157,30 +172,31 @@ namespace WindowsInterface
 
         private void RefreshSegmentModificationBoxes()
         {
-            if (App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex == -1) return;
+
+            if (selectedPlayerIndex == -1 || selectedLayerIndex == -1 || App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex == -1) return;
             Segment selectedSegment = App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
 
             //ControlPointOne
-            ControlPointOneXTextBox.Text = selectedSegment.ControlptOne[0].ToString();
-            ControlPointOneYTextBox.Text = selectedSegment.ControlptOne[1].ToString();
-            StartPointXTextBlock.Text = selectedSegment.ControlptOne[0].ToString();
-            StartPointYTextBlock.Text = selectedSegment.ControlptOne[1].ToString();
+            ControlPointOneXTextBox.Text = ((int)selectedSegment.ControlptOne[0]).ToString();
+            ControlPointOneYTextBox.Text = ((int)selectedSegment.ControlptOne[1]).ToString();
+            StartPointXTextBlock.Text = ((int)selectedSegment.ControlptOne[0]).ToString();
+            StartPointYTextBlock.Text = ((int)selectedSegment.ControlptOne[1]).ToString();
 
             //ControlPointTwo
-            ControlPointTwoXTextBox.Text = selectedSegment.ControlptTwo[0].ToString();
-            ControlPointTwoYTextBox.Text = selectedSegment.ControlptTwo[1].ToString();
-            StartingAngleTextBlock.Text = selectedSegment.GetDirectionAt(0).ToString();
+            ControlPointTwoXTextBox.Text = ((int)selectedSegment.ControlptTwo[0]).ToString();
+            ControlPointTwoYTextBox.Text = ((int)selectedSegment.ControlptTwo[1]).ToString();
+            StartingAngleTextBlock.Text = ((int)selectedSegment.GetDirectionAt(0)).ToString();
 
             //ControlPointThree
-            ControlPointThreeXTextBox.Text = selectedSegment.ControlptThree[0].ToString();
-            ControlPointThreeYTextBox.Text = selectedSegment.ControlptThree[1].ToString();
-            EndingAngleXTextBlock.Text = selectedSegment.GetDirectionAt(selectedSegment.SegmentLength).ToString();
+            ControlPointThreeXTextBox.Text = ((int)selectedSegment.ControlptThree[0]).ToString();
+            ControlPointThreeYTextBox.Text = ((int)selectedSegment.ControlptThree[1]).ToString();
+            EndingAngleXTextBlock.Text = ((int)selectedSegment.GetDirectionAt(selectedSegment.SegmentLength)).ToString();
 
             //ControlPointFour
-            ControlPointFourXTextBox.Text = selectedSegment.ControlptFour[0].ToString();
-            ControlPointFourYTextBox.Text = selectedSegment.ControlptFour[1].ToString();
-            EndPointXTextBlock.Text = selectedSegment.ControlptFour[0].ToString();
-            EndPointYTextBlock.Text = selectedSegment.ControlptFour[1].ToString();
+            ControlPointFourXTextBox.Text = ((int)selectedSegment.ControlptFour[0]).ToString();
+            ControlPointFourYTextBox.Text = ((int)selectedSegment.ControlptFour[1]).ToString();
+            EndPointXTextBlock.Text = ((int)selectedSegment.ControlptFour[0]).ToString();
+            EndPointYTextBlock.Text = ((int)selectedSegment.ControlptFour[1]).ToString();
 
         }
         //switches between coordinate and degree mode
@@ -232,6 +248,12 @@ namespace WindowsInterface
                 LayerSelectorComboBox.SelectedIndex = 0;
                 selectedLayerIndex = 0;
             }
+            else
+            {
+                NewLayerButton_Click(null, null);
+                LayerSelectorComboBox.SelectedIndex = 0;
+                selectedLayerIndex = 0;
+            }
 
         }
         private void RefreshPlayerComboBox()
@@ -251,11 +273,9 @@ namespace WindowsInterface
         private void RefreshHolderCanvas()
         {
             HolderCanvas.Children.Clear();
-            foreach (Player player in App.PlayerList)
-            {
-                player.CompileCanvas(-1);
-                HolderCanvas.Children.Add(player.MainCanvas);
-            }
+            if (selectedPlayerIndex == -1) return;
+            App.PlayerList[selectedPlayerIndex].CompileCanvas(-1);
+            HolderCanvas.Children.Add(App.PlayerList[selectedPlayerIndex].MainCanvas);
         }
 
 
@@ -264,11 +284,11 @@ namespace WindowsInterface
             ComboBox box = sender as ComboBox;
             selectedLayerIndex = box.SelectedIndex;
             if (selectedPlayerIndex == -1) return;
+            if (selectedLayerIndex == -1) return;
             RefreshSegmentComboBox();
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
-            if (selectedLayerIndex == -1) return;
             ReverseButton.IsOn = !App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.Path.IsReversed;
-            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
+
 
         }
 
@@ -289,8 +309,8 @@ namespace WindowsInterface
         {
             ContentDialog deleteFileDialog = new ContentDialog
             {
-                Title = "Delete Primary Permanently?",
-                Content = "If you delete this primary, you won't be able to recover it. Do you want to delete it?",
+                Title = "Delete Player Permanently?",
+                Content = "If you delete this player, you won't be able to recover it. Do you want to delete it?",
                 PrimaryButtonText = "Delete",
                 CloseButtonText = "Cancel"
             };
@@ -299,8 +319,9 @@ namespace WindowsInterface
             if (result == ContentDialogResult.Primary)
             {
                 App.PlayerList.RemoveAt(selectedPlayerIndex);
-                RefreshHolderCanvas();
+                selectedPlayerIndex = -1;
                 RefreshPlayerComboBox();
+                RefreshHolderCanvas();
                 RefreshLayerComboBox();
             }
 
@@ -309,7 +330,8 @@ namespace WindowsInterface
         private void NewLayerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (selectedPlayerIndex == -1) return;
-            App.PlayerList[selectedPlayerIndex].CreateLayer();
+            App.PlayerList[selectedPlayerIndex].CreateLayer(RefreshSegmentModificationBoxes);
+            App.PlayerList[selectedPlayerIndex].GetLayer(App.PlayerList[selectedPlayerIndex].GetNumberOfLayers() - 1).PtManipulationMthd = RefreshSegmentModificationBoxes;
             ComboBoxItem comboBoxItem = new ComboBoxItem
             {
                 Content = "Layer" + (LayerSelectorComboBox.Items.Count + 1),
@@ -319,7 +341,6 @@ namespace WindowsInterface
             LayerSelectorComboBox.SelectedIndex = LayerSelectorComboBox.Items.Count - 1;
             selectedLayerIndex = LayerSelectorComboBox.SelectedIndex;
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
-            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
 
         }
 
@@ -340,7 +361,6 @@ namespace WindowsInterface
                 App.PlayerList[selectedPlayerIndex].DeleteLayer(selectedLayerIndex);
                 RefreshLayerComboBox();
             }
-            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
 
         }
 
@@ -353,13 +373,11 @@ namespace WindowsInterface
             App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).AddPoint(newpt);
             RefreshSegmentComboBox();
             App.PlayerList[selectedPlayerIndex].CompileCanvas(selectedLayerIndex);
-            ProfileTimeTextBox.Text = "ProfileTime: " + App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).Profile.ProfileTime + " Seconds";
-
         }
 
         private void ConfirmNewPlayerBtnBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            App.PlayerList.Add(new Player(FieldCanvas.Width, FieldCanvas.Height, TeamNumberTextBox.Text, new Robot()));
+            App.PlayerList.Add(new Player(FieldCanvas.Width, FieldCanvas.Height, TeamNumberTextBox.Text));
             ComboBoxItem comboBoxItem = new ComboBoxItem
             {
                 Content = "Team " + (TeamNumberTextBox.Text),
@@ -371,7 +389,6 @@ namespace WindowsInterface
             selectedPlayerIndex = PlayerSelectorComboBox.SelectedIndex;
             RefreshHolderCanvas();
             NewPlayerPopup.IsOpen = false;
-
         }
 
         private void ReverseButton_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)

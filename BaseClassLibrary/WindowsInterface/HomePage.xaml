@@ -194,10 +194,10 @@
         </Grid>
         
         <!--Column Two-->
-        <StackPanel Name="ColumnTwoStackPanel" Grid.Column="1" Visibility="Collapsed" >
+        <StackPanel Name="ColumnTwoStackPanel" Grid.Column="1" Visibility="Visible" >
             <StackPanel Orientation="Horizontal" Background="LightGray">
                 <Rectangle Fill="Black" Width="2" Margin="0,0,3,0"/>
-                <StackPanel Name="SegmentPopOutStackPanel" Visibility="Collapsed">
+                <StackPanel Name="SegmentPopOutStackPanel" Visibility="Visible">
                     <TextBlock Text="Segment Selector" FontSize="30" Margin="0,0,10,0" HorizontalAlignment="Center"/>
                     <ComboBox Name="SegmentSelectorComboBox" HorizontalAlignment="Stretch" Margin="0,10,0,0" SelectionChanged="SegmentSelectorComboBox_SelectionChanged"/>
                     <Rectangle HorizontalAlignment="Stretch" Height="30"/>
@@ -238,7 +238,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
-                        <Button Grid.Column="0" Name="CoordinateSaveButton" Content="Save" FontSize="12" HorizontalAlignment="Stretch" Click="CoordinateSaveButton_Click"  Grid.Row="1" Margin="0,5,0,3"/>
+                        <Button Grid.Column="0" Name="CoordinateSaveButton" Content="Save" Background="DarkSlateGray" FontSize="12" HorizontalAlignment="Stretch" Click="CoordinateSaveButton_Click"  Grid.Row="1" Margin="0,5,0,3"/>
                     </StackPanel>
                     <StackPanel Name="DegreeModeStackPanel" Visibility="Collapsed">
                         <Grid>
@@ -267,7 +267,7 @@
                             </StackPanel>
 
                         </Grid>
-                        <Button Name="SaveDegreeButton" Content="Save" FontSize="12" Click="SaveDegreeButton_Click" HorizontalAlignment="Stretch" Margin="0,7,0,3"/>
+                        <Button Name="SaveDegreeButton" Content="Save" FontSize="12" Click="SaveDegreeButton_Click" HorizontalAlignment="Stretch" Margin="0,7,0,3" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Name="LayerPopOutStackPanel" Visibility="Collapsed">
@@ -281,10 +281,10 @@
                         </Grid.ColumnDefinitions>
                         <Button Name="NewPlayerButton" Content="New Player" HorizontalAlignment="Center" Grid.Column="0" Click="NewPlayerButton_Click"/>
                         <Popup  Name="NewPlayerPopup" IsOpen="false">
-                            <StackPanel>
-                                <TextBlock Text="Enter Team Number"/>
-                                <TextBox Name="TeamNumberTextBox"/>
-                                <Button Name="ConfirmNewPlayerBtnBtn" Content="Create" Click="ConfirmNewPlayerBtnBtn_Click"/>
+                            <StackPanel Background="LightGray" BorderBrush="Black" BorderThickness="2">
+                                <TextBlock Text="Enter Team Number" Padding="5,5,5,5"/>
+                                <TextBox Name="TeamNumberTextBox" Padding="5,5,5,5"/>
+                                <Button Name="ConfirmNewPlayerBtnBtn" Content="Create" Click="ConfirmNewPlayerBtnBtn_Click" Padding="5,5,5,5"/>
                             </StackPanel>
                         </Popup>
                         <Button Name="DeletePlayerButton" Content="Delete Player" Grid.Column="1" HorizontalAlignment="Center" Click="DeletePlayerButton_Click" />
