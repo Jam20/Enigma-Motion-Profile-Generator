@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using Windows.System.Threading;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+
 namespace WindowsInterface
 {
 
@@ -17,6 +22,28 @@ namespace WindowsInterface
             RefreshPlayerComboBox();
             App.FieldCanvasHeight = FieldCanvas.Height;
             App.FieldCanvasWidth = FieldCanvas.Width; ResetCanvases();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            TimeSpan period = TimeSpan.FromSeconds(.1);
+
+            ThreadPoolTimer PeriodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (source) =>
+            {
+                //
+                // TODO: Work
+                //
+
+                //
+                // Update the UI thread by using the UI core dispatcher.
+                //
+                await Dispatcher.RunAsync(CoreDispatcherPriority.High,
+                    () =>
+                    {
+                       RefreshSegmentModificationBoxes();
+                       
+            });
+
+            }, period);
         }
 
         public void ResetCanvases()
@@ -157,30 +184,31 @@ namespace WindowsInterface
 
         private void RefreshSegmentModificationBoxes()
         {
-            if (App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex == -1) return;
+
+            if (selectedPlayerIndex == -1 || selectedLayerIndex == -1 || App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex == -1) return;
             Segment selectedSegment = App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).GetPath().PathList[App.PlayerList[selectedPlayerIndex].GetLayer(selectedLayerIndex).SelectedSegmentIndex];
 
             //ControlPointOne
-            ControlPointOneXTextBox.Text = selectedSegment.ControlptOne[0].ToString();
-            ControlPointOneYTextBox.Text = selectedSegment.ControlptOne[1].ToString();
-            StartPointXTextBlock.Text = selectedSegment.ControlptOne[0].ToString();
-            StartPointYTextBlock.Text = selectedSegment.ControlptOne[1].ToString();
+            ControlPointOneXTextBox.Text = ((int)selectedSegment.ControlptOne[0]).ToString();
+            ControlPointOneYTextBox.Text = ((int)selectedSegment.ControlptOne[1]).ToString();
+            StartPointXTextBlock.Text = ((int)selectedSegment.ControlptOne[0]).ToString();
+            StartPointYTextBlock.Text = ((int)selectedSegment.ControlptOne[1]).ToString();
 
             //ControlPointTwo
-            ControlPointTwoXTextBox.Text = selectedSegment.ControlptTwo[0].ToString();
-            ControlPointTwoYTextBox.Text = selectedSegment.ControlptTwo[1].ToString();
-            StartingAngleTextBlock.Text = selectedSegment.GetDirectionAt(0).ToString();
+            ControlPointTwoXTextBox.Text = ((int)selectedSegment.ControlptTwo[0]).ToString();
+            ControlPointTwoYTextBox.Text = ((int)selectedSegment.ControlptTwo[1]).ToString();
+            StartingAngleTextBlock.Text = ((int)selectedSegment.GetDirectionAt(0)).ToString();
 
             //ControlPointThree
-            ControlPointThreeXTextBox.Text = selectedSegment.ControlptThree[0].ToString();
-            ControlPointThreeYTextBox.Text = selectedSegment.ControlptThree[1].ToString();
-            EndingAngleXTextBlock.Text = selectedSegment.GetDirectionAt(selectedSegment.SegmentLength).ToString();
+            ControlPointThreeXTextBox.Text = ((int)selectedSegment.ControlptThree[0]).ToString();
+            ControlPointThreeYTextBox.Text = ((int)selectedSegment.ControlptThree[1]).ToString();
+            EndingAngleXTextBlock.Text = ((int)selectedSegment.GetDirectionAt(selectedSegment.SegmentLength)).ToString();
 
             //ControlPointFour
-            ControlPointFourXTextBox.Text = selectedSegment.ControlptFour[0].ToString();
-            ControlPointFourYTextBox.Text = selectedSegment.ControlptFour[1].ToString();
-            EndPointXTextBlock.Text = selectedSegment.ControlptFour[0].ToString();
-            EndPointYTextBlock.Text = selectedSegment.ControlptFour[1].ToString();
+            ControlPointFourXTextBox.Text = ((int)selectedSegment.ControlptFour[0]).ToString();
+            ControlPointFourYTextBox.Text = ((int)selectedSegment.ControlptFour[1]).ToString();
+            EndPointXTextBlock.Text = ((int)selectedSegment.ControlptFour[0]).ToString();
+            EndPointYTextBlock.Text = ((int)selectedSegment.ControlptFour[1]).ToString();
 
         }
         //switches between coordinate and degree mode
